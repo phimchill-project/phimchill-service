@@ -4,7 +4,11 @@
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/phimchill" />
   </component>
+<<<<<<< HEAD
   <component name="ProjectRootManager">
+=======
+  <component name="ProjectRootManager" version="2" project-jdk-name="17" project-jdk-type="JavaSDK">
+>>>>>>> 9049b4728eded9fdbac9c849cdb5ffcd593a9516
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

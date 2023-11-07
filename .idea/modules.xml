@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/phimchill-service.iml" filepath="$PROJECT_DIR$/.idea/phimchill-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/phimchill.iml" filepath="$PROJECT_DIR$/.idea/modules/phimchill.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/phimchill.main.iml" filepath="$PROJECT_DIR$/.idea/modules/phimchill.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/phimchill.test.iml" filepath="$PROJECT_DIR$/.idea/modules/phimchill.test.iml" />
     </modules>
   </component>
 </project>

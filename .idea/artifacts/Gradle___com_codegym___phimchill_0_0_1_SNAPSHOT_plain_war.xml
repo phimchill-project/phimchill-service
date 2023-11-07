@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" external-system-id="GRADLE" name="Gradle : com.codegym : phimchill-0.0.1-SNAPSHOT-plain.war">
+    <output-path>$PROJECT_DIR$/phimchill/build/libs</output-path>
+    <properties id="gradle-properties">
+      <options external-project-path="$PROJECT_DIR$/phimchill">
+        <buildTaskPath>:war</buildTaskPath>
+        <cleanTaskPath>:cleanWar</cleanTaskPath>
+      </options>
+    </properties>
+    <root id="archive" name="phimchill-0.0.1-SNAPSHOT-plain.war">
+      <element id="artifact" artifact-name="Gradle : com.codegym : phimchill-0.0.1-SNAPSHOT-plain.war (exploded)" />
+    </root>
+  </artifact>
+</component>
