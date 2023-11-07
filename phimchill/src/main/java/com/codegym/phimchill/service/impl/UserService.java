@@ -1,8 +1,10 @@
 package com.codegym.phimchill.service.impl;
 
-import com.codegym.phimchill.convect.UserDTOConvect;
+import com.codegym.phimchill.convert.impl.UserConvert;
 import com.codegym.phimchill.dto.payload.request.LoginRequest;
+import com.codegym.phimchill.dto.payload.request.RegisterRequest;
 import com.codegym.phimchill.dto.payload.response.LoginResponse;
+import com.codegym.phimchill.dto.payload.response.RegisterResponse;
 import com.codegym.phimchill.entity.User;
 import com.codegym.phimchill.repository.IUserRepository;
 import com.codegym.phimchill.service.IUserService;
@@ -15,7 +17,7 @@ public class UserService implements IUserService {
     private IUserRepository iUserRepository;
 
     @Autowired
-    private UserDTOConvect userDTOConvect;
+    private UserConvert userDTOConvect;
     @Override
     public LoginResponse login(LoginRequest loginRequest) {
         User user = iUserRepository.findUserByEmail(loginRequest.getEmail());
@@ -34,4 +36,23 @@ public class UserService implements IUserService {
 
 
     }
+
+    @Override
+    public RegisterResponse register(RegisterRequest registerRequest) throws Exception {
+            User user = iUserRepository.findUserByEmail(registerRequest.getEmail());
+            if (user == null ){
+                User user1 = User
+                        .builder()
+                        .email(registerRequest.getEmail())
+                        .password(registerRequest.getPassword())
+                        .name(registerRequest.getName())
+                        .build();
+                iUserRepository.save(user1);
+                return userDTOConvect.convertRegister(user1);
+            } else {
+                throw new Exception();
+        }
+
+    }
 }
+
