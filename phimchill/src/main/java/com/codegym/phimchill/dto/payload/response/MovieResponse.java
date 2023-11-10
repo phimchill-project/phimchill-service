@@ -1,19 +1,12 @@
-package com.codegym.phimchill.dto;
+package com.codegym.phimchill.dto.payload.response;
 
 import com.codegym.phimchill.entity.Category;
 import com.codegym.phimchill.entity.User;
-import jakarta.persistence.Column;
-import jakarta.persistence.ManyToMany;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 import java.util.List;
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class MovieDTO {
+
+public class MovieResponse {
     private Long id;
 
     private String name;
