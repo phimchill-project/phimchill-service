@@ -1,5 +1,6 @@
 package com.codegym.phimchill.controller;
 
+import com.codegym.phimchill.dto.payload.request.CheckEmailExist;
 import com.codegym.phimchill.dto.payload.request.LoginRequest;
 import com.codegym.phimchill.dto.payload.request.RegisterRequest;
 import com.codegym.phimchill.dto.payload.response.LoginResponse;
@@ -33,8 +34,17 @@ public class AuthController {
         if (response != null) {
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email already exists");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
 
+    @PostMapping("/email-not-existion")
+    public ResponseEntity<?> isEmailNotExist (@RequestBody CheckEmailExist checkEmailExist) {
+        boolean response = iUserService.isEmailExist(checkEmailExist);
+        if(response){
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }else{
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }
     }
 }
