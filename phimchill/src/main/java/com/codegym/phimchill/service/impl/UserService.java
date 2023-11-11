@@ -1,6 +1,6 @@
 package com.codegym.phimchill.service.impl;
-
 import com.codegym.phimchill.convert.impl.UserConvert;
+import com.codegym.phimchill.dto.payload.request.CheckEmailExist;
 import com.codegym.phimchill.dto.payload.request.LoginRequest;
 import com.codegym.phimchill.dto.payload.request.RegisterRequest;
 import com.codegym.phimchill.dto.payload.response.LoginResponse;
@@ -26,7 +26,6 @@ public class UserService implements IUserService {
             loginResponse.setUserDTO(userDTOConvect.convertToDTO(user));
             loginResponse.setMessage("Đăng nhập thành công!");
             return loginResponse;
-
         } else {
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setUserDTO(null);
@@ -53,6 +52,16 @@ public class UserService implements IUserService {
                 throw new Exception();
         }
 
+    }
+
+    @Override
+    public boolean isEmailExist(CheckEmailExist email) {
+        User user = iUserRepository.findUserByEmail(email.getEmail());
+        if(user != null) {
+            return true;
+        }else {
+            return false;
+        }
     }
 }
 

@@ -2,7 +2,6 @@ package com.codegym.phimchill.dto.payload.response;
 
 public class RegisterResponse {
     private String email;
-    private String password;
     private String name;
 
     public String getName() {
@@ -21,11 +20,4 @@ public class RegisterResponse {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }
