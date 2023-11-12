@@ -5,12 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-public class RegisterRequest {
-    private String email;
-    private String name;
-    private String password;
+public class CheckEmailExist {
+    String email;
 }
