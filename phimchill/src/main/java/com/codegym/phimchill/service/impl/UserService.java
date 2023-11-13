@@ -1,10 +1,9 @@
 package com.codegym.phimchill.service.impl;
-import com.codegym.phimchill.converter.UserDTOConverter;
-import com.codegym.phimchill.convert.impl.UserConvert;
-import com.codegym.phimchill.dto.payload.request.LoginRequest;
-import com.codegym.phimchill.dto.payload.request.RegisterRequest;
-import com.codegym.phimchill.dto.payload.response.LoginResponse;
-import com.codegym.phimchill.dto.payload.response.RegisterResponse;
+import com.codegym.phimchill.converter.impl.UserDTOConverter;
+import com.codegym.phimchill.payload.request.LoginRequest;
+import com.codegym.phimchill.payload.request.RegisterRequest;
+import com.codegym.phimchill.payload.response.LoginResponse;
+import com.codegym.phimchill.payload.response.RegisterResponse;
 import com.codegym.phimchill.entity.User;
 import com.codegym.phimchill.repository.IUserRepository;
 import com.codegym.phimchill.service.IUserService;
@@ -18,8 +17,6 @@ public class UserService implements IUserService {
     @Autowired
 
     private UserDTOConverter userDTOConverter;
-
-    private UserConvert userDTOConvect;
 
     @Override
     public LoginResponse login(LoginRequest loginRequest) {
@@ -48,7 +45,7 @@ public class UserService implements IUserService {
                         .name(registerRequest.getName())
                         .build();
                 iUserRepository.save(user1);
-                return userDTOConvect.convertRegister(user1);
+                return userDTOConverter.converterRegister(user1);
             } else {
                 throw new Exception();
         }

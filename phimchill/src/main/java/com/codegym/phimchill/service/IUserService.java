@@ -1,9 +1,9 @@
 package com.codegym.phimchill.service;
 
-import com.codegym.phimchill.dto.payload.request.LoginRequest;
-import com.codegym.phimchill.dto.payload.request.RegisterRequest;
-import com.codegym.phimchill.dto.payload.response.LoginResponse;
-import com.codegym.phimchill.dto.payload.response.RegisterResponse;
+import com.codegym.phimchill.payload.request.LoginRequest;
+import com.codegym.phimchill.payload.request.RegisterRequest;
+import com.codegym.phimchill.payload.response.LoginResponse;
+import com.codegym.phimchill.payload.response.RegisterResponse;
 
 public interface IUserService {
     LoginResponse login(LoginRequest loginRequest);
