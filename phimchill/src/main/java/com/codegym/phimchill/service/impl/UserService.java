@@ -1,5 +1,6 @@
 package com.codegym.phimchill.service.impl;
 import com.codegym.phimchill.converter.impl.UserDTOConverter;
+import com.codegym.phimchill.payload.request.CheckEmailExist;
 import com.codegym.phimchill.payload.request.LoginRequest;
 import com.codegym.phimchill.payload.request.RegisterRequest;
 import com.codegym.phimchill.payload.response.LoginResponse;
@@ -50,6 +51,16 @@ public class UserService implements IUserService {
                 throw new Exception();
         }
 
+    }
+
+    @Override
+    public boolean isEmailExist(CheckEmailExist email) {
+        User user = iUserRepository.findUserByEmail(email.getEmail());
+        if(user != null) {
+            return true;
+        }else {
+            return false;
+        }
     }
 }
 

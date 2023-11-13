@@ -87,6 +87,7 @@
           <element id="library" level="project" name="Gradle: org.eclipse.angus:angus-activation:2.0.1" />
           <element id="library" level="project" name="Gradle: org.glassfish.jaxb:txw2:4.0.3" />
           <element id="library" level="project" name="Gradle: com.sun.istack:istack-commons-runtime:4.1.2" />
+          <element id="library" level="project" name="Gradle: org.flywaydb:flyway-mysql:9.16.3" />
         </element>
       </element>
     </root>

@@ -4,6 +4,7 @@ import com.codegym.phimchill.payload.request.LoginRequest;
 import com.codegym.phimchill.payload.request.RegisterRequest;
 import com.codegym.phimchill.payload.response.LoginResponse;
 import com.codegym.phimchill.payload.response.RegisterResponse;
+import com.codegym.phimchill.payload.request.CheckEmailExist;
 import com.codegym.phimchill.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,9 +35,18 @@ public class AuthController {
         if (response != null) {
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email already exists");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
 
+    @PostMapping("/email-not-existion")
+    public ResponseEntity<?> isEmailNotExist (@RequestBody CheckEmailExist checkEmailExist) {
+        boolean response = iUserService.isEmailExist(checkEmailExist);
+        if(response){
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }else{
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }
     }
 
 }
