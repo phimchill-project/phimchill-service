@@ -24,9 +24,6 @@
   <component name="NewModuleRootManager">
     <output url="file://$MODULE_DIR$/../../phimchill/build/classes/java/main" />
     <exclude-output />
-    <content url="file://$MODULE_DIR$/../../phimchill/build/generated/sources/annotationProcessor/java/main">
-      <sourceFolder url="file://$MODULE_DIR$/../../phimchill/build/generated/sources/annotationProcessor/java/main" isTestSource="false" generated="true" />
-    </content>
     <content url="file://$MODULE_DIR$/../../phimchill/src/main">
       <sourceFolder url="file://$MODULE_DIR$/../../phimchill/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../phimchill/src/main/resources" type="java-resource" />

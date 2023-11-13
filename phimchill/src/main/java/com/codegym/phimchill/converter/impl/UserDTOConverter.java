@@ -1,15 +1,15 @@
-package com.codegym.phimchill.convert.impl;
+package com.codegym.phimchill.converter.impl;
 
-import com.codegym.phimchill.convert.IUserConvert;
+import com.codegym.phimchill.converter.IUserDTOConverter;
 import com.codegym.phimchill.dto.UserDTO;
-import com.codegym.phimchill.dto.payload.response.RegisterResponse;
+import com.codegym.phimchill.payload.response.RegisterResponse;
 import com.codegym.phimchill.entity.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserConvert implements IUserConvert {
-    public UserDTO convertToDTO(User user) {
+public class UserDTOConverter implements IUserDTOConverter {
+    public UserDTO converterToDTO(User user) {
         if (user == null) {
             return null;
         }
@@ -17,9 +17,12 @@ public class UserConvert implements IUserConvert {
         BeanUtils.copyProperties(user, userDTO);
         return userDTO;
     }
-    public RegisterResponse convertRegister(User user) {
+
+    @Override
+    public RegisterResponse converterRegister(User user) {
         RegisterResponse response = new RegisterResponse();
         response.setName(user.getName());
         response.setEmail(user.getEmail());
         return response;
-}}
+    }
+}

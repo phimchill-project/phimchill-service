@@ -1,4 +1,4 @@
-package com.codegym.phimchill.dto.payload.request;
+package com.codegym.phimchill.payload.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

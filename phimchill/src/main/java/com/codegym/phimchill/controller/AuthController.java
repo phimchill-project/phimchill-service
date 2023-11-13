@@ -1,10 +1,10 @@
 package com.codegym.phimchill.controller;
 
-import com.codegym.phimchill.dto.payload.request.CheckEmailExist;
-import com.codegym.phimchill.dto.payload.request.LoginRequest;
-import com.codegym.phimchill.dto.payload.request.RegisterRequest;
-import com.codegym.phimchill.dto.payload.response.LoginResponse;
-import com.codegym.phimchill.dto.payload.response.RegisterResponse;
+import com.codegym.phimchill.payload.request.LoginRequest;
+import com.codegym.phimchill.payload.request.RegisterRequest;
+import com.codegym.phimchill.payload.response.LoginResponse;
+import com.codegym.phimchill.payload.response.RegisterResponse;
+import com.codegym.phimchill.payload.request.CheckEmailExist;
 import com.codegym.phimchill.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/auth")
 public class AuthController {
     @Autowired
-    private IUserService iUserService;
+
+    private IUserService iUserService ;
 
     @PostMapping("/login")
     public ResponseEntity<?> Login(@Validated @RequestBody LoginRequest loginRequest) {
@@ -25,7 +26,7 @@ public class AuthController {
         if (loginResponse.getUserDTO() == null) {
             return ResponseEntity.badRequest().body("Invalid username or password.");
         }
-        return ResponseEntity.ok(loginRequest);
+        return ResponseEntity.ok(loginResponse);
     }
 
     @PostMapping("/register")
@@ -47,4 +48,5 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.OK).body(response);
         }
     }
+
 }
