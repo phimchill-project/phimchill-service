@@ -29,13 +29,12 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) throws Exception {
+    public ResponseEntity<?> register(@Validated @RequestBody RegisterRequest registerRequest) throws Exception {
         RegisterResponse response = iUserService.register(registerRequest);
         if (response != null) {
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
-        } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/email-not-existion")

@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ControllerAdvice
-public class ValidatedController { // Bắt toàn bộ các lỗi validate của cả ứng dụng. Chỉ cần thêm validate trên tên trường và thêm vào trong controller muốn sử dụng.
+public class ValidatedController {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
