@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 CREATE TABLE IF NOT EXISTS roles
 (
     ID          bigint auto_increment
@@ -6,6 +5,9 @@ CREATE TABLE IF NOT EXISTS roles
     NAME        varchar(50) null,
     DESCRIPTION varchar(50) null
 );
+
+INSERT INTO phim_chill.roles (ID, NAME, DESCRIPTION) VALUES (1, 'ROLE_ADMIN', 'Admin');
+INSERT INTO phim_chill.roles (ID, NAME, DESCRIPTION) VALUES (2, 'ROLE_USER', 'Customer');
 
 CREATE TABLE IF NOT EXISTS users
 (
@@ -18,13 +20,3 @@ CREATE TABLE IF NOT EXISTS users
     constraint fk_users_roles
         foreign key (ROLE_ID) references roles (ID)
 );
-
-=======
-CREATE TABLE USERS
-(
-    ID       BIGINT PRIMARY KEY AUTO_INCREMENT,
-    EMAIL    VARCHAR(50) NOT NULL ,
-    NAME VARCHAR(50) NOT NULL ,
-    PASSWORD VARCHAR(50) NOT NULL
-);
->>>>>>> a3faaae2dc122349f674a11a9e41e7c9dc100cb8
