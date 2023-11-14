@@ -1,6 +1,6 @@
 package com.codegym.phimchill.controller;
 
-import com.codegym.phimchill.dto.payload.request.CheckEmailExist;
+import com.codegym.phimchill.dto.payload.request.EmailRequest;
 import com.codegym.phimchill.dto.payload.request.RegisterRequest;
 import com.codegym.phimchill.dto.payload.request.LoginRequest;
 import com.codegym.phimchill.dto.payload.response.LoginResponse;
@@ -40,8 +40,8 @@ public class  AuthController {
     }
 
     @PostMapping("/email-not-existion")
-    public ResponseEntity<?> isEmailNotExist (@RequestBody CheckEmailExist checkEmailExist) {
-        boolean response = userService.isEmailExist(checkEmailExist);
+    public ResponseEntity<?> isEmailNotExist (@RequestBody EmailRequest emailRequest) {
+        boolean response = userService.isEmailExist(emailRequest);
         if(response){
             return ResponseEntity.status(HttpStatus.OK).body(response);
         }else{

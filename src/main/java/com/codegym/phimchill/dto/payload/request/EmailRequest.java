@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class CheckEmailExist {
+public class EmailRequest {
     @Email(message = "Email shoud valid")
     private String email;
 }

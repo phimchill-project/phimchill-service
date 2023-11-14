@@ -1,7 +1,7 @@
 package com.codegym.phimchill.service.impl;
 
 import com.codegym.phimchill.converter.UserConverter;
-import com.codegym.phimchill.dto.payload.request.CheckEmailExist;
+import com.codegym.phimchill.dto.payload.request.EmailRequest;
 import com.codegym.phimchill.dto.payload.request.RegisterRequest;
 import com.codegym.phimchill.entity.User;
 import com.codegym.phimchill.dto.payload.request.LoginRequest;
@@ -53,7 +53,7 @@ public class UserService implements com.codegym.phimchill.service.UserService {
     }
 
     @Override
-    public boolean isEmailExist(CheckEmailExist email) {
+    public boolean isEmailExist(EmailRequest email) {
         User user = userRepository.findUserByEmail(email.getEmail());
         if(user != null) {
             return true;
