@@ -2,8 +2,6 @@ package com.codegym.phimchill.dto;
 
 import com.codegym.phimchill.entity.Category;
 import com.codegym.phimchill.entity.User;
-import jakarta.persistence.Column;
-import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
