@@ -1,6 +1,7 @@
 package com.codegym.phimchill.service.impl;
 
 import com.codegym.phimchill.converter.UserConverter;
+import com.codegym.phimchill.dto.RegisterDto;
 import com.codegym.phimchill.dto.payload.request.EmailRequest;
 import com.codegym.phimchill.dto.payload.request.RegisterRequest;
 import com.codegym.phimchill.entity.User;
@@ -46,7 +47,12 @@ public class UserService implements com.codegym.phimchill.service.UserService {
                         .name(registerRequest.getName())
                         .build();
                 userRepository.save(user1);
-                return userConverter.converterRegister(user1);
+                RegisterDto registerDto = userConverter.converterRegister(user1);
+                RegisterResponse registerResponse = new RegisterResponse();
+                registerResponse.setData(registerDto);
+                registerResponse.setStatusCode(200);
+                registerResponse.setMessage("Register Success");
+                return registerResponse;
             } else {
                 throw new Exception();
         }

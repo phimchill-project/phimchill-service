@@ -1,6 +1,7 @@
 package com.codegym.phimchill.converter.impl;
 
 import com.codegym.phimchill.converter.UserConverter;
+import com.codegym.phimchill.dto.RegisterDto;
 import com.codegym.phimchill.dto.UserDTO;
 import com.codegym.phimchill.dto.payload.response.RegisterResponse;
 import com.codegym.phimchill.entity.User;
@@ -19,8 +20,8 @@ public class UserConverterImpl implements UserConverter {
     }
 
     @Override
-    public RegisterResponse converterRegister(User user) {
-        RegisterResponse response = new RegisterResponse();
+    public RegisterDto converterRegister(User user) {
+        RegisterDto response = new RegisterDto();
         response.setName(user.getName());
         response.setEmail(user.getEmail());
         return response;

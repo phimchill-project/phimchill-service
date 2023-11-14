@@ -4,10 +4,11 @@ import com.codegym.phimchill.converter.MovieConverter;
 import com.codegym.phimchill.dto.MovieDTO;
 import com.codegym.phimchill.entity.Movie;
 import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Component
 public class MovieConverterImpl implements MovieConverter {
     @Override
     public MovieDTO convertToDTO(Movie movie) {
