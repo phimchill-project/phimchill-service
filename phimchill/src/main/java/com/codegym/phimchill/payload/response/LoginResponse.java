@@ -4,6 +4,16 @@ import com.codegym.phimchill.dto.UserDTO;
 
 public class LoginResponse {
     private UserDTO userDTO;
+    private int statuscode;
+
+    public int getStatuscode() {
+        return statuscode;
+    }
+
+    public void setStatuscode(int statuscode) {
+        this.statuscode = statuscode;
+    }
+
     private String message;
     public LoginResponse() {
         this.userDTO = userDTO;
