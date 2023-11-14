@@ -1,4 +1,4 @@
-package com.codegym.phimchill.payload.response;
+package com.codegym.phimchill.dto.payload.response;
 
 public class RegisterResponse {
     private String email;

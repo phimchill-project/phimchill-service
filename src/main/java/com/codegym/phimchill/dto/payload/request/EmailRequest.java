@@ -1,5 +1,6 @@
-package com.codegym.phimchill.payload.request;
+package com.codegym.phimchill.dto.payload.request;
 
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,8 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class RegisterRequest {
+public class EmailRequest {
+    @Email(message = "Email shoud valid")
     private String email;
-    private String name;
-    private String password;
 }

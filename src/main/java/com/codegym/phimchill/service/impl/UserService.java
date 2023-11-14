@@ -1,30 +1,30 @@
 package com.codegym.phimchill.service.impl;
-import com.codegym.phimchill.converter.impl.UserDTOConverter;
-import com.codegym.phimchill.payload.request.CheckEmailExist;
-import com.codegym.phimchill.payload.request.LoginRequest;
-import com.codegym.phimchill.payload.request.RegisterRequest;
-import com.codegym.phimchill.payload.response.LoginResponse;
-import com.codegym.phimchill.payload.response.RegisterResponse;
+
+import com.codegym.phimchill.converter.UserConverter;
+import com.codegym.phimchill.dto.payload.request.EmailRequest;
+import com.codegym.phimchill.dto.payload.request.RegisterRequest;
 import com.codegym.phimchill.entity.User;
-import com.codegym.phimchill.repository.IUserRepository;
-import com.codegym.phimchill.service.IUserService;
+import com.codegym.phimchill.dto.payload.request.LoginRequest;
+import com.codegym.phimchill.dto.payload.response.LoginResponse;
+import com.codegym.phimchill.dto.payload.response.RegisterResponse;
+import com.codegym.phimchill.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService implements IUserService {
+public class UserService implements com.codegym.phimchill.service.UserService {
     @Autowired
-    private IUserRepository iUserRepository;
-    @Autowired
+    private UserRepository userRepository;
 
-    private UserDTOConverter userDTOConverter;
+    @Autowired
+    private UserConverter userConverter;
 
     @Override
     public LoginResponse login(LoginRequest loginRequest) {
-        User user = iUserRepository.findUserByEmail(loginRequest.getEmail());
+        User user = userRepository.findUserByEmail(loginRequest.getEmail());
         if (user != null && user.getPassword().equals(loginRequest.getPassword())) {
             LoginResponse loginResponse = new LoginResponse();
-            loginResponse.setUserDTO(userDTOConverter.converterToDTO(user));
+            loginResponse.setUserDTO(userConverter.converterToDTO(user));
             loginResponse.setMessage("Đăng nhập thành công!");
             return loginResponse;
         } else {
@@ -37,7 +37,7 @@ public class UserService implements IUserService {
 
     @Override
     public RegisterResponse register(RegisterRequest registerRequest) throws Exception {
-            User user = iUserRepository.findUserByEmail(registerRequest.getEmail());
+            User user = userRepository.findUserByEmail(registerRequest.getEmail());
             if (user == null ){
                 User user1 = User
                         .builder()
@@ -45,17 +45,16 @@ public class UserService implements IUserService {
                         .password(registerRequest.getPassword())
                         .name(registerRequest.getName())
                         .build();
-                iUserRepository.save(user1);
-                return userDTOConverter.converterRegister(user1);
+                userRepository.save(user1);
+                return userConverter.converterRegister(user1);
             } else {
                 throw new Exception();
         }
-
     }
 
     @Override
-    public boolean isEmailExist(CheckEmailExist email) {
-        User user = iUserRepository.findUserByEmail(email.getEmail());
+    public boolean isEmailExist(EmailRequest email) {
+        User user = userRepository.findUserByEmail(email.getEmail());
         if(user != null) {
             return true;
         }else {
