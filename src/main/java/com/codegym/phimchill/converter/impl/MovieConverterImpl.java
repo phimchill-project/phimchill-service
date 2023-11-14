@@ -1,6 +1,6 @@
-package com.codegym.phimchill.convert.impl;
+package com.codegym.phimchill.converter.impl;
 
-import com.codegym.phimchill.convert.IMovieDTOConvert;
+import com.codegym.phimchill.converter.MovieConverter;
 import com.codegym.phimchill.dto.MovieDTO;
 import com.codegym.phimchill.entity.Movie;
 import org.springframework.beans.BeanUtils;
@@ -8,7 +8,7 @@ import org.springframework.beans.BeanUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MovieConvertImpl implements IMovieDTOConvert {
+public class MovieConverterImpl implements MovieConverter {
     @Override
     public MovieDTO convertToDTO(Movie movie) {
         MovieDTO movieDTO = new MovieDTO();

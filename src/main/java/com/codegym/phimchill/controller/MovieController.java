@@ -1,7 +1,7 @@
 package com.codegym.phimchill.controller;
 
 import com.codegym.phimchill.dto.MovieDTO;
-import com.codegym.phimchill.service.IMovieService;
+import com.codegym.phimchill.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 public class MovieController {
     @Autowired
-    private IMovieService movieService;
+    private MovieService movieService;
 
     @GetMapping
     public ResponseEntity<?> findAll(){
