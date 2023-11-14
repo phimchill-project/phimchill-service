@@ -1,8 +1,6 @@
 package com.codegym.phimchill.dto.payload.response;
-
 import com.codegym.phimchill.entity.Category;
 import com.codegym.phimchill.entity.User;
-
 import java.sql.Date;
 import java.util.List;
 
