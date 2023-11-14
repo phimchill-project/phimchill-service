@@ -6,7 +6,7 @@ import com.codegym.phimchill.payload.request.LoginRequest;
 import com.codegym.phimchill.payload.response.LoginResponse;
 import com.codegym.phimchill.payload.response.RegisterResponse;
 
-public interface IUserService {
+public interface UserService {
     LoginResponse login(LoginRequest loginRequest);
     RegisterResponse register(RegisterRequest registerRequest) throws Exception;
     boolean isEmailExist(CheckEmailExist checkEmailExist);

@@ -4,6 +4,6 @@ import com.codegym.phimchill.dto.MovieDTO;
 
 import java.util.List;
 
-public interface IMovieService {
+public interface MovieService {
     List<MovieDTO> findAll();
 }
