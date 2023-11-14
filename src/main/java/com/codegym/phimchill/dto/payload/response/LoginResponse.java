@@ -1,17 +1,17 @@
-package com.codegym.phimchill.payload.response;
+package com.codegym.phimchill.dto.payload.response;
 
 import com.codegym.phimchill.dto.UserDTO;
 
 public class LoginResponse {
     private UserDTO userDTO;
-    private int statuscode;
+    private int statusCode;
 
     public int getStatuscode() {
-        return statuscode;
+        return statusCode;
     }
 
     public void setStatuscode(int statuscode) {
-        this.statuscode = statuscode;
+        this.statusCode = statuscode;
     }
 
     private String message;
