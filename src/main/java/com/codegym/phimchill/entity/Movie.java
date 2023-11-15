@@ -33,6 +33,8 @@ public class Movie {
     private boolean isRelease;
     @Column (name = "DATE_RELEASE")
     private Date dateRelease;
+    @Column (name = "VIEWS")
+    private int views;
     @ManyToMany(mappedBy = "movieList")
     private List<Category> categoryList;
     @ManyToMany(mappedBy = "movieHistoryList")
