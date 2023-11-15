@@ -1,5 +1,4 @@
 package com.codegym.phimchill.controller;
-
 import com.codegym.phimchill.dto.MovieDTO;
 import com.codegym.phimchill.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
