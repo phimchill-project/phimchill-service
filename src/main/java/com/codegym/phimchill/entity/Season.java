@@ -1,7 +1,6 @@
 package com.codegym.phimchill.entity;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.sql.Date;
 import java.util.List;
 

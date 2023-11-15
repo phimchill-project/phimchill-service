@@ -1,6 +1,4 @@
 package com.codegym.phimchill.controller;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(value = "*", maxAge = 3600)

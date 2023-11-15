@@ -1,10 +1,8 @@
 package com.codegym.phimchill.configuration;
-
 import com.codegym.phimchill.security.JwtAuthEntryPoint;
 import com.codegym.phimchill.security.JwtAuthFilter;
 import com.codegym.phimchill.service.SecurityService;
 import com.codegym.phimchill.service.impl.UserDetailsServiceImpl;
-import jakarta.servlet.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
