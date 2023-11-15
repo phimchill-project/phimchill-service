@@ -25,7 +25,7 @@ public class  AuthController {
         if (loginResponse.getUserDTO() == null) {
             return ResponseEntity.badRequest().body("Invalid username or password.");
         }
-        loginResponse.setStatuscode(200);
+        loginResponse.setStatusCode(200);
         return ResponseEntity.ok(loginResponse);
     }
 

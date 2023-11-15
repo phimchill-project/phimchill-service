@@ -19,6 +19,4 @@ public class MovieDTO {
     private String image;
     private String trailer;
     private List<Category> categoryList;
-    private List<User> userHistoryList;
-    private List<User> userFavoriteList;
 }
