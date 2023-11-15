@@ -1,16 +1,19 @@
 package com.codegym.phimchill.dto.payload.response;
-<<<<<<< HEAD
-=======
-
 import com.codegym.phimchill.dto.RegisterDto;
->>>>>>> 8afa229d6c79178d59d395e4b061a2bf4afff784
 import com.codegym.phimchill.entity.Category;
 import com.codegym.phimchill.entity.User;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import java.sql.Date;
 import java.util.List;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class MovieResponse {
-<<<<<<< HEAD
     private Long id;
     private String name;
     private String description;
@@ -19,12 +22,9 @@ public class MovieResponse {
     private float imdb;
     private String image;
     private String trailer;
-=======
     private RegisterDto data;
     private String message;
     private int statusCode;
-
->>>>>>> 8afa229d6c79178d59d395e4b061a2bf4afff784
     private List<Category> categoryList;
     private List<User> userHistoryList;
     private List<User> userFavoriteList;
