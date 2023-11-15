@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/movies")
 public class CategoryController {
-    @Autowired
-    @GetMapping("/category")
-    public
+
 
 }
