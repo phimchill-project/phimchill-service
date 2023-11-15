@@ -20,6 +20,11 @@ public class User {
     private String name;
     @Column(name = "PASSWORD")
     private String password;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ROLE_ID")
+    private Role role;
+
     @ManyToMany
     @JoinTable(
             name = "HISTORY_MOVIE",

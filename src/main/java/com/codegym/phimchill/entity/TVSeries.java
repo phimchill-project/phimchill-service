@@ -25,6 +25,12 @@ public class TVSeries {
     private float imdb; // điểm đánh giá
     @Column(name = "IMAGE")
     private String image;
+    @Column(name = "IS_RELEASE")
+    private boolean isRelease;
+    @Column (name = "DATE_RELEASE")
+    private Date dateRelease;
+    @Column (name = "VIEWS")
+    private int views;
     @ManyToMany(mappedBy = "tvSeriesList")
     private List<Category> categoryList;
     @OneToMany(mappedBy = "tvSeries")

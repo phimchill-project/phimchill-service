@@ -1,5 +1,4 @@
 package com.codegym.phimchill.dto.payload.response;
-
 import com.codegym.phimchill.dto.UserDTO;
 
 public class LoginResponse {
