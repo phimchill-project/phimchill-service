@@ -19,6 +19,6 @@ public class Season {
     @ManyToOne
     @JoinColumn(name = "TVSERIES_ID", referencedColumnName = "ID")
     private TVSeries tvSeries;
-    @OneToMany(mappedBy = "season")
+    @OneToMany(mappedBy = "SEASON")
     private List<Episode> episodeList;
 }

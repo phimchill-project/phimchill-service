@@ -29,6 +29,10 @@ public class Movie {
     private String image;
     @Column(name = "TRAILER")
     private String trailer;
+    @Column(name = "IS_RELEASE")
+    private boolean isRelease;
+    @Column (name = "DATE_RELEASE")
+    private Date dateRelease;
     @ManyToMany(mappedBy = "movieList")
     private List<Category> categoryList;
     @ManyToMany(mappedBy = "movieHistoryList")
