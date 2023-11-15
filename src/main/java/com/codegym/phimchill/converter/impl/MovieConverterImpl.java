@@ -5,7 +5,6 @@ import com.codegym.phimchill.entity.Movie;
 import jakarta.persistence.Converter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.List;
 
