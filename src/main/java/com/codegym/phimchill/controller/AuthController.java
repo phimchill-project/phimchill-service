@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/auth")
 public class  AuthController {
     @Autowired
-
     private UserService userService;
 
     @PostMapping("/login")
@@ -47,5 +46,4 @@ public class  AuthController {
             return ResponseEntity.status(HttpStatus.OK).body(response);
         }
     }
-
 }
