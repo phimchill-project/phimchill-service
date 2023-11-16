@@ -1,33 +1,16 @@
 package com.codegym.phimchill.dto.payload.response;
-
 import com.codegym.phimchill.dto.UserDTO;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class LoginResponse {
-    private UserDTO userDTO;
+    private UserDTO data;
     private int statusCode;
-
-    public int getStatuscode() {
-        return statusCode;
-    }
-
-    public void setStatuscode(int statuscode) {
-        this.statusCode = statuscode;
-    }
-
     private String message;
-    public LoginResponse() {
-        this.userDTO = userDTO;
-    }
-    public UserDTO getUserDTO() {
-        return userDTO;
-    }
-    public void setUserDTO(UserDTO userDTO) {
-        this.userDTO = userDTO;
-    }
-    public String getMessage() {
-        return message;
-    }
-    public void setMessage(String message) {
-        this.message = message;
-    }
 }

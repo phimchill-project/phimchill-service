@@ -1,5 +1,4 @@
 package com.codegym.phimchill.controller;
-
 import com.codegym.phimchill.dto.payload.request.EmailRequest;
 import com.codegym.phimchill.dto.payload.request.RegisterRequest;
 import com.codegym.phimchill.dto.payload.request.LoginRequest;
@@ -23,10 +22,10 @@ public class  AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> Login(@Validated @RequestBody LoginRequest loginRequest) {
         LoginResponse loginResponse = userService.login(loginRequest);
-        if (loginResponse.getUserDTO() == null) {
+        if (loginResponse.getData() == null) {
             return ResponseEntity.badRequest().body("Invalid username or password.");
         }
-        loginResponse.setStatuscode(200);
+        loginResponse.setStatusCode(200);
         return ResponseEntity.ok(loginResponse);
     }
 

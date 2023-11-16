@@ -2,6 +2,7 @@ package com.codegym.phimchill.service.impl;
 
 import com.codegym.phimchill.converter.MovieConverter;
 import com.codegym.phimchill.dto.MovieDTO;
+import com.codegym.phimchill.dto.payload.response.UpcomingMoviesResponse;
 import com.codegym.phimchill.entity.Movie;
 import com.codegym.phimchill.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,4 +24,11 @@ public class MovieService implements com.codegym.phimchill.service.MovieService 
         List<MovieDTO> movieDTOList = movieDTOConvert.convertToListDTO(movieList);
         return movieDTOList;
     }
+
+    @Override
+    public List<UpcomingMoviesResponse> getUpcomingMovies() {
+        List<Movie> upcomingMovieList = movieRepository.findUnreleasedMovies();
+        return movieDTOConvert.convertToUpcomingMoviesResponse(upcomingMovieList);
+    }
+
 }
