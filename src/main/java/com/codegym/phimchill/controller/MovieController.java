@@ -1,5 +1,6 @@
 package com.codegym.phimchill.controller;
-import com.codegym.phimchill.dto.MovieDTO;
+
+import com.codegym.phimchill.dto.MovieDto;
 import com.codegym.phimchill.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ public class MovieController {
 
     @GetMapping
     public ResponseEntity<?> findAll(){
-        List<MovieDTO> movieDTOList = movieService.findAll();
-        return new ResponseEntity<>(movieDTOList, HttpStatus.OK);
+        List<MovieDto> MovieDtoList = movieService.findAll();
+        return new ResponseEntity<>(MovieDtoList, HttpStatus.OK);
     }
 }

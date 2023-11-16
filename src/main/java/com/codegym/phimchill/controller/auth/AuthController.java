@@ -1,4 +1,5 @@
-package com.codegym.phimchill.controller;
+package com.codegym.phimchill.controller.auth;
+
 import com.codegym.phimchill.dto.payload.request.EmailRequest;
 import com.codegym.phimchill.dto.payload.request.RegisterRequest;
 import com.codegym.phimchill.dto.payload.request.LoginRequest;
@@ -16,13 +17,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/auth")
 public class  AuthController {
     @Autowired
-
     private UserService userService;
 
     @PostMapping("/login")
     public ResponseEntity<?> Login(@Validated @RequestBody LoginRequest loginRequest) {
         LoginResponse loginResponse = userService.login(loginRequest);
-        if (loginResponse.getUserDTO() == null) {
+        if (loginResponse.getData() == null) {
             return ResponseEntity.badRequest().body("Invalid username or password.");
         }
         loginResponse.setStatusCode(200);
@@ -47,5 +47,4 @@ public class  AuthController {
             return ResponseEntity.status(HttpStatus.OK).body(response);
         }
     }
-
 }

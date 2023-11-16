@@ -1,6 +1,7 @@
 package com.codegym.phimchill.converter.impl;
+
 import com.codegym.phimchill.converter.MovieConverter;
-import com.codegym.phimchill.dto.MovieDTO;
+import com.codegym.phimchill.dto.MovieDto;
 import com.codegym.phimchill.entity.Movie;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
@@ -10,15 +11,15 @@ import java.util.List;
 @Component
 public class MovieConverterImpl implements MovieConverter {
     @Override
-    public MovieDTO convertToDTO(Movie movie) {
-        MovieDTO movieDTO = new MovieDTO();
+    public MovieDto convertToDTO(Movie movie) {
+        MovieDto movieDTO = new MovieDto();
         BeanUtils.copyProperties(movie, movieDTO);
         return movieDTO;
     }
 
     @Override
-    public List<MovieDTO> convertToListDTO(List<Movie> movies) {
-        List<MovieDTO> listDTO = new ArrayList<>();
+    public List<MovieDto> convertToListDTO(List<Movie> movies) {
+        List<MovieDto> listDTO = new ArrayList<>();
         for (Movie movie: movies
         ) {
 

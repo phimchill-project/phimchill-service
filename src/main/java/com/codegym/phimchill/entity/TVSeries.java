@@ -20,7 +20,7 @@ public class TVSeries {
     @Column(name = "DESCRIPTION")
     private String description;
     @Column(name = "YEAR")
-    private Date year; // năm phát hành
+    private int year; // năm phát hành
     @Column(name = "IMDB")
     private float imdb; // điểm đánh giá
     @Column(name = "IMAGE")
@@ -39,4 +39,11 @@ public class TVSeries {
     private List<User> userHistoryList;
     @ManyToMany(mappedBy = "tvSeriesFavoriteList")
     private List<User> userFavoriteList;
+
+    public TVSeries(String name, String description, int year, float imdb) {
+        this.name = name;
+        this.description = description;
+        this.year = year;
+        this.imdb = imdb;
+    }
 }

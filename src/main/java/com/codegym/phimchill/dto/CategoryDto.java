@@ -2,13 +2,12 @@ package com.codegym.phimchill.dto;
 
 import lombok.*;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Builder
-public class RegisterDto {
+public class CategoryDto {
     private Long id;
-    private String email;
     private String name;
 }

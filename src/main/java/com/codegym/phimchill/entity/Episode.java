@@ -1,4 +1,5 @@
 package com.codegym.phimchill.entity;
+
 import jakarta.persistence.*;
 import lombok.*;
 import java.sql.Date;
@@ -17,12 +18,12 @@ public class Episode {
     private Long id;
     @Column(name = "NAME")
     private String name;
-    @Column(name = "VIDEO")
-    private String video;
     @Column(name = "IS_RELEASE")
     private boolean isRelease;
     @Column (name = "DATE_RELEASE")
     private Date dateRelease;
+    @Column (name = "URL")
+    private String url;
     @ManyToOne
     @JoinColumn(name = "SEASON_ID", referencedColumnName = "ID")
     private Season season;

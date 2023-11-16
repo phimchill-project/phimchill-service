@@ -1,7 +1,7 @@
 package com.codegym.phimchill.dto;
-import com.codegym.phimchill.entity.Category;
-import com.codegym.phimchill.entity.User;
+
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.sql.Date;
@@ -9,7 +9,8 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MovieDTO {
+@Builder
+public class MovieDto {
     private Long id;
     private String name;
     private String description;
@@ -18,5 +19,7 @@ public class MovieDTO {
     private float imdb;
     private String image;
     private String trailer;
-    private List<Category> categoryList;
+    private String url;
+    private Integer views;
+    private List<CategoryDto> categoryList;
 }

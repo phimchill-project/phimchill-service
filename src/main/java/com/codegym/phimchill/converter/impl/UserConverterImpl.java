@@ -1,18 +1,19 @@
 package com.codegym.phimchill.converter.impl;
+
 import com.codegym.phimchill.converter.UserConverter;
 import com.codegym.phimchill.dto.RegisterDto;
-import com.codegym.phimchill.dto.UserDTO;
+import com.codegym.phimchill.dto.UserDto;
 import com.codegym.phimchill.entity.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserConverterImpl implements UserConverter {
-    public UserDTO converterToDTO(User user) {
+    public UserDto converterToDTO(User user) {
         if (user == null) {
             return null;
         }
-        UserDTO userDTO = new UserDTO();
+        UserDto userDTO = new UserDto();
         BeanUtils.copyProperties(user, userDTO);
         return userDTO;
     }

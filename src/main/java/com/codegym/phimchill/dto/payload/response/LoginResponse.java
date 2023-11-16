@@ -1,5 +1,6 @@
 package com.codegym.phimchill.dto.payload.response;
-import com.codegym.phimchill.dto.UserDTO;
+
+import com.codegym.phimchill.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LoginResponse {
-    private UserDTO userDTO;
+    private UserDto data;
     private int statusCode;
     private String message;
 }

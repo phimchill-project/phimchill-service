@@ -1,14 +1,17 @@
 package com.codegym.phimchill.dto;
 
 import lombok.*;
+import java.sql.Date;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Builder
-public class RegisterDto {
+public class EpisodeDto {
     private Long id;
-    private String email;
     private String name;
+    private String video;
+    private Date dateRelease;
+    private String url;
 }
