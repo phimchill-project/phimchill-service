@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/admin/tvseries")
-@CrossOrigin(origins = "http://localhost:3000")
 public class AuthTvSeriesController {
     @Autowired
     private TvSeriesService tvSeriesService;
