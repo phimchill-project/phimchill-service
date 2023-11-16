@@ -1,6 +1,10 @@
 package com.codegym.phimchill.controller;
+<<<<<<< HEAD
 import com.codegym.phimchill.dto.MovieDTO;
 import com.codegym.phimchill.dto.payload.response.UpcomingMoviesResponse;
+=======
+import com.codegym.phimchill.dto.MovieDto;
+>>>>>>> 7b7e16617f13882f2c94c2d7a7e39279891b5ff4
 import com.codegym.phimchill.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,8 +24,8 @@ public class MovieController {
 
     @GetMapping
     public ResponseEntity<?> findAll(){
-        List<MovieDTO> movieDTOList = movieService.findAll();
-        return new ResponseEntity<>(movieDTOList, HttpStatus.OK);
+        List<MovieDto> MovieDtoList = movieService.findAll();
+        return new ResponseEntity<>(MovieDtoList, HttpStatus.OK);
     }
 
     @GetMapping("/upcoming")

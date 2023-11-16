@@ -1,5 +1,4 @@
 package com.codegym.phimchill.service.impl;
-
 import com.codegym.phimchill.converter.UserConverter;
 import com.codegym.phimchill.dto.RegisterDto;
 import com.codegym.phimchill.dto.payload.request.EmailRequest;
@@ -9,11 +8,12 @@ import com.codegym.phimchill.dto.payload.request.LoginRequest;
 import com.codegym.phimchill.dto.payload.response.LoginResponse;
 import com.codegym.phimchill.dto.payload.response.RegisterResponse;
 import com.codegym.phimchill.repository.UserRepository;
+import com.codegym.phimchill.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService implements com.codegym.phimchill.service.UserService {
+public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
