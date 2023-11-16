@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/auth")
 public class  AuthController {
     @Autowired
-
     private UserService userService;
 
     @PostMapping("/login")
@@ -25,7 +24,7 @@ public class  AuthController {
         if (loginResponse.getUserDTO() == null) {
             return ResponseEntity.badRequest().body("Invalid username or password.");
         }
-        loginResponse.setStatuscode(200);
+        loginResponse.setStatusCode(200);
         return ResponseEntity.ok(loginResponse);
     }
 
@@ -47,5 +46,4 @@ public class  AuthController {
             return ResponseEntity.status(HttpStatus.OK).body(response);
         }
     }
-
 }
