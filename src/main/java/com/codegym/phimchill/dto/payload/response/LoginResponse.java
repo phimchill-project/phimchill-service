@@ -10,11 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LoginResponse {
-<<<<<<< HEAD
-    private UserDTO data;
-=======
     private UserDto data;
->>>>>>> 7b7e16617f13882f2c94c2d7a7e39279891b5ff4
     private int statusCode;
     private String message;
 }

@@ -5,6 +5,7 @@ import com.codegym.phimchill.dto.payload.request.MovieNameRequest;
 import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
 import com.codegym.phimchill.dto.payload.response.CheckMovieNameExistResponse;
 import com.codegym.phimchill.dto.payload.response.NewMovieResponse;
+import com.codegym.phimchill.dto.payload.response.UpcomingMoviesResponse;
 import com.codegym.phimchill.entity.Movie;
 import com.codegym.phimchill.repository.MoviePagingRepository;
 import com.codegym.phimchill.repository.MovieRepository;
@@ -23,6 +24,11 @@ public class MovieServiceImpl implements MovieService {
 
     @Autowired
     private MovieConverter movieDTOConvert;
+
+    @Override
+    public List<UpcomingMoviesResponse> getUpcomingMovies() {
+        return null;
+    }
 
     @Override
     public List<MovieDto> findAll() {

@@ -1,11 +1,8 @@
 package com.codegym.phimchill.converter.impl;
+
 import com.codegym.phimchill.converter.MovieConverter;
-<<<<<<< HEAD
-import com.codegym.phimchill.dto.MovieDTO;
-import com.codegym.phimchill.dto.payload.response.UpcomingMoviesResponse;
-=======
 import com.codegym.phimchill.dto.MovieDto;
->>>>>>> 7b7e16617f13882f2c94c2d7a7e39279891b5ff4
+import com.codegym.phimchill.dto.payload.response.UpcomingMoviesResponse;
 import com.codegym.phimchill.entity.Movie;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
