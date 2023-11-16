@@ -20,7 +20,7 @@ public class Movie {
     @Column(name = "DESCRIPTION")
     private String description;
     @Column(name = "YEAR")
-    private Date year; // năm phát hành
+    private int year; // năm phát hành
     @Column(name = "DURATION")
     private int duration; //thời lượnng tính theo phút
     @Column(name = "IMDB")
@@ -29,6 +29,8 @@ public class Movie {
     private String image;
     @Column(name = "TRAILER")
     private String trailer;
+    @Column (name = "URL")
+    private String url;
     @Column(name = "IS_RELEASE")
     private boolean isRelease;
     @Column (name = "DATE_RELEASE")

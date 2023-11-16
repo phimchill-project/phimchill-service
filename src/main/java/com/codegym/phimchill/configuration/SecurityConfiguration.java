@@ -2,6 +2,7 @@ package com.codegym.phimchill.configuration;
 import com.codegym.phimchill.security.JwtAuthEntryPoint;
 import com.codegym.phimchill.security.JwtAuthFilter;
 import com.codegym.phimchill.service.SecurityService;
+import com.codegym.phimchill.service.impl.SecurityServiceImpl;
 import com.codegym.phimchill.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -34,7 +35,7 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityService securityService() {
-        return new com.codegym.phimchill.service.impl.SecurityService();
+        return new SecurityServiceImpl();
     }
 
     @Bean
