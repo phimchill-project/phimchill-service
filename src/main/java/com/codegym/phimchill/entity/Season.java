@@ -1,7 +1,6 @@
 package com.codegym.phimchill.entity;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.sql.Date;
 import java.util.List;
 
@@ -25,6 +24,6 @@ public class Season {
     @ManyToOne
     @JoinColumn(name = "TVSERIES_ID", referencedColumnName = "ID")
     private TVSeries tvSeries;
-    @OneToMany(mappedBy = "SEASON")
+    @OneToMany(mappedBy = "season")
     private List<Episode> episodeList;
 }

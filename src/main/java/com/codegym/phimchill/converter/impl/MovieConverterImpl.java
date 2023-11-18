@@ -2,7 +2,6 @@ package com.codegym.phimchill.converter.impl;
 import com.codegym.phimchill.converter.MovieConverter;
 import com.codegym.phimchill.dto.MovieDTO;
 import com.codegym.phimchill.entity.Movie;
-import jakarta.persistence.Converter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;

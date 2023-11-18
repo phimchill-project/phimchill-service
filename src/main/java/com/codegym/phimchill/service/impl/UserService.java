@@ -10,6 +10,7 @@ import com.codegym.phimchill.dto.payload.response.LoginResponse;
 import com.codegym.phimchill.dto.payload.response.RegisterResponse;
 import com.codegym.phimchill.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,6 +20,10 @@ public class UserService implements com.codegym.phimchill.service.UserService {
 
     @Autowired
     private UserConverter userConverter;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
     @Override
     public LoginResponse login(LoginRequest loginRequest) {
@@ -40,6 +45,8 @@ public class UserService implements com.codegym.phimchill.service.UserService {
     public RegisterResponse register(RegisterRequest registerRequest) throws Exception {
             User user = userRepository.findUserByEmail(registerRequest.getEmail());
             if (user == null ){
+                String hashPassword = passwordEncoder.encode(registerRequest.getPassword());
+                registerRequest.setPassword(hashPassword);
                 User user1 = User
                         .builder()
                         .email(registerRequest.getEmail())

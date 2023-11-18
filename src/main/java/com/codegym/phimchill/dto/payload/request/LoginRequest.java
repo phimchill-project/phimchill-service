@@ -5,7 +5,6 @@ import jakarta.validation.constraints.Pattern;
 public class LoginRequest {
     @Email(message = "Email should be valid")
     private String email;
-
     @Pattern(regexp = "^(?=.*[A-Z])(?=.*\\W).{8,}$", message = "Password should be valid")
     private String password;
     public String getEmail() {
