@@ -3,7 +3,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(value = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/movies")
+@RequestMapping("/api/category")
 public class CategoryController {
 
 }
