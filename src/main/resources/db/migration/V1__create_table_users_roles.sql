@@ -1,3 +1,4 @@
+
 CREATE TABLE IF NOT EXISTS ROLES
 (
     ID          bigint auto_increment primary key,
@@ -10,7 +11,7 @@ CREATE TABLE IF NOT EXISTS USERS
     ID       bigint auto_increment primary key,
     EMAIL    varchar(50),
     NAME     varchar(50),
-    PASSWORD varchar(50),
+    PASSWORD varchar(500),
     ROLE_ID  bigint not null,
     FOREIGN KEY (ROLE_ID) REFERENCES ROLES (ID)
 );
