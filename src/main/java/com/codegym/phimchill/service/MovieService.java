@@ -3,14 +3,13 @@ import com.codegym.phimchill.dto.MovieDto;
 import com.codegym.phimchill.dto.payload.request.MovieNameRequest;
 import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
 import com.codegym.phimchill.dto.payload.response.CheckMovieNameExistResponse;
+import com.codegym.phimchill.dto.payload.response.MovieResponse;
 import com.codegym.phimchill.dto.payload.response.NewMovieResponse;
 
 import java.util.List;
 
 public interface MovieService {
     List<MovieDto> findAll();
-
-    NewMovieResponse create(NewMovieRequest newTvSeriesRequest);
-
+    MovieResponse create(NewMovieRequest newTvSeriesRequest);
     CheckMovieNameExistResponse isNotExist(MovieNameRequest movieNameRequest);
 }
