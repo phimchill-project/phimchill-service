@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/admin/movie")
-@CrossOrigin(origins = "http://localhost:3000")
 public class AuthMovieController {
     @Autowired
     private MovieService movieService;
