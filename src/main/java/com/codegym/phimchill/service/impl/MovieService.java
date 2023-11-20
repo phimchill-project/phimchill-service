@@ -40,6 +40,11 @@ public class MovieService implements com.codegym.phimchill.service.MovieService 
     }
 
     @Override
+    public List<MovieDto> getTop10ByImdb() {
+        return null;
+    }
+
+    @Override
     public List<UpcomingMoviesResponse> getUpcomingMovies() {
         List<Movie> upcomingMovieList = movieRepository.findUnreleasedMovies();
         return movieDTOConvert.convertToUpcomingMoviesResponse(upcomingMovieList);
