@@ -74,5 +74,16 @@ public class UserServiceImpl implements UserService {
             return false;
         }
     }
+
+    @Override
+    public boolean updateEmail( String newEmail) {
+        User existingUser = userRepository.findUserByEmail(newEmail);
+        if (existingUser != null) {
+            existingUser.setEmail(newEmail);
+            userRepository.save(existingUser);
+            return true;
+        }
+        return false;
+    }
 }
 

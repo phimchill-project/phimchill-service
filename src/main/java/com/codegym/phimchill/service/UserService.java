@@ -9,4 +9,6 @@ public interface UserService {
     LoginResponse login(LoginRequest loginRequest);
     RegisterResponse register(RegisterRequest registerRequest) throws Exception;
     boolean isEmailExist(EmailRequest emailRequest);
+
+    boolean updateEmail( String email);
 }
