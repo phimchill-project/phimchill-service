@@ -11,8 +11,10 @@ import com.codegym.phimchill.repository.MoviePagingRepository;
 import com.codegym.phimchill.repository.MovieRepository;
 import com.codegym.phimchill.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MovieServiceImpl implements MovieService {
@@ -22,8 +24,9 @@ public class MovieServiceImpl implements MovieService {
     @Autowired
     private MovieRepository movieRepository;
 
+    @Qualifier("movieConverterImpl")
     @Autowired
-    private MovieConverter movieDTOConvert;
+    private MovieConverter movieDtoConvert;
 
     @Override
     public List<UpcomingMoviesResponse> getUpcomingMovies() {
@@ -33,7 +36,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public List<MovieDto> findAll() {
         List<Movie> movieList = movieRepository.findAll();
-        List<MovieDto> movieDTOList = movieDTOConvert.convertToListDTO(movieList);
+        List<MovieDto> movieDTOList = movieDtoConvert.convertToListDTO(movieList);
         return movieDTOList;
     }
 
@@ -45,5 +48,24 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public CheckMovieNameExistResponse isNotExist(MovieNameRequest movieNameRequest) {
         return null;
+    }
+
+    @Override
+    public List<MovieDto> getTop10ByImdb() {
+        return null;
+    }
+
+    @Override
+    public MovieDto findByName(String nameMovie){
+        nameMovie = nameMovie.replaceAll("-", " ");
+        List<Movie> movies = movieRepository.findAll();
+        Optional<Movie> movie = Optional.empty();
+        for (var item : movies) {
+            String movieName = item.getName().replaceAll(":", "").replaceAll("-", " ");
+            if (movieName.equalsIgnoreCase(nameMovie)) {
+                movie = Optional.of(item);
+            }
+        }
+        return movie.map(value -> movieDtoConvert.convertToDTO(value)).orElse(null);
     }
 }

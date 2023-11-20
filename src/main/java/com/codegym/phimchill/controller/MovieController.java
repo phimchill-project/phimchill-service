@@ -1,15 +1,14 @@
 package com.codegym.phimchill.controller;
 
+import com.codegym.phimchill.dto.payload.response.FindMovieReponse;
 import com.codegym.phimchill.dto.payload.response.UpcomingMoviesResponse;
 import com.codegym.phimchill.dto.MovieDto;
 import com.codegym.phimchill.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -29,5 +28,24 @@ public class MovieController {
     public ResponseEntity<?> getUpcomingMovies() {
         List<UpcomingMoviesResponse> upcomingMovies = movieService.getUpcomingMovies();
         return ResponseEntity.ok(upcomingMovies);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> getByName(@RequestParam(value = "name", required = true) String nameMovie) {
+        MovieDto movieDto = movieService.findByName(nameMovie);
+        FindMovieReponse response;
+        if (movieDto != null){
+            response = FindMovieReponse.builder()
+                    .data(movieDto)
+                    .statusCode(HttpStatus.OK.value())
+                    .message("Success")
+                    .build();
+        }else {
+            response = FindMovieReponse.builder()
+                    .statusCode(HttpStatus.NOT_FOUND.value())
+                    .message("Not found Movie")
+                    .build();
+        }
+        return ResponseEntity.ok(response);
     }
 }

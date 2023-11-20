@@ -36,7 +36,7 @@ public class Movie {
     @Column (name = "DATE_RELEASE")
     private Date dateRelease;
     @Column (name = "VIEWS")
-    private int views;
+    private Integer views;
     @ManyToMany(mappedBy = "movieList")
     private List<Category> categoryList;
     @ManyToMany(mappedBy = "movieHistoryList")

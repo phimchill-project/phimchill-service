@@ -12,11 +12,18 @@ import java.sql.Date;
 @Setter
 public class UpcomingMoviesResponse {
     private Long id;
+
     private String name;
+
     private String description;
+
     private Date year;
+
     private float imdb;
+
     private String image;
+
     private String trailer;
+
     private boolean isRelease;
 }

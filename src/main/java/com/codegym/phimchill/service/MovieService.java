@@ -1,5 +1,6 @@
 package com.codegym.phimchill.service;
 
+import com.codegym.phimchill.dto.TvSeriesDto;
 import com.codegym.phimchill.dto.payload.response.UpcomingMoviesResponse;
 import com.codegym.phimchill.dto.MovieDto;
 import com.codegym.phimchill.dto.payload.request.MovieNameRequest;
@@ -18,4 +19,7 @@ public interface MovieService {
 
     CheckMovieNameExistResponse isNotExist(MovieNameRequest movieNameRequest);
 
+    List<MovieDto> getTop10ByImdb();
+
+    MovieDto findByName(String nameMovie);
 }
