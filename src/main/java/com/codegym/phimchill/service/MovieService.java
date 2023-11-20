@@ -1,5 +1,6 @@
 package com.codegym.phimchill.service;
 
+import com.codegym.phimchill.dto.payload.response.ListMovieResponse;
 import com.codegym.phimchill.dto.payload.response.UpcomingMoviesResponse;
 import com.codegym.phimchill.dto.MovieDto;
 import com.codegym.phimchill.dto.payload.request.MovieNameRequest;
@@ -10,12 +11,17 @@ import java.util.List;
 
 public interface MovieService {
 
-   List<UpcomingMoviesResponse> getUpcomingMovies();
+    UpcomingMoviesResponse getUpcomingMovies();
 
     List<MovieDto> findAll();
 
     NewMovieResponse create(NewMovieRequest newTvSeriesRequest);
 
     CheckMovieNameExistResponse isNotExist(MovieNameRequest movieNameRequest);
+
+    ListMovieResponse getMoviesByCategory(Long id) ;
+    ListMovieResponse getTop10MoviesByViews();
+
+
 
 }

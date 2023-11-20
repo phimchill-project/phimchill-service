@@ -82,13 +82,13 @@ public class SecurityConfiguration {
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers("/api/movies/upcoming").permitAll());
+
+        http.authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/api/auth/register").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/auth/login").permitAll());
-
-        http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/api/movies/upcoming").permitAll());
 
         // Configure remember me (save token in database)
         http.rememberMe((remember) -> remember

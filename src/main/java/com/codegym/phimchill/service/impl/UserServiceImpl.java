@@ -35,8 +35,6 @@ public class UserServiceImpl implements UserService {
     public String  login(LoginRequest loginRequest) {
         User user = userRepository.findUserByEmail(loginRequest.getEmail());
         return user.getName();
-
-
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.codegym.phimchill.converter.impl;
 
 import com.codegym.phimchill.converter.MovieConverter;
 import com.codegym.phimchill.dto.MovieDto;
+import com.codegym.phimchill.dto.UpcomingMovieDto;
 import com.codegym.phimchill.dto.payload.response.UpcomingMoviesResponse;
 import com.codegym.phimchill.entity.Movie;
 import org.springframework.beans.BeanUtils;
@@ -31,14 +32,29 @@ public class MovieConverterImpl implements MovieConverter {
     }
 
     @Override
-    public List<UpcomingMoviesResponse> convertToUpcomingMoviesResponse(List<Movie> movie) {
-        return movie.stream()
-                .map(this::convertMovieToUpcomingMoviesResponse)
+    public List<UpcomingMovieDto> convertToUpcomingMoviesResponse(List<Movie> movies) {
+        return movies.stream()
+                .map(this::convertToUpcomingMovieDTO)
                 .collect(Collectors.toList());
     }
-      private UpcomingMoviesResponse convertMovieToUpcomingMoviesResponse(Movie movie) {
-        UpcomingMoviesResponse response = new UpcomingMoviesResponse();
-        BeanUtils.copyProperties(movie,response);
-        return response;
+    private UpcomingMovieDto convertToUpcomingMovieDTO(Movie movie) {
+        UpcomingMovieDto dto = new UpcomingMovieDto();
+        BeanUtils.copyProperties(movie,dto);
+        return dto;
     }
+
+    @Override
+    public MovieDto convertToMovieDTO(Movie movie) {
+        MovieDto dto = new MovieDto();
+        dto.setId(movie.getId());
+        dto.setName(movie.getName());
+        dto.setViews(movie.getViews());
+        return dto;
+    }
+    public List<MovieDto> convertToMovieDTOList(List<Movie> movies) {
+        return movies.stream()
+                .map(this::convertToMovieDTO)
+                .collect(Collectors.toList());
+    }
+
 }
