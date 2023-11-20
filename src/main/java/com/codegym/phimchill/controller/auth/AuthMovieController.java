@@ -16,17 +16,16 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/admin/movie")
-@CrossOrigin(origins = "http://localhost:3000")
 public class AuthMovieController {
     @Autowired
     private MovieService movieService;
 
-//    @Autowired
-//    private SecurityService securityService;
+    @Autowired
+    private SecurityService securityService;
 
     @PostMapping("/new")
     public ResponseEntity<?> createNewMovie(
-            @RequestBody NewMovieRequest newMovieRequest, @RequestHeader("Authorization") final String authToken) {
+            @RequestBody NewMovieRequest newMovieRequest) {
 //        if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
 //            return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
 //        }
@@ -34,8 +33,10 @@ public class AuthMovieController {
             MovieResponse response = movieService.create(newMovieRequest);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            ErrorMessageResponse messageResponse = new ErrorMessageResponse(e.getMessage());
-            return new ResponseEntity<>(messageResponse, HttpStatus.BAD_REQUEST);
+            ErrorMessageResponse response = new ErrorMessageResponse();
+            response.setMessage(e.getMessage());
+            response.setStatusCode(400);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
 

@@ -9,6 +9,7 @@ import com.codegym.phimchill.dto.payload.response.CheckMovieNameExistResponse;
 import com.codegym.phimchill.dto.payload.response.MovieResponse;
 import com.codegym.phimchill.dto.payload.response.NewMovieResponse;
 import com.codegym.phimchill.entity.Category;
+import com.codegym.phimchill.dto.payload.response.UpcomingMoviesResponse;
 import com.codegym.phimchill.entity.Movie;
 import com.codegym.phimchill.repository.MoviePagingRepository;
 import com.codegym.phimchill.repository.MovieRepository;
@@ -16,7 +17,6 @@ import com.codegym.phimchill.service.CategoryService;
 import com.codegym.phimchill.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +39,11 @@ public class MovieServiceImpl implements MovieService {
     private MovieConverter movieConverter;
 
     @Override
+    public List<UpcomingMoviesResponse> getUpcomingMovies() {
+        return null;
+    }
+
+    @Override
     public List<MovieDto> findAll() {
         List<Movie> movieList = movieRepository.findAll();
         List<MovieDto> movieDTOList = movieDTOConvert.convertToListDTO(movieList);
@@ -46,7 +51,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public MovieResponse create(NewMovieRequest newTvSeriesRequest) {
+    public MovieResponse create(NewMovieRequest newTvSeriesRequest) throws Exception {
         Movie newMovie = Movie.builder()
                 .name(newTvSeriesRequest.getName())
                 .description(newTvSeriesRequest.getDescription())
@@ -59,7 +64,9 @@ public class MovieServiceImpl implements MovieService {
                 .build();
         List<Category> categoryList = new ArrayList<>();
         for (NewMovieCategoryDto categoryDto : newTvSeriesRequest.getCategoryList()) {
-            Category category = categoryService.findById(categoryDto.getId()).orElse(null);
+            Category category = categoryService.findById(categoryDto.getId()).orElseThrow(
+                    () -> new Exception("Create Movie Fail")
+            );
             categoryList.add(category);
         }
         newMovie.setCategoryList(categoryList);
@@ -72,6 +79,11 @@ public class MovieServiceImpl implements MovieService {
     }
     @Override
     public CheckMovieNameExistResponse isNotExist(MovieNameRequest movieNameRequest) {
+        return null;
+    }
+
+    @Override
+    public List<MovieDto> getTop10ByImdb() {
         return null;
     }
 }
