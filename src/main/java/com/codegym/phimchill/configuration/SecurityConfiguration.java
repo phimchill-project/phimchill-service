@@ -95,6 +95,9 @@ public class SecurityConfiguration {
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/admin/movie/new").permitAll());
 
+        http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers("/api/movies/upcoming").permitAll());
+
         // Configure remember me (save token in database)
         http.rememberMe((remember) -> remember
                 .tokenRepository(this.persistentTokenRepository())
