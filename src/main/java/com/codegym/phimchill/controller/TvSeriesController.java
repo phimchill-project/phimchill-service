@@ -1,4 +1,6 @@
 package com.codegym.phimchill.controller;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
 import com.codegym.phimchill.dto.payload.response.TvSeriesResponse;
 import com.codegym.phimchill.service.TvSeriesService;
 import org.springframework.http.HttpStatus;
