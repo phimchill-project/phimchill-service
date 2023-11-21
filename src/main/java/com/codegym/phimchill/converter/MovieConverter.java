@@ -12,6 +12,7 @@ public interface MovieConverter {
      List<UpcomingMoviesResponse> convertToUpcomingMoviesResponse(List<Movie> movie);
 
      MovieDto convertToDTO(Movie movie);
+
      List<MovieDto> convertToListDTO(List<Movie> movies);
 
 }

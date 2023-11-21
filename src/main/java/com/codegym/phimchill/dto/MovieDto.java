@@ -12,13 +12,22 @@ import java.util.List;
 @Builder
 public class MovieDto {
     private Long id;
+
     private String name;
+
     private String description;
+
     private Date year;
+
     private int duration;
+
     private float imdb;
+
     private String image;
+
     private String trailer;
+
     private String url;
+
     private List<CategoryDto> categoryList;
 }
