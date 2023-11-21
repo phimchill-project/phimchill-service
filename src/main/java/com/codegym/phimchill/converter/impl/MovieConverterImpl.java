@@ -25,7 +25,6 @@ public class MovieConverterImpl implements MovieConverter {
         List<MovieDto> listDTO = new ArrayList<>();
         for (Movie movie: movies
         ) {
-
             listDTO.add(convertToDTO(movie));
         }
         return listDTO;

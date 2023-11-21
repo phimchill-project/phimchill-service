@@ -15,7 +15,25 @@ import java.util.List;
 @Getter
 @Setter
 public class UpcomingMoviesResponse {
+<<<<<<< HEAD
     private List<UpcomingMovieDto> data;
     private String message;
     private int statusCode;
+=======
+    private Long id;
+
+    private String name;
+
+    private String description;
+
+    private Date year;
+
+    private float imdb;
+
+    private String image;
+
+    private String trailer;
+
+    private boolean isRelease;
+>>>>>>> 5286e9eb94fa522937fd07b6b60ea86eb6b73a1d
 }
