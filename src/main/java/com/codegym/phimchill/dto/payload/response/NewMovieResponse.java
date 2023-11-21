@@ -1,14 +1,15 @@
 package com.codegym.phimchill.dto.payload.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.codegym.phimchill.dto.MovieDto;
+import lombok.*;
 
-//@AllArgsConstructor
-//@NoArgsConstructor
-//@Getter
-//@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
 public class NewMovieResponse {
-
+    private MovieDto data;
+    private String message;
+    private int statusCode;
 }
