@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Component
 public class MovieConverterImpl implements MovieConverter {
     @Override
     public MovieDto convertToDTO(Movie movie) {

@@ -6,6 +6,8 @@ import com.codegym.phimchill.dto.payload.request.MovieNameRequest;
 import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
 import com.codegym.phimchill.dto.payload.response.CheckMovieNameExistResponse;
 import com.codegym.phimchill.dto.payload.response.NewMovieResponse;
+import com.codegym.phimchill.entity.Movie;
+
 import java.util.List;
 
 public interface MovieService {
@@ -18,4 +20,5 @@ public interface MovieService {
 
     CheckMovieNameExistResponse isNotExist(MovieNameRequest movieNameRequest);
 
+    MovieDto getMovieById(Long id);
 }

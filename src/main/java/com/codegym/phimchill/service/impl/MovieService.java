@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MovieService implements com.codegym.phimchill.service.MovieService {
@@ -38,6 +39,12 @@ public class MovieService implements com.codegym.phimchill.service.MovieService 
     @Override
     public CheckMovieNameExistResponse isNotExist(MovieNameRequest movieNameRequest) {
         return null;
+    }
+
+    @Override
+    public MovieDto getMovieById(Long id) {
+       Movie movie = movieRepository.findById(id).orElse(null);
+       return movieDTOConvert.convertToDTO(movie);
     }
 
     @Override

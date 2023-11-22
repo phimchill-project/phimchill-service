@@ -46,4 +46,9 @@ public class MovieServiceImpl implements MovieService {
     public CheckMovieNameExistResponse isNotExist(MovieNameRequest movieNameRequest) {
         return null;
     }
+
+    @Override
+    public MovieDto getMovieById(Long id) {
+        return null;
+    }
 }

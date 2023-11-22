@@ -2,6 +2,7 @@ package com.codegym.phimchill.controller;
 
 import com.codegym.phimchill.dto.payload.response.UpcomingMoviesResponse;
 import com.codegym.phimchill.dto.MovieDto;
+import com.codegym.phimchill.entity.Movie;
 import com.codegym.phimchill.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,5 +30,10 @@ public class MovieController {
     public ResponseEntity<?> getUpcomingMovies() {
         List<UpcomingMoviesResponse> upcomingMovies = movieService.getUpcomingMovies();
         return ResponseEntity.ok(upcomingMovies);
+    }
+    @GetMapping("/detail")
+    public ResponseEntity<?> getMovieDetail(Long id) {
+        MovieDto movie = movieService.getMovieById(id);
+        return new ResponseEntity<>(movie, HttpStatus.OK);
     }
 }
