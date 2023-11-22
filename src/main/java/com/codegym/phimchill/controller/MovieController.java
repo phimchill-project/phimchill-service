@@ -1,5 +1,9 @@
 package com.codegym.phimchill.controller;
 
+<<<<<<< HEAD
+=======
+import com.codegym.phimchill.dto.payload.response.UpcomingMoviesResponse;
+>>>>>>> d0c1a91d03c7231111e522d0148999f9897f39ad
 import com.codegym.phimchill.dto.MovieDto;
 import com.codegym.phimchill.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/movies")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(value = "*", maxAge = 3600)
 public class MovieController {
     @Autowired
     private MovieService movieService;
@@ -22,5 +26,11 @@ public class MovieController {
     public ResponseEntity<?> findAll(){
         List<MovieDto> MovieDtoList = movieService.findAll();
         return new ResponseEntity<>(MovieDtoList, HttpStatus.OK);
+    }
+
+    @GetMapping("/upcoming")
+    public ResponseEntity<?> getUpcomingMovies() {
+        List<UpcomingMoviesResponse> upcomingMovies = movieService.getUpcomingMovies();
+        return ResponseEntity.ok(upcomingMovies);
     }
 }
