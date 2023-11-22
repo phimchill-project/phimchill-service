@@ -3,9 +3,7 @@ package com.codegym.phimchill.controller;
 import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
 import com.codegym.phimchill.dto.payload.response.ListMovieResponse;
 import com.codegym.phimchill.dto.payload.response.FindMovieReponse;
-import com.codegym.phimchill.dto.payload.response.UpcomingMoviesResponse;
 import com.codegym.phimchill.dto.MovieDto;
-import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
 import com.codegym.phimchill.dto.payload.response.ErrorMessageResponse;
 import com.codegym.phimchill.dto.payload.response.MovieResponse;
 import com.codegym.phimchill.service.MovieService;
@@ -49,14 +47,14 @@ public class MovieController {
             ErrorMessageResponse messageResponse = new ErrorMessageResponse(e.getMessage());
             return new ResponseEntity<>(messageResponse, HttpStatus.BAD_REQUEST);
         }
-
+    }
 
     @GetMapping("/upcoming")
     public ResponseEntity<?> getUpcomingMovies() {
-       UpcomingMoviesResponse upcomingMovies = movieService.getUpcomingMovies();
+        ListMovieResponse upcomingMovies = movieService.getUpcomingMovies();
         return ResponseEntity.ok(upcomingMovies);
     }
-<<<<<<< HEAD
+
     @GetMapping("/blockbuster")
     public ResponseEntity<?>  getBlockbusterMoives(){
         ListMovieResponse movies = movieService.getMoviesByCategory(1L);
@@ -67,8 +65,6 @@ public class MovieController {
         ListMovieResponse movies = movieService.getTop10MoviesByViews();
         return ResponseEntity.ok(movies);
     }
-}
-=======
 
     @GetMapping("/search")
     public ResponseEntity<?> getByName(@RequestParam(value = "name", required = true) String nameMovie) {

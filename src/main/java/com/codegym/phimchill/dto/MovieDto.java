@@ -28,10 +28,8 @@ public class MovieDto {
     private String trailer;
 
     private String url;
-<<<<<<< HEAD
-    private Integer views;
-=======
 
->>>>>>> 5286e9eb94fa522937fd07b6b60ea86eb6b73a1d
+    private Integer views;
+
     private List<CategoryDto> categoryList;
 }

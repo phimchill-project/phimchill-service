@@ -89,19 +89,19 @@ public class SecurityConfiguration {
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/auth/login").permitAll());
 
-<<<<<<< HEAD
-=======
+
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/admin/movie/**").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/api/movies/**").permitAll());
                 .requestMatchers("/api/movies/upcoming").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/movies/*").permitAll());
 
->>>>>>> 5286e9eb94fa522937fd07b6b60ea86eb6b73a1d
+        http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers("/api/category").permitAll());
+
         // Configure remember me (save token in database)
         http.rememberMe((remember) -> remember
                 .tokenRepository(this.persistentTokenRepository())
