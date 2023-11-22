@@ -26,6 +26,5 @@ public class CategoryController {
             response.setStatusCode(400);
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
-
     }
 }

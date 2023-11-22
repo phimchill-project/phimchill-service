@@ -17,5 +17,8 @@ public interface MovieService {
     List<MovieDto> findAll();
     MovieResponse create(NewMovieRequest newTvSeriesRequest) throws Exception;
     CheckMovieNameExistResponse isNotExist(MovieNameRequest movieNameRequest);
+
     List<MovieDto> getTop10ByImdb();
+
+    MovieDto findByName(String nameMovie);
 }
