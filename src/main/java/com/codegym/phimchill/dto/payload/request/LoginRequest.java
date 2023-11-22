@@ -12,12 +12,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoginRequest {
-
     @Email(message = "Email should be valid")
     private String email;
-
-    private String name;
-
     @Pattern(regexp = "^(?=.*[A-Z])(?=.*\\W).{8,}$", message = "Password should be valid")
     private String password;
 }

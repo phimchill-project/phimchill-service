@@ -87,10 +87,15 @@ public class SecurityConfiguration {
                 .requestMatchers("/api/auth/login").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/api/admin/movie/**").permitAll());
+                .requestMatchers("/api/movies/upcoming").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/api/movies/**").permitAll());
+                .requestMatchers("/api/category").permitAll());
+
+        http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers("/api/admin/movie/new").permitAll());
+
+        http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/movies/upcoming").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize

@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -23,7 +22,7 @@ public class MovieController {
     private MovieService movieService;
 
     @GetMapping
-    public ResponseEntity<?> findAll(){
+    public ResponseEntity<?> findAll() {
         List<MovieDto> MovieDtoList = movieService.findAll();
         return new ResponseEntity<>(MovieDtoList, HttpStatus.OK);
     }
@@ -38,9 +37,13 @@ public class MovieController {
             MovieResponse response = movieService.create(newMovieRequest);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            ErrorMessageResponse messageResponse = new ErrorMessageResponse(e.getMessage());
-            return new ResponseEntity<>(messageResponse, HttpStatus.BAD_REQUEST);
+            ErrorMessageResponse response = new ErrorMessageResponse();
+            response.setMessage(e.getMessage());
+            response.setStatusCode(400);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
+    }
+
     @GetMapping("/upcoming")
     public ResponseEntity<?> getUpcomingMovies() {
         List<UpcomingMoviesResponse> upcomingMovies = movieService.getUpcomingMovies();

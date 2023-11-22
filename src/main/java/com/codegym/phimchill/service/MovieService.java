@@ -15,7 +15,7 @@ public interface MovieService {
    List<UpcomingMoviesResponse> getUpcomingMovies();
 
     List<MovieDto> findAll();
-    MovieResponse create(NewMovieRequest newTvSeriesRequest);
+    MovieResponse create(NewMovieRequest newTvSeriesRequest) throws Exception;
     CheckMovieNameExistResponse isNotExist(MovieNameRequest movieNameRequest);
 
     List<MovieDto> getTop10ByImdb();

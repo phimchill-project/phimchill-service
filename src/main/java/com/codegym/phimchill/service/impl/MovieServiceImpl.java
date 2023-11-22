@@ -53,7 +53,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public MovieResponse create(NewMovieRequest newTvSeriesRequest) {
+    public MovieResponse create(NewMovieRequest newTvSeriesRequest) throws Exception {
         Movie newMovie = Movie.builder()
                 .name(newTvSeriesRequest.getName())
                 .description(newTvSeriesRequest.getDescription())
@@ -66,7 +66,9 @@ public class MovieServiceImpl implements MovieService {
                 .build();
         List<Category> categoryList = new ArrayList<>();
         for (NewMovieCategoryDto categoryDto : newTvSeriesRequest.getCategoryList()) {
-            Category category = categoryService.findById(categoryDto.getId()).orElse(null);
+            Category category = categoryService.findById(categoryDto.getId()).orElseThrow(
+                    () -> new Exception("Create Movie Fail")
+            );
             categoryList.add(category);
         }
         newMovie.setCategoryList(categoryList);
