@@ -17,6 +17,10 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
+
+#!**/src/main/resources/application.properties
+#!**/src/main/resources/application-local.properties
+
 ### IntelliJ IDEA ###
 .idea
 *.iws
@@ -35,3 +39,5 @@ out/
 
 ### VS Code ###
 .vscode/
+
+src/main/resources/application-local.properties

@@ -1,4 +1,5 @@
 package com.codegym.phimchill.dto.payload.response;
+
 import com.codegym.phimchill.dto.RegisterDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
