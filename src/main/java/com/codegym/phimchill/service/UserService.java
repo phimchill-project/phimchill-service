@@ -6,9 +6,9 @@ import com.codegym.phimchill.dto.payload.response.LoginResponse;
 import com.codegym.phimchill.dto.payload.response.RegisterResponse;
 
 public interface UserService {
-    LoginResponse login(LoginRequest loginRequest);
+    String login(LoginRequest loginRequest);
     RegisterResponse register(RegisterRequest registerRequest) throws Exception;
     boolean isEmailExist(EmailRequest emailRequest);
 
-    boolean updateEmail( String email);
+    boolean updateEmail( String email );
 }

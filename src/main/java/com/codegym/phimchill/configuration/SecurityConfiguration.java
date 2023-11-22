@@ -1,6 +1,7 @@
 package com.codegym.phimchill.configuration;
 import com.codegym.phimchill.security.JwtAuthEntryPoint;
 import com.codegym.phimchill.security.JwtAuthFilter;
+import com.codegym.phimchill.security.JwtTokenProvider;
 import com.codegym.phimchill.service.SecurityService;
 import com.codegym.phimchill.service.impl.SecurityServiceImpl;
 import com.codegym.phimchill.service.impl.UserDetailsServiceImpl;
@@ -32,7 +33,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableAutoConfiguration
 @EnableAsync
 @EnableWebSecurity
-@ComponentScan(basePackages = {"com.codegym.phimchill"})
+@ComponentScan(basePackages = {"com.codegym.phimchill", "com.codegym.phimchill.security"})
 public class SecurityConfiguration {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
@@ -86,6 +87,12 @@ public class SecurityConfiguration {
 
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/auth/login").permitAll());
+
+        http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers("/api/movies/upcoming").permitAll());
+
+        http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers("/api/users/edit-email").hasRole("USER"));
 
         // Configure remember me (save token in database)
         http.rememberMe((remember) -> remember
