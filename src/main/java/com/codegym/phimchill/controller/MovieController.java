@@ -4,10 +4,9 @@ import com.codegym.phimchill.dto.payload.response.FindMovieReponse;
 import com.codegym.phimchill.dto.payload.response.UpcomingMoviesResponse;
 import com.codegym.phimchill.dto.MovieDto;
 import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
-import com.codegym.phimchill.dto.payload.response.ErrorMessageResponse;
+import com.codegym.phimchill.dto.payload.response.ErrorResponse;
 import com.codegym.phimchill.dto.payload.response.MovieResponse;
 import com.codegym.phimchill.service.MovieService;
-import com.codegym.phimchill.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +36,7 @@ public class MovieController {
             MovieResponse response = movieService.create(newMovieRequest);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            ErrorMessageResponse response = new ErrorMessageResponse();
+            ErrorResponse response = new ErrorResponse();
             response.setMessage(e.getMessage());
             response.setStatusCode(400);
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);

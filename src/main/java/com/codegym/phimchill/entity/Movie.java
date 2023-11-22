@@ -44,4 +44,6 @@ public class Movie {
     private List<User> userHistoryList;
     @ManyToMany(mappedBy = "movieFavoriteList")
     private List<User> userFavoriteList;
+    @OneToMany(mappedBy = "movie")
+    private List<MovieComment> movieCommentList;
 }

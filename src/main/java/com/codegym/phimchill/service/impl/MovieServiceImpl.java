@@ -11,12 +11,14 @@ import com.codegym.phimchill.dto.payload.response.NewMovieResponse;
 import com.codegym.phimchill.entity.Category;
 import com.codegym.phimchill.dto.payload.response.UpcomingMoviesResponse;
 import com.codegym.phimchill.entity.Movie;
+import com.codegym.phimchill.repository.CategoryRepository;
 import com.codegym.phimchill.repository.MoviePagingRepository;
 import com.codegym.phimchill.repository.MovieRepository;
 import com.codegym.phimchill.service.CategoryService;
 import com.codegym.phimchill.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.support.ManagedList;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,9 @@ public class MovieServiceImpl implements MovieService {
 
     @Autowired
     private MovieConverter movieConverter;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Override
     public List<UpcomingMoviesResponse> getUpcomingMovies() {
@@ -64,17 +69,20 @@ public class MovieServiceImpl implements MovieService {
                 .url(newTvSeriesRequest.getUrl())
                 .dateRelease(newTvSeriesRequest.getDateRelease())
                 .build();
+        Movie savedMovie = movieRepository.save(newMovie);
         List<Category> categoryList = new ArrayList<>();
         for (NewMovieCategoryDto categoryDto : newTvSeriesRequest.getCategoryList()) {
             Category category = categoryService.findById(categoryDto.getId()).orElseThrow(
                     () -> new Exception("Create Movie Fail")
             );
+            category.getMovieList().add(savedMovie);
             categoryList.add(category);
         }
-        newMovie.setCategoryList(categoryList);
-        movieRepository.save(newMovie);
+        categoryRepository.saveAll(categoryList);
+        savedMovie.setCategoryList(categoryList);
+        movieRepository.save(savedMovie);
         return MovieResponse.builder()
-                .data(movieConverter.convertToDTO(newMovie))
+                .data(movieConverter.convertToDTO(savedMovie))
                 .message("Add Movie Success")
                 .statusCode(200)
                 .build();
