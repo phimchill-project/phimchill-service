@@ -1,9 +1,6 @@
 package com.codegym.phimchill.controller;
 
-<<<<<<< HEAD
-=======
 import com.codegym.phimchill.dto.payload.response.UpcomingMoviesResponse;
->>>>>>> d0c1a91d03c7231111e522d0148999f9897f39ad
 import com.codegym.phimchill.dto.MovieDto;
 import com.codegym.phimchill.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;

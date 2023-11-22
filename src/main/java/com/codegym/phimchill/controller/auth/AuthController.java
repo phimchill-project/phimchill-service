@@ -1,9 +1,6 @@
 package com.codegym.phimchill.controller.auth;
-<<<<<<< HEAD
 
-=======
 import com.codegym.phimchill.dto.UserDto;
->>>>>>> d0c1a91d03c7231111e522d0148999f9897f39ad
 import com.codegym.phimchill.dto.payload.request.EmailRequest;
 import com.codegym.phimchill.dto.payload.request.RegisterRequest;
 import com.codegym.phimchill.dto.payload.request.LoginRequest;
