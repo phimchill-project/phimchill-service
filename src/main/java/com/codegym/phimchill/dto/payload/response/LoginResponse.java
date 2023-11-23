@@ -12,8 +12,6 @@ import lombok.Setter;
 @Setter
 public class LoginResponse {
     private UserDto data;
-
     private int statusCode;
-
     private String message;
 }

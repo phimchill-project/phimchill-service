@@ -13,7 +13,7 @@ public interface MovieService {
 
     ListMovieResponse getUpcomingMovies();
     List<MovieDto> findAll();
-    MovieResponse create(NewMovieRequest newTvSeriesRequest);
+    MovieResponse create(NewMovieRequest newTvSeriesRequest) throws Exception;
     CheckMovieNameExistResponse isNotExist(MovieNameRequest movieNameRequest);
     ListMovieResponse getMoviesByCategory(Long id) ;
     ListMovieResponse getTop10MoviesByViews();
