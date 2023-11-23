@@ -87,7 +87,16 @@ public class SecurityConfiguration {
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/api/auth/*").permitAll());
+                .requestMatchers("/api/movies/upcoming").permitAll());
+
+        http.authorizeHttpRequests((authorize) -> authorize
+                        .requestMatchers("/api/auth/register").permitAll());
+
+        http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers("/api/auth/login").permitAll());
+
+        http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers("/api/movies/blockbuster").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/category").permitAll());
@@ -100,6 +109,9 @@ public class SecurityConfiguration {
 
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/tvseries/*").permitAll());
+
+        http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers("/api/category").permitAll());
 
         // Configure remember me (save token in database)
         http.rememberMe((remember) -> remember

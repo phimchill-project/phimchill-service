@@ -1,9 +1,9 @@
 package com.codegym.phimchill.controller;
 
-import com.codegym.phimchill.dto.payload.response.FindMovieReponse;
-import com.codegym.phimchill.dto.payload.response.UpcomingMoviesResponse;
-import com.codegym.phimchill.dto.MovieDto;
 import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
+import com.codegym.phimchill.dto.payload.response.ListMovieResponse;
+import com.codegym.phimchill.dto.payload.response.FindMovieReponse;
+import com.codegym.phimchill.dto.MovieDto;
 import com.codegym.phimchill.dto.payload.response.ErrorMessageResponse;
 import com.codegym.phimchill.dto.payload.response.MovieResponse;
 import com.codegym.phimchill.service.MovieService;
@@ -11,6 +11,7 @@ import com.codegym.phimchill.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class MovieController {
         return new ResponseEntity<>(MovieDtoList, HttpStatus.OK);
     }
 
+
     @PostMapping("/new")
     public ResponseEntity<?> createNewMovie(
             @RequestBody NewMovieRequest newMovieRequest) {
@@ -50,10 +52,26 @@ public class MovieController {
 
     @GetMapping("/upcoming")
     public ResponseEntity<?> getUpcomingMovies() {
-        List<UpcomingMoviesResponse> upcomingMovies = movieService.getUpcomingMovies();
+        ListMovieResponse upcomingMovies = movieService.getUpcomingMovies();
         return ResponseEntity.ok(upcomingMovies);
     }
 
+    @GetMapping("/blockbuster")
+    public ResponseEntity<?>  getBlockbusterMoives(){
+        ListMovieResponse movies = movieService.getMoviesSortedByIMDBAndDate();
+        return ResponseEntity.ok(movies);
+    }
+    @GetMapping("/top-views")
+    public ResponseEntity<?> getTopMoviesByViews() {
+        ListMovieResponse movies = movieService.getTop10MoviesByViews();
+        return ResponseEntity.ok(movies);
+    }
+
+    @GetMapping("/top-imdb")
+    public ResponseEntity<?> getMoviesbyImbdTop() {
+        ListMovieResponse movies = movieService.getMoviesbyImbdTop();
+        return ResponseEntity.ok(movies);
+    }
     @GetMapping("/search")
     public ResponseEntity<?> getByName(/*@RequestHeader("Authorization") final String authToken,*/ @RequestParam(value = "name", required = true) String nameMovie) {
         /*if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
@@ -76,3 +94,4 @@ public class MovieController {
         return ResponseEntity.ok(response);
     }
 }
+
