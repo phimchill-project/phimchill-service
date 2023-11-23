@@ -90,19 +90,16 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/auth/*").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/api/movies/upcoming").permitAll());
-
-        http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/category").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/admin/movie/new").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/api/movies/upcoming").permitAll());
+                .requestMatchers("/api/movies/*").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/api/movies/*").permitAll());
+                .requestMatchers("/api/tvseries/*").permitAll());
 
         // Configure remember me (save token in database)
         http.rememberMe((remember) -> remember
