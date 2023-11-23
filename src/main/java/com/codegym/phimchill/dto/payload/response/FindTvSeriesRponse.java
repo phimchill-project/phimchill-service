@@ -1,6 +1,6 @@
 package com.codegym.phimchill.dto.payload.response;
 
-import com.codegym.phimchill.dto.MovieDto;
+import com.codegym.phimchill.dto.TvSeriesDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
@@ -10,8 +10,8 @@ import lombok.*;
 @Setter
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class FindMovieReponse {
-    MovieDto data;
+public class FindTvSeriesRponse {
+    TvSeriesDto data;
 
     private int statusCode;
 

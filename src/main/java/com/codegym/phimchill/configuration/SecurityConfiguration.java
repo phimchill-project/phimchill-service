@@ -105,10 +105,10 @@ public class SecurityConfiguration {
                 .requestMatchers("/api/admin/movie/new").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/api/movies/upcoming").permitAll());
+                .requestMatchers("/api/movies/*").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/api/movies/*").permitAll());
+                .requestMatchers("/api/tvseries/*").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/category").permitAll());
