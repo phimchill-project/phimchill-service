@@ -11,7 +11,10 @@ import java.util.List;
 @Builder
 public class SeasonDto {
     private Long id;
+
     private String name;
+
     private Date dateRelease;
+
     private List<EpisodeDto> episodeList;
 }

@@ -1,5 +1,6 @@
 package com.codegym.phimchill.service;
 
+import com.codegym.phimchill.dto.MovieDto;
 import com.codegym.phimchill.dto.TvSeriesDto;
 import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
 import com.codegym.phimchill.dto.payload.request.MovieNameRequest;
@@ -16,4 +17,5 @@ public interface TvSeriesService {
     List<TvSeriesDto> getTop10ByImdb();
     List<TvSeriesDto> getTop10Newest();
 
+    TvSeriesDto findByName(String nameMovie);
 }

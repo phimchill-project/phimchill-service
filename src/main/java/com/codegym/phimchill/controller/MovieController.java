@@ -55,10 +55,10 @@ public class MovieController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<?> getByName(@RequestHeader("Authorization") final String authToken, @RequestParam(value = "name", required = true) String nameMovie) {
-        if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
+    public ResponseEntity<?> getByName(/*@RequestHeader("Authorization") final String authToken,*/ @RequestParam(value = "name", required = true) String nameMovie) {
+        /*if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
             return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
-        }
+        }*/
         MovieDto movieDto = movieService.findByName(nameMovie);
         FindMovieReponse response;
         if (movieDto != null){
