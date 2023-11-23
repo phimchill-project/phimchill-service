@@ -25,4 +25,10 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     Page<Movie> findTop10ByOrderByViewsDesc(Pageable pageable);
 
     List<Movie> findFirst10ByOrderByImdbDesc();
+    @Query(value = "SELECT * FROM movie WHERE is_release = 1 ORDER BY imdb DESC, date_release DESC", nativeQuery = true)
+    List<Movie> findReleasedMoviesSortedByIMDBAndDate();
+
+    @Query("SELECT m FROM Movie m WHERE m.dateRelease > CURRENT_DATE ORDER BY m.imdb DESC")
+    List<Movie> findUpcomingMoviesOrderByImdbDesc();
+
 }

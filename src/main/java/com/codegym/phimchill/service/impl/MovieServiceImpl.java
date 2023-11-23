@@ -20,8 +20,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -53,7 +55,7 @@ public class MovieServiceImpl implements MovieService {
         movieResponse.setData(upcomingMoviesDtos);
         movieResponse.setMessage("Get Upcoming Movies");
         movieResponse.setStatusCode(200);
-        return movieResponse ;
+        return movieResponse;
     }
 
 
@@ -91,6 +93,7 @@ public class MovieServiceImpl implements MovieService {
                 .statusCode(200)
                 .build();
     }
+
     @Override
     public CheckMovieNameExistResponse isNotExist(MovieNameRequest movieNameRequest) {
         return null;
@@ -105,6 +108,7 @@ public class MovieServiceImpl implements MovieService {
         listMovieResponse.setStatusCode(200);
         return listMovieResponse;
     }
+
     @Override
     public ListMovieResponse getTop10MoviesByViews() {
         Page<Movie> page = movieRepository.findTop10ByOrderByViewsDesc(PageRequest.of(0, 10));
@@ -121,7 +125,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public MovieDto findByName(String nameMovie){
+    public MovieDto findByName(String nameMovie) {
         nameMovie = nameMovie.replaceAll("-", " ");
         List<Movie> movies = movieRepository.findAll();
         Optional<Movie> movie = Optional.empty();
@@ -132,5 +136,25 @@ public class MovieServiceImpl implements MovieService {
             }
         }
         return movie.map(value -> movieDtoConvert.convertToDTO(value)).orElse(null);
+    }
+
+    @Override
+    public ListMovieResponse getMoviesSortedByIMDBAndDate() {
+        List<Movie> moviesData = movieRepository.findReleasedMoviesSortedByIMDBAndDate();
+        ListMovieResponse listMovieResponse = new ListMovieResponse();
+        listMovieResponse.setData(movieConverter.convertToListDTO(moviesData));
+        listMovieResponse.setMessage("get Movies Sorted By IMDB And Date");
+        listMovieResponse.setStatusCode(200);
+        return listMovieResponse;
+    }
+
+    @Override
+    public ListMovieResponse getMoviesbyImbdTop() {
+        List<Movie> movieList = movieRepository.findFirst10ByOrderByImdbDesc();
+        ListMovieResponse listMovieResponse = new ListMovieResponse();
+        listMovieResponse.setData(movieConverter.convertToListDTO(movieList));
+        listMovieResponse.setMessage("get Movies by Imbd Top");
+        listMovieResponse.setStatusCode(200);
+        return listMovieResponse;
     }
 }

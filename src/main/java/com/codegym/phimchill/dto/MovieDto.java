@@ -17,7 +17,7 @@ public class MovieDto {
 
     private String description;
 
-    private Date year;
+    private int year;
 
     private int duration;
 

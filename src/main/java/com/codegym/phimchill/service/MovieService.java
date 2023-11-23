@@ -21,5 +21,7 @@ public interface MovieService {
     List<MovieDto> getTop10ByImdb();
 
     MovieDto findByName(String nameMovie);
+    ListMovieResponse getMoviesSortedByIMDBAndDate();
+    ListMovieResponse getMoviesbyImbdTop();
 
 }
