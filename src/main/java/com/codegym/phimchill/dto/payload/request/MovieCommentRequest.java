@@ -2,6 +2,8 @@ package com.codegym.phimchill.dto.payload.request;
 
 import lombok.*;
 
+import java.sql.Date;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -9,6 +11,6 @@ import lombok.*;
 @Builder
 public class MovieCommentRequest {
     private String comment;
-    private Long datePost;
+    private Date datePost;
     private Long movieID;
 }

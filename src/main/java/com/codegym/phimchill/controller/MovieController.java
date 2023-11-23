@@ -7,6 +7,7 @@ import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
 import com.codegym.phimchill.dto.payload.response.ErrorResponse;
 import com.codegym.phimchill.dto.payload.response.MovieResponse;
 import com.codegym.phimchill.service.MovieService;
+import com.codegym.phimchill.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,6 @@ import java.util.List;
 @RequestMapping("/api/movies")
 @CrossOrigin(value = "*", maxAge = 3600)
 public class MovieController {
-
     @Autowired
     private SecurityService securityService;
 
