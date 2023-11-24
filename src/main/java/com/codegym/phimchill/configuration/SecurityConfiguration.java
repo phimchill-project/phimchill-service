@@ -88,11 +88,10 @@ public class SecurityConfiguration {
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.authorizeHttpRequests((authorize) -> authorize
-
-                .requestMatchers("/api/movies/upcoming").permitAll());
+                        .requestMatchers("/api/auth/**").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/api/auth/register").permitAll());
+                .requestMatchers("/api/movies/upcoming").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/auth/login").permitAll());
@@ -108,7 +107,7 @@ public class SecurityConfiguration {
                 .requestMatchers("/api/admin/movie/new").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/api/movies/*").permitAll());
+                .requestMatchers("/api/movies/**").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/tvseries/**").permitAll());
