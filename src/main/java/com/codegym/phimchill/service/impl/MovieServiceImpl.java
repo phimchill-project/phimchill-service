@@ -47,7 +47,6 @@ public class MovieServiceImpl implements MovieService {
 
     @Autowired
     private CategoryRepository categoryRepository;
-
     private NameNormalizationService nameNormalizationService;
 
     @Override
