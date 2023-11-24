@@ -46,11 +46,8 @@ public class MovieServiceImpl implements MovieService {
     private MovieConverter movieConverter;
 
     @Autowired
-
     private CategoryRepository categoryRepository;
-
     private NameNormalizationService nameNormalizationService;
-
 
     @Override
     public ListMovieResponse getUpcomingMovies() {

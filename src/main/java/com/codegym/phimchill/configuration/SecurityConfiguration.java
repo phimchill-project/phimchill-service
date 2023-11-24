@@ -99,7 +99,6 @@ public class SecurityConfiguration {
                 .requestMatchers("/api/movies/blockbuster").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
-
                 .requestMatchers("/api/category").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
