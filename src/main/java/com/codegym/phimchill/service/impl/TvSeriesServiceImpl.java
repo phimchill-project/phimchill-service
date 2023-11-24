@@ -1,4 +1,5 @@
 package com.codegym.phimchill.service.impl;
+
 import com.codegym.phimchill.converter.TvSeriesConverter;
 import com.codegym.phimchill.dto.TvSeriesDto;
 import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
@@ -8,12 +9,15 @@ import com.codegym.phimchill.dto.payload.response.NewMovieResponse;
 import com.codegym.phimchill.entity.TVSeries;
 import com.codegym.phimchill.repository.TvSeriesPagingRepository;
 import com.codegym.phimchill.repository.TvSeriesRepository;
+import com.codegym.phimchill.service.NameNormalizationService;
 import com.codegym.phimchill.service.TvSeriesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.Normalizer;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @Service
 public class TvSeriesServiceImpl implements TvSeriesService {
@@ -22,8 +26,12 @@ public class TvSeriesServiceImpl implements TvSeriesService {
 
     @Autowired
     private TvSeriesPagingRepository tvSeriesPagingRepository;
+
     @Autowired
     private TvSeriesConverter tvSeriesConverter;
+
+    @Autowired
+    private NameNormalizationService nameNormalizationService;
 
     @Override
     public NewMovieResponse create(NewMovieRequest newTvSeriesRequest) {
@@ -58,4 +66,17 @@ public class TvSeriesServiceImpl implements TvSeriesService {
         return tvSeriesConverter.convertToListDTO(tvSeriesRepository.findFirst10ByOrderByDateReleaseDesc());
     }
 
+    @Override
+    public TvSeriesDto findByName(String nameTvSeries){
+        nameTvSeries = nameTvSeries.replaceAll("-", " ");
+        List<TVSeries> seriesList = tvSeriesRepository.findAll();
+        Optional<TVSeries> series = Optional.empty();
+        for (var item : seriesList) {
+            String tvSeriesName = nameNormalizationService.normalizeName(item.getName());
+            if (tvSeriesName.equalsIgnoreCase(nameTvSeries)) {
+                series = Optional.of(item);
+            }
+        }
+        return series.map(value -> tvSeriesConverter.convertToDto(value)).orElse(null);
+    }
 }

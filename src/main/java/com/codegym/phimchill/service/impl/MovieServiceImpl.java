@@ -15,6 +15,7 @@ import com.codegym.phimchill.repository.MoviePagingRepository;
 import com.codegym.phimchill.repository.MovieRepository;
 import com.codegym.phimchill.service.CategoryService;
 import com.codegym.phimchill.service.MovieService;
+import com.codegym.phimchill.service.NameNormalizationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -45,7 +46,11 @@ public class MovieServiceImpl implements MovieService {
     private MovieConverter movieConverter;
 
     @Autowired
+
     private CategoryRepository categoryRepository;
+
+    private NameNormalizationService nameNormalizationService;
+
 
     @Override
     public ListMovieResponse getUpcomingMovies() {
@@ -130,7 +135,7 @@ public class MovieServiceImpl implements MovieService {
         List<Movie> movies = movieRepository.findAll();
         Optional<Movie> movie = Optional.empty();
         for (var item : movies) {
-            String movieName = item.getName().replaceAll(":", "").replaceAll("-", " ");
+            String movieName = nameNormalizationService.normalizeName(item.getName());
             if (movieName.equalsIgnoreCase(nameMovie)) {
                 movie = Optional.of(item);
             }
