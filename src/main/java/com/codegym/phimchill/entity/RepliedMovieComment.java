@@ -23,6 +23,6 @@ public class RepliedMovieComment {
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
     private User user;
     @ManyToOne
-    @JoinColumn(name = "REPLIED_USER_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "REPLIED_TO_USER_ID", referencedColumnName = "ID")
     private User repliedToUser;
 }

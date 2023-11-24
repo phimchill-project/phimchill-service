@@ -74,5 +74,14 @@ public class UserServiceImpl implements UserService {
             return false;
         }
     }
+
+    @Override
+    public User findUserByEmail(String email) throws Exception {
+        User user = userRepository.findUserByEmail(email);
+        if (user == null){
+            throw new Exception("Email cannot find");
+        }
+        return user;
+    }
 }
 

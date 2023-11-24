@@ -1,4 +1,6 @@
 package com.codegym.phimchill.security;
+import com.codegym.phimchill.entity.User;
+import com.codegym.phimchill.service.UserService;
 import com.codegym.phimchill.service.impl.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -36,7 +38,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                         userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                request.getSession().setAttribute("currentUser", userDetails);
             }
         } catch (Exception ex) {
             logger.error("Could not set user authentication in security context", ex);
