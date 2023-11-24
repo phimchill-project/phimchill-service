@@ -1,5 +1,6 @@
 package com.codegym.phimchill.controller;
 
+
 import com.codegym.phimchill.dto.payload.response.CategoryListResponse;
 import com.codegym.phimchill.dto.payload.response.ErrorMessageResponse;
 import com.codegym.phimchill.service.CategoryService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/category")
 public class CategoryController {
+
     @Autowired
     private CategoryService categoryService;
 
