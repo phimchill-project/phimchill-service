@@ -97,6 +97,7 @@ public class SecurityConfiguration {
                 .requestMatchers("/api/auth/login").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
+
                 .requestMatchers("/api/movies/blockbuster").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
@@ -110,14 +111,6 @@ public class SecurityConfiguration {
 
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/tvseries/**").permitAll());
-
-        http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/api/auth/comment/**").hasRole("USER"));
-//        http.authorizeHttpRequests((authorize) -> authorize
-//                .requestMatchers("/api/auth/comment/movie-comment/{commentID}/subcomment").permitAll());
-
-//        http.authorizeHttpRequests((authorize) -> authorize
-//                .requestMatchers("/api/movies/").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/category").permitAll());

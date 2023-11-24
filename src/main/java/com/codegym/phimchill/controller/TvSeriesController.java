@@ -25,12 +25,14 @@ public class TvSeriesController {
     public ResponseEntity<TvSeriesResponse> findTop10ByImdb(){
         TvSeriesResponse tvSeriesResponse = new TvSeriesResponse();
         tvSeriesResponse.setListTVSeries(tvSeriesService.getTop10ByImdb());
+        tvSeriesResponse.setTitle("Top TV series");
         return new ResponseEntity<>(tvSeriesResponse, HttpStatus.OK);
     }
     @GetMapping("/newest/top10")
-    public ResponseEntity<?> findTop10Newest(){
+    public ResponseEntity<TvSeriesResponse> findTop10Newest(){
         TvSeriesResponse tvSeriesResponse = new TvSeriesResponse();
         tvSeriesResponse.setListTVSeries(tvSeriesService.getTop10Newest());
+        tvSeriesResponse.setTitle("Newest TV series");
         return new ResponseEntity<>(tvSeriesResponse, HttpStatus.OK) ;
     }
     // upcoming => them truong status (isDeleted, UpComing,...) vao bang TvSeries
