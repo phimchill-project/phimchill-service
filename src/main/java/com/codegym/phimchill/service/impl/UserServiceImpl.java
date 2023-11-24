@@ -75,14 +75,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-<<<<<<< HEAD
     public User findUserByEmail(String email) throws Exception {
         User user = userRepository.findUserByEmail(email);
-        if (user == null){
+        if (user == null) {
             throw new Exception("Email cannot find");
         }
         return user;
-=======
+    }
+
+    @Override
     public boolean updateEmail( String newEmail) {
         User existingUser = userRepository.findUserByEmail(newEmail);
         if (existingUser != null) {
@@ -91,7 +92,6 @@ public class UserServiceImpl implements UserService {
             return true;
         }
         return false;
->>>>>>> a8944ae78980ff5f7ebebaee44d61d32d53e282d
     }
 }
 

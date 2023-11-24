@@ -88,15 +88,10 @@ public class SecurityConfiguration {
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.authorizeHttpRequests((authorize) -> authorize
-<<<<<<< HEAD
                         .requestMatchers("/api/auth/**").permitAll());
-=======
-
-                .requestMatchers("/api/movies/upcoming").permitAll());
->>>>>>> a8944ae78980ff5f7ebebaee44d61d32d53e282d
 
         http.authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/api/auth/register").permitAll());
+                .requestMatchers("/api/movies/upcoming").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/auth/login").permitAll());
