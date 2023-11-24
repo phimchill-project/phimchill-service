@@ -1,4 +1,5 @@
 package com.codegym.phimchill.dto;
+
 import lombok.*;
 import java.sql.Date;
 import java.util.List;
@@ -10,12 +11,20 @@ import java.util.List;
 @Builder
 public class TvSeriesDto {
     private Long id;
+
     private String name;
+
     private String description;
+
     private int year;
+
     private float imdb;
+
     private String image;
+
     private Date dateRelease;
+
     private List<CategoryDto> categoryList;
+
     private List<SeasonDto> seasonList;
 }

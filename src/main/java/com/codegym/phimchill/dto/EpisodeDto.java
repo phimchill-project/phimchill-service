@@ -1,4 +1,5 @@
 package com.codegym.phimchill.dto;
+
 import lombok.*;
 import java.sql.Date;
 
@@ -9,8 +10,12 @@ import java.sql.Date;
 @Builder
 public class EpisodeDto {
     private Long id;
+
     private String name;
+
     private String video;
+
     private Date dateRelease;
+
     private String url;
 }
