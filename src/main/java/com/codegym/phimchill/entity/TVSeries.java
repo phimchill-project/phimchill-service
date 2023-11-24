@@ -30,7 +30,7 @@ public class TVSeries {
     @Column (name = "DATE_RELEASE")
     private Date dateRelease;
     @Column (name = "VIEWS")
-    private int views;
+    private Integer views;
     @ManyToMany(mappedBy = "tvSeriesList")
     private List<Category> categoryList;
     @OneToMany(mappedBy = "tvSeries")
