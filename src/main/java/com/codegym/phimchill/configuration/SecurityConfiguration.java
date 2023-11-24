@@ -2,6 +2,7 @@ package com.codegym.phimchill.configuration;
 
 import com.codegym.phimchill.security.JwtAuthEntryPoint;
 import com.codegym.phimchill.security.JwtAuthFilter;
+import com.codegym.phimchill.security.JwtTokenProvider;
 import com.codegym.phimchill.service.SecurityService;
 import com.codegym.phimchill.service.impl.SecurityServiceImpl;
 import com.codegym.phimchill.service.impl.UserDetailsServiceImpl;
@@ -32,7 +33,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableAutoConfiguration
 @EnableAsync
 @EnableWebSecurity
-@ComponentScan(basePackages = {"com.codegym.phimchill"})
+@ComponentScan(basePackages = {"com.codegym.phimchill", "com.codegym.phimchill.security"})
 public class SecurityConfiguration {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
@@ -100,7 +101,7 @@ public class SecurityConfiguration {
                 .requestMatchers("/api/movies/blockbuster").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/api/category").permitAll());
+                .requestMatchers("/api/users/edit-email").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/admin/movie/new").permitAll());
