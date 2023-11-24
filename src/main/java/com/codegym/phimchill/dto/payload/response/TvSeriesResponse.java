@@ -14,4 +14,5 @@ import java.util.List;
 @NoArgsConstructor
 public class TvSeriesResponse {
     List<TvSeriesDto> listTVSeries;
+    String title;
 }
