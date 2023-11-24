@@ -3,9 +3,8 @@ package com.codegym.phimchill.controller.auth;
 import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
 import com.codegym.phimchill.dto.payload.request.MovieNameRequest;
 import com.codegym.phimchill.dto.payload.response.CheckMovieNameExistResponse;
-import com.codegym.phimchill.dto.payload.response.ErrorMessageResponse;
+import com.codegym.phimchill.dto.payload.response.ErrorResponse;
 import com.codegym.phimchill.dto.payload.response.MovieResponse;
-import com.codegym.phimchill.dto.payload.response.NewMovieResponse;
 import com.codegym.phimchill.service.MovieService;
 import com.codegym.phimchill.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,7 @@ public class AuthMovieController {
             MovieResponse response = movieService.create(newMovieRequest);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            ErrorMessageResponse response = new ErrorMessageResponse();
+            ErrorResponse response = new ErrorResponse();
             response.setMessage(e.getMessage());
             response.setStatusCode(400);
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);

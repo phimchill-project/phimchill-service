@@ -1,16 +1,19 @@
 package com.codegym.phimchill.controller;
 
-import com.codegym.phimchill.dto.payload.response.FindMovieReponse;
-import com.codegym.phimchill.dto.payload.response.UpcomingMoviesResponse;
+import com.codegym.phimchill.dto.payload.response.*;
 import com.codegym.phimchill.dto.MovieDto;
 import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
-import com.codegym.phimchill.dto.payload.response.ErrorMessageResponse;
+import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
+import com.codegym.phimchill.dto.payload.response.ListMovieResponse;
+import com.codegym.phimchill.dto.payload.response.FindMovieReponse;
+import com.codegym.phimchill.dto.MovieDto;
 import com.codegym.phimchill.dto.payload.response.MovieResponse;
 import com.codegym.phimchill.service.MovieService;
 import com.codegym.phimchill.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -18,6 +21,9 @@ import java.util.List;
 @RequestMapping("/api/movies")
 @CrossOrigin(value = "*", maxAge = 3600)
 public class MovieController {
+    @Autowired
+    private SecurityService securityService;
+
     @Autowired
     private MovieService movieService;
 
@@ -27,31 +33,37 @@ public class MovieController {
         return new ResponseEntity<>(MovieDtoList, HttpStatus.OK);
     }
 
-    @PostMapping("/new")
-    public ResponseEntity<?> createNewMovie(
-            @RequestBody NewMovieRequest newMovieRequest) {
-//        if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
-//            return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
-//        }
-        try {
-            MovieResponse response = movieService.create(newMovieRequest);
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (Exception e) {
-            ErrorMessageResponse response = new ErrorMessageResponse();
-            response.setMessage(e.getMessage());
-            response.setStatusCode(400);
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        }
-    }
-
     @GetMapping("/upcoming")
     public ResponseEntity<?> getUpcomingMovies() {
-        List<UpcomingMoviesResponse> upcomingMovies = movieService.getUpcomingMovies();
+        ListMovieResponse upcomingMovies = movieService.getUpcomingMovies();
         return ResponseEntity.ok(upcomingMovies);
     }
+    @GetMapping("/detail")
+    public ResponseEntity<?> getMovieDetail(Long id) {
+        MovieDto movie = movieService.getMovieById(id);
+        return new ResponseEntity<>(movie, HttpStatus.OK);
+    }
+    @GetMapping("/blockbuster")
+    public ResponseEntity<?>  getBlockbusterMoives(){
+        ListMovieResponse movies = movieService.getMoviesSortedByIMDBAndDate();
+        return ResponseEntity.ok(movies);
+    }
+    @GetMapping("/top-views")
+    public ResponseEntity<?> getTopMoviesByViews() {
+        ListMovieResponse movies = movieService.getTop10MoviesByViews();
+        return ResponseEntity.ok(movies);
+    }
 
+    @GetMapping("/top-imdb")
+    public ResponseEntity<?> getMoviesbyImbdTop() {
+        ListMovieResponse movies = movieService.getMoviesbyImbdTop();
+        return ResponseEntity.ok(movies);
+    }
     @GetMapping("/search")
-    public ResponseEntity<?> getByName(@RequestParam(value = "name", required = true) String nameMovie) {
+    public ResponseEntity<?> getByName(/*@RequestHeader("Authorization") final String authToken,*/ @RequestParam(value = "name", required = true) String nameMovie) {
+        /*if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
+            return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
+        }*/
         MovieDto movieDto = movieService.findByName(nameMovie);
         FindMovieReponse response;
         if (movieDto != null){
@@ -68,4 +80,19 @@ public class MovieController {
         }
         return ResponseEntity.ok(response);
     }
+
+//    @GetMapping("/{movieId}/comments")
+//    public ResponseEntity<ListMovieCommentResponse> getAllByMovieId(@PathVariable Long movieId){
+//        try {
+//            ListMovieCommentResponse response = movieService.getMovieCommentsById(movieId);
+//            return new ResponseEntity<>(response, HttpStatus.OK);
+//        }catch (Exception e){
+//            ListMovieCommentResponse response = new ListMovieCommentResponse();
+//            response.setData(null);
+//            response.setMessage("Cannot get comments by movie id "+ movieId);
+//            response.setStatusCode(HttpStatus.BAD_REQUEST.value());
+//            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+//        }
+//    }
 }
+

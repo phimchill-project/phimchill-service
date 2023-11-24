@@ -28,6 +28,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+
     @Autowired
     private RoleRepository roleRepository;
 
@@ -35,16 +36,14 @@ public class UserServiceImpl implements UserService {
     public String  login(LoginRequest loginRequest) {
         User user = userRepository.findUserByEmail(loginRequest.getEmail());
         return user.getName();
-
-
     }
 
     @Override
     public RegisterResponse register(RegisterRequest registerRequest) throws Exception {
             User user = userRepository.findUserByEmail(registerRequest.getEmail());
             if (user == null ){
-                String hashPass = passwordEncoder.encode(registerRequest.getPassword());
-                registerRequest.setPassword(hashPass);
+                String hashPassword = passwordEncoder.encode(registerRequest.getPassword());
+                registerRequest.setPassword(hashPassword);
                 Role role = roleRepository.findById(2L).orElse(null);
                 User user1 = User
                         .builder()
@@ -73,6 +72,26 @@ public class UserServiceImpl implements UserService {
         }else {
             return false;
         }
+    }
+
+    @Override
+    public User findUserByEmail(String email) throws Exception {
+        User user = userRepository.findUserByEmail(email);
+        if (user == null) {
+            throw new Exception("Email cannot find");
+        }
+        return user;
+    }
+
+    @Override
+    public boolean updateEmail( String newEmail) {
+        User existingUser = userRepository.findUserByEmail(newEmail);
+        if (existingUser != null) {
+            existingUser.setEmail(newEmail);
+            userRepository.save(existingUser);
+            return true;
+        }
+        return false;
     }
 }
 

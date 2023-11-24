@@ -2,9 +2,11 @@ package com.codegym.phimchill.configuration;
 
 import com.codegym.phimchill.security.JwtAuthEntryPoint;
 import com.codegym.phimchill.security.JwtAuthFilter;
+import com.codegym.phimchill.security.JwtTokenProvider;
 import com.codegym.phimchill.service.SecurityService;
 import com.codegym.phimchill.service.impl.SecurityServiceImpl;
 import com.codegym.phimchill.service.impl.UserDetailsServiceImpl;
+import jakarta.servlet.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -31,7 +33,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableAutoConfiguration
 @EnableAsync
 @EnableWebSecurity
-@ComponentScan(basePackages = {"com.codegym.phimchill"})
+@ComponentScan(basePackages = {"com.codegym.phimchill", "com.codegym.phimchill.security"})
 public class SecurityConfiguration {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
@@ -52,6 +54,11 @@ public class SecurityConfiguration {
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
         return http.getSharedObject(AuthenticationManagerBuilder.class).build();
+    }
+
+    @Bean
+    public Filter jwtAuthenticationFilter() {
+        return new JwtAuthFilter();
     }
 
     @Autowired
@@ -81,26 +88,38 @@ public class SecurityConfiguration {
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/api/auth/register").permitAll());
+                        .requestMatchers("/api/auth/**").permitAll());
+
+        http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers("/api/movies/upcoming").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/auth/login").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/api/movies/upcoming").permitAll());
+
+                .requestMatchers("/api/movies/blockbuster").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/api/category").permitAll());
+                .requestMatchers("/api/users/edit-email").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/admin/movie/new").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/api/movies/upcoming").permitAll());
+                .requestMatchers("/api/movies/**").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/api/movies/*").permitAll());
+                .requestMatchers("/api/tvseries/**").permitAll());
 
+        http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers("/api/category").permitAll());
+
+        http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers("/api/movies").permitAll());
+
+        http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers("/api/movies/detail").permitAll());
         // Configure remember me (save token in database)
         http.rememberMe((remember) -> remember
                 .tokenRepository(this.persistentTokenRepository())
@@ -108,7 +127,7 @@ public class SecurityConfiguration {
         );
 
         // Use JwtAuthorizationFilter to check token -> get user info
-        http.addFilterBefore(new JwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
     public PersistentTokenRepository persistentTokenRepository() {
