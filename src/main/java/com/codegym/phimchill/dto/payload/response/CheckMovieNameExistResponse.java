@@ -9,6 +9,8 @@ import lombok.*;
 @Builder
 public class CheckMovieNameExistResponse {
     boolean data;
+
     int statusCode;
+
     String message;
 }

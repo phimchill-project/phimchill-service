@@ -1,10 +1,13 @@
 package com.codegym.phimchill.controller.auth;
+
 import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
 import com.codegym.phimchill.dto.payload.request.MovieNameRequest;
 import com.codegym.phimchill.dto.payload.response.CheckMovieNameExistResponse;
 import com.codegym.phimchill.dto.payload.response.ErrorMessageResponse;
+import com.codegym.phimchill.dto.payload.response.MovieResponse;
 import com.codegym.phimchill.dto.payload.response.NewMovieResponse;
 import com.codegym.phimchill.service.MovieService;
+import com.codegym.phimchill.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,14 +20,23 @@ public class AuthMovieController {
     @Autowired
     private MovieService movieService;
 
+    @Autowired
+    private SecurityService securityService;
+
     @PostMapping("/new")
-    public ResponseEntity<?> createTvSeries(@Validated @RequestBody NewMovieRequest newMovieRequest) {
+    public ResponseEntity<?> createNewMovie(
+            @RequestBody NewMovieRequest newMovieRequest) {
+//        if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
+//            return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
+//        }
         try {
-            NewMovieResponse response = movieService.create(newMovieRequest);
+            MovieResponse response = movieService.create(newMovieRequest);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            ErrorMessageResponse messageResponse = new ErrorMessageResponse(e.getMessage());
-            return new ResponseEntity<>(messageResponse, HttpStatus.BAD_REQUEST);
+            ErrorMessageResponse response = new ErrorMessageResponse();
+            response.setMessage(e.getMessage());
+            response.setStatusCode(400);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
 

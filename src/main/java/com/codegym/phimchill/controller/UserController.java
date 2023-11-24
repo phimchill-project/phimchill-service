@@ -33,17 +33,13 @@ public class UserController {
 
         }
         @PutMapping("/edit-password")
-        public ResponseEntity<?> editPassword( @RequestBody PasswordRequest passwordRequest,@RequestHeader("Authorization") String authToken) {
+        public ResponseEntity<?> editPassword (@RequestBody PassRequest passRequest,@RequestHeader("Authorization") String authToken ){
                 if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
                         return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
                 }
-                boolean updated = userService.updateEmail(emailRequest.getEmail());
-                if (updated) {
-                        return ResponseEntity.ok("Email updated successfully");
-                } else {
-                        return ResponseEntity.ok("Email updated fail");
-                }
+                boolean updated = userService.updatePass(passRequest.getPass());
 
         }
+
 
 }

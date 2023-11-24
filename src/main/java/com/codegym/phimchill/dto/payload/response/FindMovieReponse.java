@@ -1,6 +1,7 @@
 package com.codegym.phimchill.dto.payload.response;
 
 import com.codegym.phimchill.dto.MovieDto;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 @AllArgsConstructor
@@ -8,8 +9,9 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
-public class NewMovieResponse {
-    private MovieDto data;
-    private String message;
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class FindMovieReponse {
+    MovieDto data;
     private int statusCode;
+    private String message;
 }
