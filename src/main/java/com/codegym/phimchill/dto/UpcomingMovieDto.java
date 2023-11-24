@@ -1,22 +1,26 @@
-package com.codegym.phimchill.dto.payload.response;
+package com.codegym.phimchill.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.sql.Date;
-@NoArgsConstructor
+import java.util.List;
+@Data
 @AllArgsConstructor
-@Getter
-@Setter
-public class UpcomingMoviesResponse {
+@NoArgsConstructor
+@Builder
+public class UpcomingMovieDto {
     private Long id;
     private String name;
     private String description;
     private Date year;
+    private int duration;
     private float imdb;
     private String image;
     private String trailer;
-    private boolean isRelease;
+    private String url;
+    private Integer views;
+    private List<CategoryDto> categoryList;
 }
