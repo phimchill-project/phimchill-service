@@ -1,13 +1,23 @@
 package com.codegym.phimchill.controller;
 
+<<<<<<< HEAD
 import com.codegym.phimchill.dto.payload.response.*;
 import com.codegym.phimchill.dto.MovieDto;
 import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
+=======
+import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
+import com.codegym.phimchill.dto.payload.response.ListMovieResponse;
+import com.codegym.phimchill.dto.payload.response.FindMovieReponse;
+import com.codegym.phimchill.dto.MovieDto;
+import com.codegym.phimchill.dto.payload.response.ErrorMessageResponse;
+import com.codegym.phimchill.dto.payload.response.MovieResponse;
+>>>>>>> a8944ae78980ff5f7ebebaee44d61d32d53e282d
 import com.codegym.phimchill.service.MovieService;
 import com.codegym.phimchill.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -27,12 +37,53 @@ public class MovieController {
         return new ResponseEntity<>(MovieDtoList, HttpStatus.OK);
     }
 
-    @GetMapping("/upcoming")
-    public ResponseEntity<?> getUpcomingMovies() {
-        List<UpcomingMoviesResponse> upcomingMovies = movieService.getUpcomingMovies();
-        return ResponseEntity.ok(upcomingMovies);
+<<<<<<< HEAD
+=======
+
+    @PostMapping("/new")
+    public ResponseEntity<?> createNewMovie(
+            @RequestBody NewMovieRequest newMovieRequest) {
+//        if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
+//            return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
+//        }
+        try {
+            MovieResponse response = movieService.create(newMovieRequest);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            ErrorMessageResponse response = new ErrorMessageResponse();
+            response.setMessage(e.getMessage());
+            response.setStatusCode(400);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
     }
 
+>>>>>>> a8944ae78980ff5f7ebebaee44d61d32d53e282d
+    @GetMapping("/upcoming")
+    public ResponseEntity<?> getUpcomingMovies() {
+        ListMovieResponse upcomingMovies = movieService.getUpcomingMovies();
+        return ResponseEntity.ok(upcomingMovies);
+    }
+    @GetMapping("/detail")
+    public ResponseEntity<?> getMovieDetail(Long id) {
+        MovieDto movie = movieService.getMovieById(id);
+        return new ResponseEntity<>(movie, HttpStatus.OK);
+    }
+    @GetMapping("/blockbuster")
+    public ResponseEntity<?>  getBlockbusterMoives(){
+        ListMovieResponse movies = movieService.getMoviesSortedByIMDBAndDate();
+        return ResponseEntity.ok(movies);
+    }
+    @GetMapping("/top-views")
+    public ResponseEntity<?> getTopMoviesByViews() {
+        ListMovieResponse movies = movieService.getTop10MoviesByViews();
+        return ResponseEntity.ok(movies);
+    }
+
+    @GetMapping("/top-imdb")
+    public ResponseEntity<?> getMoviesbyImbdTop() {
+        ListMovieResponse movies = movieService.getMoviesbyImbdTop();
+        return ResponseEntity.ok(movies);
+    }
     @GetMapping("/search")
     public ResponseEntity<?> getByName(/*@RequestHeader("Authorization") final String authToken,*/ @RequestParam(value = "name", required = true) String nameMovie) {
         /*if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
@@ -54,6 +105,7 @@ public class MovieController {
         }
         return ResponseEntity.ok(response);
     }
+<<<<<<< HEAD
 
     @GetMapping("/{movieId}/comments")
     public ResponseEntity<ListMovieCommentResponse> getAllByMovieId(@PathVariable Long movieId){
@@ -69,3 +121,7 @@ public class MovieController {
         }
     }
 }
+=======
+}
+
+>>>>>>> a8944ae78980ff5f7ebebaee44d61d32d53e282d

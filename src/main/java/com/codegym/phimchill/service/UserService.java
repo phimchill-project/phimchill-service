@@ -11,5 +11,9 @@ public interface UserService {
     RegisterResponse register(RegisterRequest registerRequest) throws Exception;
     boolean isEmailExist(EmailRequest emailRequest);
 
+<<<<<<< HEAD
     User findUserByEmail(String email) throws Exception;
+=======
+    boolean updateEmail( String email );
+>>>>>>> a8944ae78980ff5f7ebebaee44d61d32d53e282d
 }
