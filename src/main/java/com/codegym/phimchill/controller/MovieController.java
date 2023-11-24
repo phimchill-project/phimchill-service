@@ -55,7 +55,11 @@ public class MovieController {
         ListMovieResponse upcomingMovies = movieService.getUpcomingMovies();
         return ResponseEntity.ok(upcomingMovies);
     }
-
+    @GetMapping("/detail")
+    public ResponseEntity<?> getMovieDetail(Long id) {
+        MovieDto movie = movieService.getMovieById(id);
+        return new ResponseEntity<>(movie, HttpStatus.OK);
+    }
     @GetMapping("/blockbuster")
     public ResponseEntity<?>  getBlockbusterMoives(){
         ListMovieResponse movies = movieService.getMoviesSortedByIMDBAndDate();

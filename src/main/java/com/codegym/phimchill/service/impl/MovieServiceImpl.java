@@ -37,6 +37,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Qualifier("movieConverterImpl")
     @Autowired
+
     private MovieConverter movieDtoConvert;
 
     @Autowired
@@ -102,6 +103,10 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
+
+    public MovieDto getMovieById(Long id) {
+        return null;
+    }
     public ListMovieResponse getMoviesByCategory(Long id) {
         List<Movie> movies = movieRepository.findMoviesByCategoryId(id);
         ListMovieResponse listMovieResponse = new ListMovieResponse();

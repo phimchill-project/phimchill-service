@@ -5,6 +5,8 @@ import com.codegym.phimchill.dto.MovieDto;
 import com.codegym.phimchill.dto.payload.request.MovieNameRequest;
 import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
 import com.codegym.phimchill.dto.payload.response.CheckMovieNameExistResponse;
+import com.codegym.phimchill.dto.payload.response.NewMovieResponse;
+import com.codegym.phimchill.entity.Movie;
 import com.codegym.phimchill.dto.payload.response.MovieResponse;
 
 import java.util.List;
@@ -24,4 +26,5 @@ public interface MovieService {
     ListMovieResponse getMoviesSortedByIMDBAndDate();
     ListMovieResponse getMoviesbyImbdTop();
 
+    MovieDto getMovieById(Long id);
 }
