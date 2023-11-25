@@ -1,17 +1,20 @@
 package com.codegym.phimchill.controller;
 
+import com.codegym.phimchill.dto.payload.request.FavoriteMoviesRequest;
 import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
 import com.codegym.phimchill.dto.payload.response.ListMovieResponse;
 import com.codegym.phimchill.dto.payload.response.FindMovieReponse;
 import com.codegym.phimchill.dto.MovieDto;
 import com.codegym.phimchill.dto.payload.response.ErrorMessageResponse;
 import com.codegym.phimchill.dto.payload.response.MovieResponse;
+import com.codegym.phimchill.service.FavoriteMoviesService;
 import com.codegym.phimchill.service.MovieService;
 import com.codegym.phimchill.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -22,7 +25,8 @@ public class MovieController {
 
     @Autowired
     private SecurityService securityService;
-
+    @Autowired
+    private FavoriteMoviesService favoriteMoviesService;
     @Autowired
     private MovieService movieService;
 
@@ -92,6 +96,17 @@ public class MovieController {
                     .build();
         }
         return ResponseEntity.ok(response);
+    }
+    @PostMapping("/favorite-movie")
+    public ResponseEntity<?> updateFavoriteMovies(@RequestBody FavoriteMoviesRequest favoriteMoviesRequest) {
+        String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+        try {
+            // Thực hiện xử lý logic để cập nhật phim ưa thích của người dùng
+            boolean updated =  favoriteMoviesService.updateFavoriteMovies(favoriteMoviesRequest.getUserId(), favoriteMoviesRequest.getMovieIds());
+            return ResponseEntity.ok("Favorite movies updated successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating favorite movies");
+        }
     }
 }
 

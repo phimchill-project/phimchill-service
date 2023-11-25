@@ -11,4 +11,6 @@ public interface UserService {
     boolean isEmailExist(EmailRequest emailRequest);
 
     boolean updateEmail( String email );
+
+    boolean updatePass(String email, String pass);
 }
