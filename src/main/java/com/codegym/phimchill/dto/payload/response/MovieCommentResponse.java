@@ -1,6 +1,6 @@
 package com.codegym.phimchill.dto.payload.response;
 
-import com.codegym.phimchill.dto.MovieDto;
+import com.codegym.phimchill.dto.MovieCommentDto;
 import lombok.*;
 
 @AllArgsConstructor
@@ -8,8 +8,8 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
-public class MovieResponse {
-    private MovieDto data;
+public class MovieCommentResponse {
+    private MovieCommentDto data;
     private String message;
     private int statusCode;
 }

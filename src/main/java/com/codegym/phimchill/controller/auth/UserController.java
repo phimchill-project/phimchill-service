@@ -47,6 +47,14 @@ public class UserController {
                         return ResponseEntity.ok("Pass updated fail");
                 }
         }
+//        @PutMapping("/edit-password")
+//        public ResponseEntity<?> editPassword (@RequestBody PassRequest passRequest,@RequestHeader("Authorization") String authToken ){
+//                if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
+//                        return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
+//                }
+//                boolean updated = userService.updatePass(passRequest.getPass());
+//
+//        }
 
 
 }
