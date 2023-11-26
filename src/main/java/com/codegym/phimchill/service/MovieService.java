@@ -29,4 +29,5 @@ public interface MovieService {
     ListMovieResponse getMoviesSortedByIMDBAndDate();
     ListMovieResponse getMoviesbyImbdTop();
     MovieDto getMovieById(Long id);
+    ListMovieCommentResponse getMovieCommentsById(Long movieId) throws Exception;
 }

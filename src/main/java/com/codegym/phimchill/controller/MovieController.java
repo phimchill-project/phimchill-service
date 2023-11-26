@@ -81,18 +81,18 @@ public class MovieController {
         return ResponseEntity.ok(response);
     }
 
-//    @GetMapping("/{movieId}/comments")
-//    public ResponseEntity<ListMovieCommentResponse> getAllByMovieId(@PathVariable Long movieId){
-//        try {
-//            ListMovieCommentResponse response = movieService.getMovieCommentsById(movieId);
-//            return new ResponseEntity<>(response, HttpStatus.OK);
-//        }catch (Exception e){
-//            ListMovieCommentResponse response = new ListMovieCommentResponse();
-//            response.setData(null);
-//            response.setMessage("Cannot get comments by movie id "+ movieId);
-//            response.setStatusCode(HttpStatus.BAD_REQUEST.value());
-//            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-//        }
-//    }
+    @GetMapping("/{movieId}/comments")
+    public ResponseEntity<ListMovieCommentResponse> getAllByMovieId(@PathVariable Long movieId){
+        try {
+            ListMovieCommentResponse response = movieService.getMovieCommentsById(movieId);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch (Exception e){
+            ListMovieCommentResponse response = new ListMovieCommentResponse();
+            response.setData(null);
+            response.setMessage("Cannot get comments by movie id "+ movieId);
+            response.setStatusCode(HttpStatus.BAD_REQUEST.value());
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
 }
 

@@ -1,9 +1,6 @@
 package com.codegym.phimchill.dto;
 
-import com.codegym.phimchill.entity.Movie;
-import com.codegym.phimchill.entity.RepliedMovieComment;
 import lombok.*;
-
 import java.sql.Date;
 import java.util.List;
 
@@ -16,7 +13,8 @@ public class MovieCommentDto {
     private Long id;
     private String comment;
     private Date datePost;
-    private MovieDto movie;
+    private Long movieId;
     private UserDto userDto;
-    private List<RepliedMovieCommentDto> repliedMovieCommentDtoList;
+    private List<MovieSubCommentDto> subCommentDtoList;
+    private List<UserDto> listUserTagged;
 }
