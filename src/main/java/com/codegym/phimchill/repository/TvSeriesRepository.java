@@ -2,6 +2,7 @@ package com.codegym.phimchill.repository;
 
 import com.codegym.phimchill.entity.TVSeries;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -11,4 +12,7 @@ public interface TvSeriesRepository extends JpaRepository<TVSeries, Long> {
     List<TVSeries> findFirst10ByOrderByImdbDesc();
 
     List<TVSeries> findFirst10ByOrderByDateReleaseDesc();
+
+    @Query("SELECT m FROM TVSeries m JOIN m.categoryList c WHERE c.id = :id")
+    List<TVSeries> findAllByCategoryId (long id);
 }

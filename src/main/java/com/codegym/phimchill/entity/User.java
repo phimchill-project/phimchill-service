@@ -54,8 +54,12 @@ public class User {
             joinColumns = @JoinColumn(name = "USER_ID"),
             inverseJoinColumns = @JoinColumn(name = "TVSERIES_ID"))
     private List<TVSeries> tvSeriesFavoriteList;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "userComment")
     private List<MovieComment> commentsMovieList;
-    @OneToMany(mappedBy = "user")
-    private List<RepliedMovieComment> repliedMovieCommentsList;
+    @OneToMany(mappedBy = "subCommentUser")
+    private List<MovieSubComment> movieSubCommentsList;
+    @ManyToMany(mappedBy = "listUserTaggedInComment")
+    private List<MovieComment> listCommentTaggedIn;
+    @ManyToMany(mappedBy = "listUserTaggedInSubComment")
+    private List<MovieSubComment> listSubCommnetTaggedIn;
 }

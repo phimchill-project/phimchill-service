@@ -25,8 +25,10 @@ public interface MovieService {
     ListMovieResponse getMoviesByCategory(Long id) ;
     ListMovieResponse getTop10MoviesByViews();
     List<MovieDto> getTop10ByImdb();
-    MovieDto findByName(String nameMovie);
+    MovieDto findByName(String nameMovie) throws Exception;
     ListMovieResponse getMoviesSortedByIMDBAndDate();
     ListMovieResponse getMoviesbyImbdTop();
     MovieDto getMovieById(Long id);
+    ListMovieCommentResponse getMovieCommentsById(Long movieId) throws Exception;
+    ListMovieResponse findMoviesByCategoryId(Long id) throws Exception;
 }
