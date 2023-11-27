@@ -43,17 +43,11 @@ public class MovieServiceImpl implements MovieService {
 
     @Qualifier("movieConverterImpl")
     @Autowired
-
     private MovieConverter movieDtoConvert;
-
-    @Autowired
-    private CategoryService categoryService;
 
     @Autowired
     private MovieConverter movieConverter;
 
-    @Autowired
-    private CategoryRepository categoryRepository;
     private NameNormalizationService nameNormalizationService;
 
     @Autowired
@@ -61,6 +55,9 @@ public class MovieServiceImpl implements MovieService {
 
     @Autowired
     private MovieCommentConverter movieCommentConverter;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
     @Override
     public ListMovieResponse getUpcomingMovies() {
         List<Movie> movies = movieRepository.findUnreleasedMovies();
@@ -94,7 +91,7 @@ public class MovieServiceImpl implements MovieService {
                 .build();
         List<Category> categoryList = new ArrayList<>();
         for (NewMovieCategoryDto categoryDto : newTvSeriesRequest.getCategoryList()) {
-            Category category = categoryService.findById(categoryDto.getId()).orElseThrow(
+            Category category = categoryRepository.findById(categoryDto.getId()).orElseThrow(
                     () -> new Exception("Create Movie Fail")
             );
             categoryList.add(category);
@@ -143,17 +140,22 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public MovieDto findByName(String nameMovie) {
+    public MovieDto findByName(String nameMovie) throws Exception {
         nameMovie = nameMovie.replaceAll("-", " ");
-        List<Movie> movies = movieRepository.findAll();
-        Optional<Movie> movie = Optional.empty();
-        for (var item : movies) {
-            String movieName = nameNormalizationService.normalizeName(item.getName());
-            if (movieName.equalsIgnoreCase(nameMovie)) {
-                movie = Optional.of(item);
-            }
+//        List<Movie> movies = movieRepository.findAll();
+//        Optional<Movie> movie = Optional.empty();
+//        for (var item : movies) {
+//            String movieName = nameNormalizationService.normalizeName(item.getName());
+//            if (movieName.equalsIgnoreCase(nameMovie)) {
+//                movie = Optional.of(item);
+//            }
+//        }
+//        return movie.map(value -> movieDtoConvert.convertToDTO(value)).orElse(null);
+        Movie movie = movieRepository.findByName(nameMovie);
+        if (movie == null){
+            throw new Exception("Cannot find movie : " + nameMovie);
         }
-        return movie.map(value -> movieDtoConvert.convertToDTO(value)).orElse(null);
+        return movieConverter.convertToDTO(movie);
     }
 
     @Override
@@ -190,6 +192,20 @@ public class MovieServiceImpl implements MovieService {
         return ListMovieCommentResponse.builder()
                 .data(movieCommentDtoList)
                 .message("get comments success by movie id " + movieId)
+                .statusCode(HttpStatus.OK.value())
+                .build();
+    }
+
+    @Override
+    public ListMovieResponse findMoviesByCategoryId(Long id) throws Exception {
+        List<Movie> movieList = movieRepository.findMoviesByCategoryId(id);
+        if(movieList.isEmpty()){
+            throw new Exception("Categoty id : " + id + " is not exist");
+        }
+        List<MovieDto> movieDtoList = movieConverter.convertToListDTO(movieList);
+        return ListMovieResponse.builder()
+                .data(movieDtoList)
+                .message("Get movies by category " + id + " success")
                 .statusCode(HttpStatus.OK.value())
                 .build();
     }

@@ -113,7 +113,7 @@ public class SecurityConfiguration {
                 .requestMatchers("/api/tvseries/**").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/api/category").permitAll());
+                .requestMatchers("/api/category/**").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/movies/**").permitAll());
@@ -123,6 +123,7 @@ public class SecurityConfiguration {
 
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/auth/comment/**").permitAll());
+
         // Configure remember me (save token in database)
         http.rememberMe((remember) -> remember
                 .tokenRepository(this.persistentTokenRepository())

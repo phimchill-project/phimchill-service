@@ -59,8 +59,9 @@ public class MovieController {
         ListMovieResponse movies = movieService.getMoviesbyImbdTop();
         return ResponseEntity.ok(movies);
     }
+
     @GetMapping("/search")
-    public ResponseEntity<?> getByName(/*@RequestHeader("Authorization") final String authToken,*/ @RequestParam(value = "name", required = true) String nameMovie) {
+    public ResponseEntity<?> getByName(/*@RequestHeader("Authorization") final String authToken,*/ @RequestParam(value = "name", required = true) String nameMovie) throws Exception {
         /*if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
             return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
         }*/

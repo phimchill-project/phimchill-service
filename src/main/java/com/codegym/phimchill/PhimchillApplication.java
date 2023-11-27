@@ -10,11 +10,11 @@ public class PhimchillApplication {
         SpringApplication.run(PhimchillApplication.class, args);
     }
 
-//    @Bean
-//    public FlywayMigrationStrategy cleanMigrateStrategy() {
-//        return flyway -> {
-//            flyway.repair();
-//            flyway.migrate();
-//        };
-//    }
+    @Bean
+    public FlywayMigrationStrategy cleanMigrateStrategy() {
+        return flyway -> {
+            flyway.repair();
+            flyway.migrate();
+        };
+    }
 }
