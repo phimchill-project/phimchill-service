@@ -2,14 +2,10 @@ package com.codegym.phimchill.converter.impl;
 
 import com.codegym.phimchill.converter.MovieCommentConverter;
 import com.codegym.phimchill.converter.MovieConverter;
-import com.codegym.phimchill.converter.RepliedMovieCommentConverter;
+import com.codegym.phimchill.converter.MovieSubCommentConverter;
 import com.codegym.phimchill.converter.UserConverter;
 import com.codegym.phimchill.dto.MovieCommentDto;
-import com.codegym.phimchill.dto.MovieDto;
-import com.codegym.phimchill.dto.payload.request.MovieCommentRequest;
 import com.codegym.phimchill.entity.MovieComment;
-import com.codegym.phimchill.entity.RepliedMovieComment;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,21 +16,27 @@ public class MovieCommentConverterImpl implements MovieCommentConverter {
     @Autowired
     private MovieConverter movieConverter;
     @Autowired
-    private RepliedMovieCommentConverter repliedMovieCommentConverter;
+    private MovieSubCommentConverter movieSubCommentConverter;
 
     @Override
     public MovieCommentDto convertToDto(MovieComment movieComment) {
         MovieCommentDto response = MovieCommentDto.builder()
                 .id(movieComment.getId())
                 .comment(movieComment.getComment())
-                .movie(movieConverter.convertToDTO(movieComment.getMovie()))
-                .userDto(userConverter.converterToDTO(movieComment.getUser()))
+                .datePost(movieComment.getDatePost())
+                .movieId(movieConverter.convertToDTO(movieComment.getMovie()).getId())
+                .userDto(userConverter.converterToDTO(movieComment.getUserComment()))
                 .build();
-        if(movieComment.getRepliedMovieCommentsList() == null){
-            response.setRepliedMovieCommentDtoList(null);
-            return response;
+        if(movieComment.getMovieSubCommentsList() == null){
+            response.setSubCommentDtoList(null);
+        }else {
+            response.setSubCommentDtoList(movieSubCommentConverter.converToDtoList(movieComment.getMovieSubCommentsList()));
         }
-        response.setRepliedMovieCommentDtoList(repliedMovieCommentConverter.converToDtoList(movieComment.getRepliedMovieCommentsList()));
+        if(movieComment.getListUserTaggedInComment() == null){
+            response.setListUserTagged(null);
+        }else {
+            response.setListUserTagged(userConverter.converterToListDto(movieComment.getListUserTaggedInComment()));
+        }
         return response;
     }
 }

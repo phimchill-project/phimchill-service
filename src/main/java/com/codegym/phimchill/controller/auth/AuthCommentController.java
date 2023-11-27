@@ -1,15 +1,12 @@
 package com.codegym.phimchill.controller.auth;
 
 import com.codegym.phimchill.dto.payload.request.MovieCommentRequest;
-import com.codegym.phimchill.dto.payload.request.RepliedMovieCommentRequest;
+import com.codegym.phimchill.dto.payload.request.MovieSubCommentRequest;
 import com.codegym.phimchill.dto.payload.response.MovieCommentResponse;
-import com.codegym.phimchill.dto.payload.response.RepliedMovieCommentResponse;
-import com.codegym.phimchill.entity.RepliedMovieComment;
-import com.codegym.phimchill.entity.User;
+import com.codegym.phimchill.dto.payload.response.MovieSubCommentResponse;
 import com.codegym.phimchill.service.MovieCommentService;
-import com.codegym.phimchill.service.RepliedMovieCommentService;
+import com.codegym.phimchill.service.MovieSubCommentService;
 import com.codegym.phimchill.service.SecurityService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,11 +21,16 @@ public class AuthCommentController {
     @Autowired
     private SecurityService securityService;
 
-    @Autowired
-    private RepliedMovieCommentService repliedMovieCommentService;
-
     @PostMapping("/movie-comment")
-    public ResponseEntity<MovieCommentResponse> postMovieComment(@RequestBody MovieCommentRequest commentRequest){
+    public ResponseEntity<MovieCommentResponse> postMovieComment(@RequestBody MovieCommentRequest commentRequest, @RequestHeader("Authorization") final String authToken){
+        if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
+            MovieCommentResponse response = MovieCommentResponse.builder()
+                    .data(null)
+                    .message("Responding with unauthorized error. Message - {}")
+                    .statusCode(HttpStatus.UNAUTHORIZED.value())
+                    .build();
+            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+        }
         try {
             MovieCommentResponse response = movieCommentService.save(commentRequest);
             return new ResponseEntity<>(response, HttpStatus.OK);
@@ -43,9 +45,9 @@ public class AuthCommentController {
     }
 
     @PostMapping("/movie-comment/{commentID}/subcomment")
-    public ResponseEntity<RepliedMovieCommentResponse> postRepliedMovieComment(@RequestHeader("Authorization") final String authToken, @PathVariable Long commentID, @RequestBody RepliedMovieCommentRequest request) {
+    public ResponseEntity<MovieSubCommentResponse> postRepliedMovieComment(@RequestHeader("Authorization") final String authToken, @PathVariable Long commentID, @RequestBody MovieSubCommentRequest request) {
         if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
-            RepliedMovieCommentResponse response = RepliedMovieCommentResponse.builder()
+            MovieSubCommentResponse response = MovieSubCommentResponse.builder()
                     .data(null)
                     .message("Responding with unauthorized error. Message - {}")
                     .statusCode(HttpStatus.UNAUTHORIZED.value())
@@ -53,10 +55,10 @@ public class AuthCommentController {
             return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
         }
         try {
-            RepliedMovieCommentResponse response = repliedMovieCommentService.save(request, commentID);
+            MovieSubCommentResponse response = movieCommentService.saveSubComment(request, commentID);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            RepliedMovieCommentResponse response = RepliedMovieCommentResponse.builder()
+            MovieSubCommentResponse response = MovieSubCommentResponse.builder()
                     .data(null)
                     .message(e.getMessage())
                     .statusCode(400)

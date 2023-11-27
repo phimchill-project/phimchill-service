@@ -8,7 +8,6 @@ import java.util.List;
 @Component
 public interface MovieConverter {
 
-
      MovieDto convertToDTO(Movie movie);
 
      List<MovieDto> convertToListDTO(List<Movie> movies);

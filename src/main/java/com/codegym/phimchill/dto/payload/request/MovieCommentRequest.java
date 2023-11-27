@@ -3,6 +3,7 @@ package com.codegym.phimchill.dto.payload.request;
 import lombok.*;
 
 import java.sql.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -12,5 +13,6 @@ import java.sql.Date;
 public class MovieCommentRequest {
     private String comment;
     private Date datePost;
-    private Long movieID;
+    private Long movieId;
+    private List<Long> listUserTagged;
 }

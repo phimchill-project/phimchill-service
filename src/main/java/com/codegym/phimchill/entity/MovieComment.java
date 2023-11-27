@@ -2,7 +2,6 @@ package com.codegym.phimchill.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.sql.Date;
 import java.util.List;
 
@@ -26,7 +25,15 @@ public class MovieComment {
     private Movie movie;
     @ManyToOne
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
-    private User user;
+    private User userComment;
     @OneToMany(mappedBy = "movieComments")
-    private List<RepliedMovieComment> repliedMovieCommentsList;
+    private List<MovieSubComment> movieSubCommentsList;
+    @ManyToMany
+    @JoinTable(
+            name = "USER_TAGGED_IN_COMMENT",
+            joinColumns = @JoinColumn(name = "COMMENT_ID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "USER_ID_TAGGED", referencedColumnName = "ID")
+    )
+    private List<User> listUserTaggedInComment;
 }
+
