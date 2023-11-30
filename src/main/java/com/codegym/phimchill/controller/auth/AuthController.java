@@ -40,12 +40,14 @@ public class  AuthController {
                             loginRequest.getEmail(), loginRequest.getPassword()));
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String token = tokenProvider.generateToken(authentication);
-            String name  = userService.login(loginRequest);
+//            String name  = userService.login(loginRequest);
+            UserDto userDto = userService.login(loginRequest);
             LoginResponse loginResponse = new LoginResponse();
-            UserDto userDto = new UserDto();
+//            UserDto userDto = new UserDto();
+            userDto.setId(userDto.getId());
             userDto.setEmail(SecurityContextHolder.getContext().getAuthentication().getName());
             userDto.setToken(token);
-            userDto.setName(name);
+            userDto.setName(userDto.getName());
             loginResponse.setData(userDto);
             loginResponse.setStatusCode(200);
             loginResponse.setMessage("login success");

@@ -90,7 +90,8 @@ public class MovieController {
         }catch (Exception e){
             ListMovieCommentResponse response = new ListMovieCommentResponse();
             response.setData(null);
-            response.setMessage("Cannot get comments by movie id "+ movieId);
+//            response.setMessage("Cannot get comments by movie id "+ movieId);
+            response.setMessage(e.getMessage());
             response.setStatusCode(HttpStatus.BAD_REQUEST.value());
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }

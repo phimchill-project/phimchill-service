@@ -14,10 +14,8 @@ import com.codegym.phimchill.dto.payload.response.MovieResponse;
 import com.codegym.phimchill.entity.Category;
 import com.codegym.phimchill.entity.Movie;
 import com.codegym.phimchill.entity.MovieComment;
-import com.codegym.phimchill.repository.CategoryRepository;
-import com.codegym.phimchill.repository.MovieCommentRepository;
-import com.codegym.phimchill.repository.MoviePagingRepository;
-import com.codegym.phimchill.repository.MovieRepository;
+import com.codegym.phimchill.entity.MovieSubComment;
+import com.codegym.phimchill.repository.*;
 import com.codegym.phimchill.service.CategoryService;
 import com.codegym.phimchill.service.MovieService;
 import com.codegym.phimchill.service.NameNormalizationService;
@@ -58,6 +56,10 @@ public class MovieServiceImpl implements MovieService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private MovieSubCommentRepository movieSubCommentRepository;
+
     @Override
     public ListMovieResponse getUpcomingMovies() {
         List<Movie> movies = movieRepository.findUnreleasedMovies();
@@ -181,14 +183,15 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public ListMovieCommentResponse getMovieCommentsById(Long movieId) throws Exception {
         List<MovieComment> movieCommentList = movieCommentRepository.findAllByMovieId(movieId);
-        if(movieCommentList == null){
-            throw new Exception("Cannot get comments by movie id " + movieId);
+        if(movieCommentList == null) {
+            throw new Exception("cannot comments success by movie id " + movieId);
         }
         List<MovieCommentDto> movieCommentDtoList = new ArrayList<>();
         for(MovieComment movieComment : movieCommentList){
+            List<MovieSubComment> movieSubCommentList = movieSubCommentRepository.findMovieSubCommentsByMovieComments_Id(movieComment.getId());
+            movieComment.setMovieSubCommentsList(movieSubCommentList);
             movieCommentDtoList.add(movieCommentConverter.convertToDto(movieComment));
         }
-
         return ListMovieCommentResponse.builder()
                 .data(movieCommentDtoList)
                 .message("get comments success by movie id " + movieId)

@@ -1,6 +1,7 @@
 package com.codegym.phimchill.service.impl;
 import com.codegym.phimchill.converter.UserConverter;
 import com.codegym.phimchill.dto.RegisterDto;
+import com.codegym.phimchill.dto.UserDto;
 import com.codegym.phimchill.dto.payload.request.EmailRequest;
 import com.codegym.phimchill.dto.payload.request.RegisterRequest;
 import com.codegym.phimchill.entity.Role;
@@ -32,10 +33,16 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RoleRepository roleRepository;
 
+//    @Override
+//    public String  login(LoginRequest loginRequest) {
+//        User user = userRepository.findUserByEmail(loginRequest.getEmail());
+//        return user.getName();
+//    }
+
     @Override
-    public String  login(LoginRequest loginRequest) {
+    public UserDto login(LoginRequest loginRequest) {
         User user = userRepository.findUserByEmail(loginRequest.getEmail());
-        return user.getName();
+        return userConverter.converterToDTO(user);
     }
 
     @Override

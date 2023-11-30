@@ -2,6 +2,8 @@ package com.codegym.phimchill.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.apache.commons.lang3.builder.EqualsExclude;
+import org.apache.commons.lang3.builder.ToStringExclude;
 
 import java.sql.Date;
 import java.util.List;
@@ -23,6 +25,8 @@ public class MovieSubComment {
     private Date datePost;
     @ManyToOne
     @JoinColumn(name = "MOVIE_COMMENTS_ID", referencedColumnName = "ID")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private MovieComment movieComments;
     @ManyToOne
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
@@ -34,4 +38,13 @@ public class MovieSubComment {
             inverseJoinColumns = @JoinColumn(name = "USER_TAGGED_IN_SUB_COMMENT", referencedColumnName = "ID")
     )
     private List<User> listUserTaggedInSubComment;
+    @Column(name = "TOTAL_LIKES")
+    private int totalLike;
+    @ManyToMany
+    @JoinTable(
+            name = "USER_LIKE_MOVIE_SUB_COMMENT",
+            joinColumns = @JoinColumn(name = "MOVIE_SUB_COMMENT_ID"),
+            inverseJoinColumns = @JoinColumn (name = "USER_ID")
+    )
+    private List<User> userListLikeSubComment;
 }

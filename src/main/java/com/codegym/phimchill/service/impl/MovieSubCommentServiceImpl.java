@@ -1,7 +1,9 @@
 package com.codegym.phimchill.service.impl;
 
+import com.codegym.phimchill.converter.MovieCommentConverter;
 import com.codegym.phimchill.converter.MovieSubCommentConverter;
 import com.codegym.phimchill.dto.payload.request.MovieSubCommentRequest;
+import com.codegym.phimchill.dto.payload.response.MovieCommentResponse;
 import com.codegym.phimchill.dto.payload.response.MovieSubCommentResponse;
 import com.codegym.phimchill.entity.MovieComment;
 import com.codegym.phimchill.entity.MovieSubComment;
@@ -11,6 +13,7 @@ import com.codegym.phimchill.repository.MovieSubCommentRepository;
 import com.codegym.phimchill.repository.UserRepository;
 import com.codegym.phimchill.service.MovieSubCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +29,20 @@ public class MovieSubCommentServiceImpl implements MovieSubCommentService {
     private MovieCommentRepository movieCommentRepository;
     @Autowired
     private MovieSubCommentConverter movieSubCommentConverter;
+    @Autowired
+    private MovieCommentConverter movieCommentConverter;
+
+    @Override
+    public MovieCommentResponse getSubCommentByCommentId(Long id) throws Exception {
+        MovieComment movieComment = movieCommentRepository.findById(id).orElseThrow(
+                () -> new Exception("Cannot find movie comment id : " + id)
+        );
+        return   MovieCommentResponse.builder()
+                .data(movieCommentConverter.convertToDto(movieComment))
+                .message("find moviecommentId : " + id + " success")
+                .statusCode(HttpStatus.OK.value())
+                .build();
+    }
 
     @Override
     public MovieSubCommentResponse save(MovieSubCommentRequest request, Long commentID) throws Exception {
@@ -53,7 +70,7 @@ public class MovieSubCommentServiceImpl implements MovieSubCommentService {
         userRepository.save(userComment);
         if(listUserTagged != null){
             for(User user : listUserTagged){
-                user.getListSubCommnetTaggedIn().add(newComment);
+                user.getListSubCommentTaggedIn().add(newComment);
                 userRepository.save(user);
             }
         }

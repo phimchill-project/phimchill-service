@@ -61,5 +61,9 @@ public class User {
     @ManyToMany(mappedBy = "listUserTaggedInComment")
     private List<MovieComment> listCommentTaggedIn;
     @ManyToMany(mappedBy = "listUserTaggedInSubComment")
-    private List<MovieSubComment> listSubCommnetTaggedIn;
+    private List<MovieSubComment> listSubCommentTaggedIn;
+    @ManyToMany(mappedBy = "userListLikeComment")
+    private List<MovieComment> movieCommentListUserLiked;
+    @ManyToMany(mappedBy = "userListLikeSubComment")
+    private List<MovieSubComment> movieSubCommentListUserLiked;
 }
