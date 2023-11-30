@@ -1,6 +1,7 @@
 package com.codegym.phimchill.controller;
 import com.codegym.phimchill.dto.payload.request.FavoriteMoviesRequest;
 import com.codegym.phimchill.dto.MovieDto;
+import com.codegym.phimchill.dto.payload.response.ListMovieCommentResponse;
 import com.codegym.phimchill.dto.payload.response.ListMovieResponse;
 import com.codegym.phimchill.dto.payload.response.FindMovieReponse;
 
@@ -58,8 +59,9 @@ public class MovieController {
         ListMovieResponse movies = movieService.getMoviesbyImbdTop();
         return ResponseEntity.ok(movies);
     }
+
     @GetMapping("/search")
-    public ResponseEntity<?> getByName(/*@RequestHeader("Authorization") final String authToken,*/ @RequestParam(value = "name", required = true) String nameMovie) {
+    public ResponseEntity<?> getByName(/*@RequestHeader("Authorization") final String authToken,*/ @RequestParam(value = "name", required = true) String nameMovie) throws Exception {
         /*if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
             return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
         }*/
@@ -84,25 +86,29 @@ public class MovieController {
         String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
         try {
             // Thực hiện xử lý logic để cập nhật phim ưa thích của người dùng
-//            boolean updated =  favoriteMoviesService.updateFavoriteMovies(favoriteMoviesRequest.getUserId(), favoriteMoviesRequest.getMovieIds());
-            return ResponseEntity.ok("Favorite movies updated successfully");
+            boolean updated =  favoriteMoviesService.updateFavoriteMovies(favoriteMoviesRequest.getUserId(), favoriteMoviesRequest.getMovieIds());
+            if (updated) {
+                return ResponseEntity.ok("Favorite movies updated successfully");
+            } else {
+                return ResponseEntity.ok("Favorite movies updated fail");
+            }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating favorite movies");
         }
     }
 
-//    @GetMapping("/{movieId}/comments")
-//    public ResponseEntity<ListMovieCommentResponse> getAllByMovieId(@PathVariable Long movieId){
-//        try {
-//            ListMovieCommentResponse response = movieService.getMovieCommentsById(movieId);
-//            return new ResponseEntity<>(response, HttpStatus.OK);
-//        }catch (Exception e){
-//            ListMovieCommentResponse response = new ListMovieCommentResponse();
-//            response.setData(null);
-//            response.setMessage("Cannot get comments by movie id "+ movieId);
-//            response.setStatusCode(HttpStatus.BAD_REQUEST.value());
-//            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-//        }
-//    }
+    @GetMapping("/{movieId}/comments")
+    public ResponseEntity<ListMovieCommentResponse> getAllByMovieId(@PathVariable Long movieId){
+        try {
+            ListMovieCommentResponse response = movieService.getMovieCommentsById(movieId);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch (Exception e){
+            ListMovieCommentResponse response = new ListMovieCommentResponse();
+            response.setData(null);
+            response.setMessage("Cannot get comments by movie id "+ movieId);
+            response.setStatusCode(HttpStatus.BAD_REQUEST.value());
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
 }
 

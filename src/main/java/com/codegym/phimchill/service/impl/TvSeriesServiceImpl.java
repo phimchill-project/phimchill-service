@@ -1,10 +1,13 @@
 package com.codegym.phimchill.service.impl;
 
 import com.codegym.phimchill.converter.TvSeriesConverter;
+import com.codegym.phimchill.dto.MovieDto;
 import com.codegym.phimchill.dto.TvSeriesDto;
 import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
 import com.codegym.phimchill.dto.payload.request.MovieNameRequest;
 import com.codegym.phimchill.dto.payload.response.CheckMovieNameExistResponse;
+import com.codegym.phimchill.dto.payload.response.ListMovieResponse;
+import com.codegym.phimchill.dto.payload.response.ListTvSeriesResponse;
 import com.codegym.phimchill.dto.payload.response.NewMovieResponse;
 import com.codegym.phimchill.entity.TVSeries;
 import com.codegym.phimchill.repository.TvSeriesPagingRepository;
@@ -12,12 +15,11 @@ import com.codegym.phimchill.repository.TvSeriesRepository;
 import com.codegym.phimchill.service.NameNormalizationService;
 import com.codegym.phimchill.service.TvSeriesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.text.Normalizer;
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Pattern;
 
 @Service
 public class TvSeriesServiceImpl implements TvSeriesService {
@@ -78,5 +80,19 @@ public class TvSeriesServiceImpl implements TvSeriesService {
             }
         }
         return series.map(value -> tvSeriesConverter.convertToDto(value)).orElse(null);
+    }
+
+    @Override
+    public ListTvSeriesResponse findTvSeriesByCategoryId(Long id) throws Exception {
+        List<TVSeries> tvSeriesList = tvSeriesRepository.findAllByCategoryId(id);
+        if(tvSeriesList.isEmpty()){
+            throw new Exception("Categoty id : " + id + " is not exist");
+        }
+        List<TvSeriesDto> tvSeriesDtoList = tvSeriesConverter.convertToListDTO(tvSeriesList);
+        return ListTvSeriesResponse.builder()
+                .data(tvSeriesDtoList)
+                .message("Get movies by category " + id + " success")
+                .statusCode(HttpStatus.OK.value())
+                .build();
     }
 }

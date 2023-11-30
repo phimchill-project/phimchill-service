@@ -7,6 +7,9 @@ import com.codegym.phimchill.entity.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class UserConverterImpl implements UserConverter {
     public UserDto converterToDTO(User user) {
@@ -14,8 +17,20 @@ public class UserConverterImpl implements UserConverter {
             return null;
         }
         UserDto userDTO = new UserDto();
-        BeanUtils.copyProperties(user, userDTO);
+//        BeanUtils.copyProperties(user, userDTO);
+        userDTO.setId(user.getId());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setName(user.getName());
         return userDTO;
+    }
+
+    @Override
+    public List<UserDto> converterToListDto(List<User> userList) {
+        List<UserDto> userDtoList = new ArrayList<>();
+        for (User user : userList){
+            userDtoList.add(converterToDTO(user));
+        }
+        return userDtoList;
     }
 
     @Override

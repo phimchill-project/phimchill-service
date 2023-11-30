@@ -20,19 +20,20 @@ public class UserController {
         private UserService userService;
         @Autowired
         private SecurityService securityService;
+
         @PutMapping("/edit-email")
         public ResponseEntity<?> editEmail( @RequestBody EmailRequest emailRequest,@RequestHeader("Authorization") String authToken) {
                 // Gọi service để xử lý logic
                 if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
                         return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
                 }
-                boolean updated = userService.updateEmail(emailRequest.getEmail());
+                String email = SecurityContextHolder.getContext().getAuthentication().getName();
+                boolean updated = userService.updateEmail(email,emailRequest.getEmail());
                 if (updated) {
                         return ResponseEntity.ok("Email updated successfully");
                 } else {
                         return ResponseEntity.ok("Email updated fail");
                 }
-
         }
         @PutMapping("/edit-password")
         public ResponseEntity<?> editPassword (@RequestBody PassRequest passRequest, @RequestHeader("Authorization") String authToken ){
@@ -47,14 +48,4 @@ public class UserController {
                         return ResponseEntity.ok("Pass updated fail");
                 }
         }
-//        @PutMapping("/edit-password")
-//        public ResponseEntity<?> editPassword (@RequestBody PassRequest passRequest,@RequestHeader("Authorization") String authToken ){
-//                if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
-//                        return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
-//                }
-//                boolean updated = userService.updatePass(passRequest.getPass());
-//
-//        }
-
-
 }

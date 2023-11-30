@@ -1,8 +1,6 @@
 package com.codegym.phimchill.dto;
 
-import com.codegym.phimchill.dto.MovieCommentDto;
-import com.codegym.phimchill.dto.UserDto;
-import com.codegym.phimchill.entity.RepliedMovieComment;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.List;
@@ -12,10 +10,10 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-public class RepliedMovieCommentDto {
+public class MovieSubCommentDto {
     private Long id;
     private String comment;
     private Long movieCommentId;
     private UserDto userDtoComment;
-    private UserDto userDtoSubComment;
+    private List<UserDto> listUserTagged;
 }

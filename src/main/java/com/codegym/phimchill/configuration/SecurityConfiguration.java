@@ -104,6 +104,9 @@ public class SecurityConfiguration {
                 .requestMatchers("/api/users/edit-email").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers("/api/users/edit-password").permitAll());
+
+        http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/admin/movie/new").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
@@ -113,13 +116,17 @@ public class SecurityConfiguration {
                 .requestMatchers("/api/tvseries/**").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/api/category").permitAll());
+                .requestMatchers("/api/category/**").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/api/movies").permitAll());
+                .requestMatchers("/api/movies/**").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/movies/detail").permitAll());
+
+        http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers("/api/auth/comment/**").permitAll());
+
         // Configure remember me (save token in database)
         http.rememberMe((remember) -> remember
                 .tokenRepository(this.persistentTokenRepository())
