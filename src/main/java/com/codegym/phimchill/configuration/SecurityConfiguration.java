@@ -104,6 +104,9 @@ public class SecurityConfiguration {
                 .requestMatchers("/api/users/edit-email").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers("/api/users/edit-password").permitAll());
+
+        http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/admin/movie/new").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
