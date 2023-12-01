@@ -12,6 +12,6 @@ public class NameNormalizationServiceImpl implements NameNormalizationService {
     public String normalizeName(String s) {
         String temp = Normalizer.normalize(s, Normalizer.Form.NFD);
         Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
-        return pattern.matcher(temp).replaceAll("").replaceAll(":", "").replaceAll("-", " ");
+        return pattern.matcher(temp).replaceAll("").replaceAll(":", "").replaceAll("-", " ").toLowerCase();
     }
 }

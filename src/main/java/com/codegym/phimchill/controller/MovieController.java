@@ -1,6 +1,7 @@
 package com.codegym.phimchill.controller;
 import com.codegym.phimchill.dto.payload.request.FavoriteMoviesRequest;
 import com.codegym.phimchill.dto.MovieDto;
+import com.codegym.phimchill.dto.payload.response.FindMoviesReponse;
 import com.codegym.phimchill.dto.payload.response.ListMovieCommentResponse;
 import com.codegym.phimchill.dto.payload.response.ListMovieResponse;
 import com.codegym.phimchill.dto.payload.response.FindMovieReponse;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/movies")
@@ -61,25 +63,43 @@ public class MovieController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<?> getByName(/*@RequestHeader("Authorization") final String authToken,*/ @RequestParam(value = "name", required = true) String nameMovie) throws Exception {
+    public ResponseEntity<?> getByName(/*@RequestHeader("Authorization") final String authToken,*/ @RequestParam(value = "name", required = true) String nameMovie, @RequestParam (value = "type", required = false) String type) {
         /*if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
             return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
         }*/
-        MovieDto movieDto = movieService.findByName(nameMovie);
-        FindMovieReponse response;
-        if (movieDto != null){
-            response = FindMovieReponse.builder()
-                    .data(movieDto)
-                    .statusCode(HttpStatus.OK.value())
-                    .message("Success")
-                    .build();
+        if ("all".equals(type)){
+            List<Optional<MovieDto>> moviesDto = movieService.findMoviesByName(nameMovie);
+            FindMoviesReponse response;
+            if (!moviesDto.isEmpty()){
+                response = FindMoviesReponse.builder()
+                        .data(moviesDto)
+                        .statusCode(HttpStatus.OK.value())
+                        .message("Success")
+                        .build();
+            }else {
+                response = FindMoviesReponse.builder()
+                        .statusCode(HttpStatus.NOT_FOUND.value())
+                        .message("Not found Movies")
+                        .build();
+            }
+            return ResponseEntity.ok(response);
         }else {
-            response = FindMovieReponse.builder()
-                    .statusCode(HttpStatus.NOT_FOUND.value())
-                    .message("Not found Movie")
-                    .build();
+            MovieDto movieDto = movieService.findByName(nameMovie);
+            FindMovieReponse response;
+            if (movieDto != null){
+                response = FindMovieReponse.builder()
+                        .data(movieDto)
+                        .statusCode(HttpStatus.OK.value())
+                        .message("Success")
+                        .build();
+            }else {
+                response = FindMovieReponse.builder()
+                        .statusCode(HttpStatus.NOT_FOUND.value())
+                        .message("Not found Movie")
+                        .build();
+            }
+            return ResponseEntity.ok(response);
         }
-        return ResponseEntity.ok(response);
     }
     @PostMapping("/favorite-movie")
     public ResponseEntity<?> updateFavoriteMovies(@RequestBody FavoriteMoviesRequest favoriteMoviesRequest) {
