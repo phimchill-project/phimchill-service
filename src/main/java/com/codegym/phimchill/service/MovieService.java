@@ -15,6 +15,8 @@ import com.codegym.phimchill.dto.payload.response.CheckMovieNameExistResponse;
 import com.codegym.phimchill.dto.payload.response.NewMovieResponse;
 import com.codegym.phimchill.entity.Movie;
 import com.codegym.phimchill.dto.payload.response.MovieResponse;
+//import com.codegym.phimchill.entity.MovieHistory;
+
 import java.util.List;
 
 public interface MovieService {
@@ -31,4 +33,6 @@ public interface MovieService {
     MovieDto getMovieById(Long id);
     ListMovieCommentResponse getMovieCommentsById(Long movieId) throws Exception;
     ListMovieResponse findMoviesByCategoryId(Long id) throws Exception;
+
+//    List<MovieHistory> getWatchHistory(Long userId);
 }

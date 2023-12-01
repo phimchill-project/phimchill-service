@@ -8,6 +8,7 @@ import com.codegym.phimchill.dto.payload.response.ListMovieResponse;
 import com.codegym.phimchill.dto.payload.response.FindMovieReponse;
 import com.codegym.phimchill.dto.MovieDto;
 import com.codegym.phimchill.dto.payload.response.MovieResponse;
+//import com.codegym.phimchill.entity.MovieHistory;
 import com.codegym.phimchill.service.MovieService;
 import com.codegym.phimchill.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,11 +39,17 @@ public class MovieController {
         ListMovieResponse upcomingMovies = movieService.getUpcomingMovies();
         return ResponseEntity.ok(upcomingMovies);
     }
-    @GetMapping("/detail")
-    public ResponseEntity<?> getMovieDetail(Long id) {
+    @GetMapping("/detail/{id}")
+    public ResponseEntity<?> getMovieDetail(@PathVariable Long id) {
         MovieDto movie = movieService.getMovieById(id);
         return new ResponseEntity<>(movie, HttpStatus.OK);
     }
+//    @GetMapping("/watch-history")
+//    public ResponseEntity<List<MovieHistory>> getWatchHistory() {
+//        Long userId ;
+//        List<MovieHistory> watchHistory = movieService.getWatchHistory(userId);
+//        return ResponseEntity.ok(watchHistory);
+//    }
     @GetMapping("/blockbuster")
     public ResponseEntity<?>  getBlockbusterMoives(){
         ListMovieResponse movies = movieService.getMoviesSortedByIMDBAndDate();

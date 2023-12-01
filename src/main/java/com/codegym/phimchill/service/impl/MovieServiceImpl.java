@@ -14,10 +14,8 @@ import com.codegym.phimchill.dto.payload.response.MovieResponse;
 import com.codegym.phimchill.entity.Category;
 import com.codegym.phimchill.entity.Movie;
 import com.codegym.phimchill.entity.MovieComment;
-import com.codegym.phimchill.repository.CategoryRepository;
-import com.codegym.phimchill.repository.MovieCommentRepository;
-import com.codegym.phimchill.repository.MoviePagingRepository;
-import com.codegym.phimchill.repository.MovieRepository;
+//import com.codegym.phimchill.entity.MovieHistory;
+import com.codegym.phimchill.repository.*;
 import com.codegym.phimchill.service.CategoryService;
 import com.codegym.phimchill.service.MovieService;
 import com.codegym.phimchill.service.NameNormalizationService;
@@ -40,6 +38,8 @@ public class MovieServiceImpl implements MovieService {
 
     @Autowired
     private MovieRepository movieRepository;
+//    @Autowired
+//    private MovieHistoryRepository movieHistoryRepository;
 
     @Qualifier("movieConverterImpl")
     @Autowired
@@ -113,7 +113,8 @@ public class MovieServiceImpl implements MovieService {
     @Override
 
     public MovieDto getMovieById(Long id) {
-        return null;
+        Movie movie = movieRepository.findById(id).orElse(null);
+        return movieConverter.convertToDTO(movie);
     }
     public ListMovieResponse getMoviesByCategory(Long id) {
         List<Movie> movies = movieRepository.findMoviesByCategoryId(id);
@@ -209,4 +210,9 @@ public class MovieServiceImpl implements MovieService {
                 .statusCode(HttpStatus.OK.value())
                 .build();
     }
+
+//    @Override
+//    public List<MovieHistory> getWatchHistory(Long userId) {
+//        return movieHistoryRepository.findByUserIdOrderByWatchedAtDesc(userId);
+//    }
 }
