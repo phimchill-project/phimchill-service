@@ -23,11 +23,15 @@ public class MovieSubCommentConverterImpl implements MovieSubCommentConverter {
         response.setComment(movieSubComment.getComment());
         response.setMovieCommentId(movieSubComment.getMovieComments().getId());
         response.setUserDtoComment(userConverter.converterToDTO(movieSubComment.getSubCommentUser()));
-        List<Long> listUserIdLiked = new ArrayList<>();
-        for (User user : movieSubComment.getUserListLikeSubComment()){
-            listUserIdLiked.add(user.getId());
+        if(movieSubComment.getUserListLikeSubComment() != null){
+            List<Long> listUserIdLiked = new ArrayList<>();
+            for (User user : movieSubComment.getUserListLikeSubComment()){
+                listUserIdLiked.add(user.getId());
+            }
+            response.setListUserIdLiked(listUserIdLiked);
+        }else {
+            response.setListUserIdLiked(null);
         }
-        response.setListUserIdLiked(listUserIdLiked);
         response.setTotalLike(movieSubComment.getTotalLike());
         if (movieSubComment.getListUserTaggedInSubComment() == null) {
             response.setListUserTagged(null);

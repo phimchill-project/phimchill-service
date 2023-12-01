@@ -46,6 +46,7 @@ public class MovieServiceImpl implements MovieService {
     @Autowired
     private MovieConverter movieConverter;
 
+    @Autowired
     private NameNormalizationService nameNormalizationService;
 
     @Autowired
@@ -144,20 +145,20 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public MovieDto findByName(String nameMovie) throws Exception {
         nameMovie = nameMovie.replaceAll("-", " ");
-//        List<Movie> movies = movieRepository.findAll();
-//        Optional<Movie> movie = Optional.empty();
-//        for (var item : movies) {
-//            String movieName = nameNormalizationService.normalizeName(item.getName());
-//            if (movieName.equalsIgnoreCase(nameMovie)) {
-//                movie = Optional.of(item);
-//            }
-//        }
-//        return movie.map(value -> movieDtoConvert.convertToDTO(value)).orElse(null);
-        Movie movie = movieRepository.findByName(nameMovie);
-        if (movie == null){
-            throw new Exception("Cannot find movie : " + nameMovie);
+        List<Movie> movies = movieRepository.findAll();
+        Optional<Movie> movie = Optional.empty();
+        for (var item : movies) {
+            String movieName = nameNormalizationService.normalizeName(item.getName());
+            if (movieName.equalsIgnoreCase(nameMovie)) {
+                movie = Optional.of(item);
+            }
         }
-        return movieConverter.convertToDTO(movie);
+        return movie.map(value -> movieDtoConvert.convertToDTO(value)).orElse(null);
+//        Movie movie = movieRepository.findByName(nameMovie);
+//        if (movie == null){
+//            throw new Exception("Cannot find movie : " + nameMovie);
+//        }
+//        return movieConverter.convertToDTO(movie);
     }
 
     @Override

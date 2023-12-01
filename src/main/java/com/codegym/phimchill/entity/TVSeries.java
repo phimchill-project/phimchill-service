@@ -52,4 +52,7 @@ public class TVSeries {
 
     @ManyToMany(mappedBy = "tvSeriesFavoriteList")
     private List<User> userFavoriteList;
+
+    @Column(name = "IS_DELETE")
+    private boolean isDelete;
 }

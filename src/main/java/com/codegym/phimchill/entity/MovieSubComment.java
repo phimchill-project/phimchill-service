@@ -25,8 +25,6 @@ public class MovieSubComment {
     private Date datePost;
     @ManyToOne
     @JoinColumn(name = "MOVIE_COMMENTS_ID", referencedColumnName = "ID")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
     private MovieComment movieComments;
     @ManyToOne
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
