@@ -40,8 +40,8 @@ public class Movie {
     private Integer views;
     @ManyToMany(mappedBy = "movieList")
     private List<Category> categoryList;
-    @ManyToMany(mappedBy = "movieHistoryList")
-    private List<User> userHistoryList;
+    @OneToMany(mappedBy = "movie")
+    private List<MovieHistory> movieHistoryList;
     @ManyToMany(mappedBy = "movieFavoriteList")
     private List<User> userFavoriteList;
     @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY)
