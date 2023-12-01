@@ -5,7 +5,6 @@ import com.codegym.phimchill.dto.payload.response.ListMovieCommentResponse;
 import com.codegym.phimchill.dto.payload.response.ListMovieResponse;
 import com.codegym.phimchill.dto.payload.response.FindMovieReponse;
 import com.codegym.phimchill.dto.MovieDto;
-//import com.codegym.phimchill.entity.MovieHistory;
 import com.codegym.phimchill.service.FavoriteMoviesService;
 import com.codegym.phimchill.service.MovieService;
 import com.codegym.phimchill.service.SecurityService;
