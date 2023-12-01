@@ -18,7 +18,6 @@ import com.codegym.phimchill.repository.CategoryRepository;
 import com.codegym.phimchill.repository.MovieCommentRepository;
 import com.codegym.phimchill.repository.MoviePagingRepository;
 import com.codegym.phimchill.repository.MovieRepository;
-import com.codegym.phimchill.service.CategoryService;
 import com.codegym.phimchill.service.MovieService;
 import com.codegym.phimchill.service.NameNormalizationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -48,6 +46,7 @@ public class MovieServiceImpl implements MovieService {
     @Autowired
     private MovieConverter movieConverter;
 
+    @Autowired
     private NameNormalizationService nameNormalizationService;
 
     @Autowired
@@ -140,22 +139,34 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public MovieDto findByName(String nameMovie) throws Exception {
-        nameMovie = nameMovie.replaceAll("-", " ");
-//        List<Movie> movies = movieRepository.findAll();
-//        Optional<Movie> movie = Optional.empty();
-//        for (var item : movies) {
-//            String movieName = nameNormalizationService.normalizeName(item.getName());
-//            if (movieName.equalsIgnoreCase(nameMovie)) {
-//                movie = Optional.of(item);
-//            }
-//        }
-//        return movie.map(value -> movieDtoConvert.convertToDTO(value)).orElse(null);
-        Movie movie = movieRepository.findByName(nameMovie);
-        if (movie == null){
-            throw new Exception("Cannot find movie : " + nameMovie);
+    public MovieDto findByName(String nameMovie) {
+        nameMovie = nameNormalizationService.normalizeName(nameMovie);
+        List<Movie> movies = movieRepository.findAll();
+        Optional<Movie> movie = Optional.empty();
+        for (var item : movies) {
+            String movieName = nameNormalizationService.normalizeName(item.getName());
+            if (movieName.equalsIgnoreCase(nameMovie)) {
+                movie = Optional.of(item);
+            }
         }
-        return movieConverter.convertToDTO(movie);
+        return movie.map(value -> movieDtoConvert.convertToDTO(value)).orElse(null);
+    }
+
+    @Override
+    public List<Optional<MovieDto>> findMoviesByName(String nameMovie) {
+        nameMovie = nameNormalizationService.normalizeName(nameMovie);
+        List<Movie> movies = movieRepository.findAll();
+        List<MovieDto> moviesDto = movieConverter.convertToListDTO(movies);
+        List<Optional<MovieDto>> moviesDtoNew = new ArrayList<>();
+        for (var item : moviesDto) {
+            if (moviesDtoNew.size() == 10)
+                break;
+            String movieName = nameNormalizationService.normalizeName(item.getName());
+            if (movieName.contains(nameMovie)) {
+                moviesDtoNew.add(Optional.of(item));
+            }
+        }
+        return moviesDtoNew;
     }
 
     @Override
