@@ -1,6 +1,5 @@
 package com.codegym.phimchill.service;
 
-import com.codegym.phimchill.dto.MovieDto;
 import com.codegym.phimchill.dto.TvSeriesDto;
 import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
 import com.codegym.phimchill.dto.payload.request.MovieNameRequest;
@@ -16,9 +15,13 @@ public interface TvSeriesService {
     CheckMovieNameExistResponse isNotExist(MovieNameRequest movieNameRequest);
 
     List<TvSeriesDto> getTop10ByImdb();
+
     List<TvSeriesDto> getTop10Newest();
+
+    List<TvSeriesDto> getTop10FavoriteList(Long user_id);
 
     TvSeriesDto findByName(String nameMovie);
 
     ListTvSeriesResponse findTvSeriesByCategoryId(Long id) throws Exception;
+    String addFavoriteList(Long user_id, Long tvSeries_id);
 }

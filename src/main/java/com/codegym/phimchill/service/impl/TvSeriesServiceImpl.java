@@ -1,6 +1,7 @@
 package com.codegym.phimchill.service.impl;
 
 import com.codegym.phimchill.converter.TvSeriesConverter;
+import com.codegym.phimchill.converter.UserConverter;
 import com.codegym.phimchill.dto.MovieDto;
 import com.codegym.phimchill.dto.TvSeriesDto;
 import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
@@ -10,10 +11,13 @@ import com.codegym.phimchill.dto.payload.response.ListMovieResponse;
 import com.codegym.phimchill.dto.payload.response.ListTvSeriesResponse;
 import com.codegym.phimchill.dto.payload.response.NewMovieResponse;
 import com.codegym.phimchill.entity.TVSeries;
+import com.codegym.phimchill.entity.User;
 import com.codegym.phimchill.repository.TvSeriesPagingRepository;
 import com.codegym.phimchill.repository.TvSeriesRepository;
+import com.codegym.phimchill.repository.UserRepository;
 import com.codegym.phimchill.service.NameNormalizationService;
 import com.codegym.phimchill.service.TvSeriesService;
+import com.codegym.phimchill.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -34,6 +38,9 @@ public class TvSeriesServiceImpl implements TvSeriesService {
 
     @Autowired
     private NameNormalizationService nameNormalizationService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public NewMovieResponse create(NewMovieRequest newTvSeriesRequest) {
@@ -69,6 +76,14 @@ public class TvSeriesServiceImpl implements TvSeriesService {
     }
 
     @Override
+    public List<TvSeriesDto> getTop10FavoriteList(Long user_id) {
+        User user = userRepository.findById(user_id).orElse(null);
+        if (user==null) {
+            return null;
+        }else return tvSeriesConverter.convertToListDTO(user.getTvSeriesFavoriteList());
+    }
+
+    @Override
     public TvSeriesDto findByName(String nameTvSeries){
         nameTvSeries = nameTvSeries.replaceAll("-", " ");
         List<TVSeries> seriesList = tvSeriesRepository.findAll();
@@ -94,5 +109,27 @@ public class TvSeriesServiceImpl implements TvSeriesService {
                 .message("Get movies by category " + id + " success")
                 .statusCode(HttpStatus.OK.value())
                 .build();
+    }
+
+    @Override
+    public String addFavoriteList(Long user_id, Long tvSeries_id) {
+        User user = userRepository.findById(user_id).orElse(null);
+        TVSeries tvSeries = tvSeriesRepository.findById(tvSeries_id).orElse(null);
+
+        if (user == null || tvSeries == null) {
+            return "Fail";
+        }
+
+        List<TVSeries> tvSeriesList = user.getTvSeriesFavoriteList();
+
+        if (!tvSeriesList.contains(tvSeries)) {
+            tvSeriesList.add(tvSeries);
+            user.setTvSeriesFavoriteList(tvSeriesList);
+            userRepository.save(user);
+            System.out.println(user.getTvSeriesFavoriteList().size());
+            return "Success";
+        } else {
+            return "TV Series is already in the favorite list.";
+        }
     }
 }
