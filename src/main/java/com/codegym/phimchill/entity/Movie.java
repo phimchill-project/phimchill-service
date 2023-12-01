@@ -38,6 +38,8 @@ public class Movie {
     private Date dateRelease;
     @Column (name = "VIEWS")
     private Integer views;
+    @Column (name = " IS_DELETE")
+    private Boolean isDelete;
     @ManyToMany(mappedBy = "movieList")
     private List<Category> categoryList;
     @ManyToMany(mappedBy = "movieHistoryList")
