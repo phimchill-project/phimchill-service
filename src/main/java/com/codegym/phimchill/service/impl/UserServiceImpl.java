@@ -1,6 +1,7 @@
 package com.codegym.phimchill.service.impl;
 import com.codegym.phimchill.converter.UserConverter;
 import com.codegym.phimchill.dto.RegisterDto;
+import com.codegym.phimchill.dto.UserDto;
 import com.codegym.phimchill.dto.payload.request.EmailRequest;
 import com.codegym.phimchill.dto.payload.request.RegisterRequest;
 import com.codegym.phimchill.entity.Role;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -32,10 +34,16 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RoleRepository roleRepository;
 
+//    @Override
+//    public String  login(LoginRequest loginRequest) {
+//        User user = userRepository.findUserByEmail(loginRequest.getEmail());
+//        return user.getName();
+//    }
+
     @Override
-    public String  login(LoginRequest loginRequest) {
+    public UserDto login(LoginRequest loginRequest) {
         User user = userRepository.findUserByEmail(loginRequest.getEmail());
-        return user.getName();
+        return userConverter.converterToDTO(user);
     }
 
     @Override
@@ -50,6 +58,7 @@ public class UserServiceImpl implements UserService {
                         .email(registerRequest.getEmail())
                         .password(registerRequest.getPassword())
                         .name(registerRequest.getName())
+
                         .role(role)
                         .build();
                 userRepository.save(user1);

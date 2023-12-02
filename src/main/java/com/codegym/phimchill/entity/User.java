@@ -24,24 +24,10 @@ public class User {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ROLE_ID")
     private Role role;
-    @ManyToMany
-    @JoinTable(
-            name = "HISTORY_MOVIE",
-            joinColumns = @JoinColumn(name = "USER_ID"),
-            inverseJoinColumns = @JoinColumn(name = "MOVIE_ID"))
-    private List<Movie> movieHistoryList;
-    @ManyToMany
-    @JoinTable(
-            name = "HISTORY_TVSERIES",
-            joinColumns = @JoinColumn(name = "USER_ID"),
-            inverseJoinColumns = @JoinColumn(name = "TVSERIES_ID"))
-    private List<TVSeries> tvSeriesHistoryList;
-    @ManyToMany
-    @JoinTable(
-            name = "HISTORY_EPISODE",
-            joinColumns = @JoinColumn(name = "USER_ID"),
-            inverseJoinColumns = @JoinColumn(name = "EPISODE_ID"))
-    private List<Episode> episodeHistoryList;
+    @OneToMany(mappedBy = "user")
+    private List<MovieHistory> movieHistoryList;
+    @OneToMany(mappedBy = "user")
+    private List<EpisodeHistory> episodeHistoryList;
     @ManyToMany
     @JoinTable(
             name = "FAVORITE_MOVIE",
@@ -61,5 +47,9 @@ public class User {
     @ManyToMany(mappedBy = "listUserTaggedInComment")
     private List<MovieComment> listCommentTaggedIn;
     @ManyToMany(mappedBy = "listUserTaggedInSubComment")
-    private List<MovieSubComment> listSubCommnetTaggedIn;
+    private List<MovieSubComment> listSubCommentTaggedIn;
+    @ManyToMany(mappedBy = "userListLikeComment")
+    private List<MovieComment> movieCommentListUserLiked;
+    @ManyToMany(mappedBy = "userListLikeSubComment")
+    private List<MovieSubComment> movieSubCommentListUserLiked;
 }

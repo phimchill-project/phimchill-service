@@ -15,5 +15,7 @@ public class MovieSubCommentDto {
     private String comment;
     private Long movieCommentId;
     private UserDto userDtoComment;
+    private int totalLike;
+    private List<Long> listUserIdLiked;
     private List<UserDto> listUserTagged;
 }

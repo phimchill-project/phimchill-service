@@ -31,4 +31,6 @@ public class MovieDto {
     private Integer views;
 
     private List<CategoryDto> categoryList;
+
+    private List<Long> userIdListLiked;
 }
