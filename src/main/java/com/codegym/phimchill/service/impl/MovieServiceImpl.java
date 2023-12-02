@@ -16,7 +16,6 @@ import com.codegym.phimchill.entity.Movie;
 import com.codegym.phimchill.entity.MovieComment;
 import com.codegym.phimchill.entity.MovieSubComment;
 import com.codegym.phimchill.repository.*;
-import com.codegym.phimchill.service.CategoryService;
 import com.codegym.phimchill.service.MovieService;
 import com.codegym.phimchill.service.NameNormalizationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -143,8 +141,8 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public MovieDto findByName(String nameMovie) throws Exception {
-        nameMovie = nameMovie.replaceAll("-", " ");
+    public MovieDto findByName(String nameMovie) {
+        nameMovie = nameNormalizationService.normalizeName(nameMovie);
         List<Movie> movies = movieRepository.findAll();
         Optional<Movie> movie = Optional.empty();
         for (var item : movies) {
@@ -154,11 +152,23 @@ public class MovieServiceImpl implements MovieService {
             }
         }
         return movie.map(value -> movieDtoConvert.convertToDTO(value)).orElse(null);
-//        Movie movie = movieRepository.findByName(nameMovie);
-//        if (movie == null){
-//            throw new Exception("Cannot find movie : " + nameMovie);
-//        }
-//        return movieConverter.convertToDTO(movie);
+    }
+
+    @Override
+    public List<Optional<MovieDto>> findMoviesByName(String nameMovie) {
+        nameMovie = nameNormalizationService.normalizeName(nameMovie);
+        List<Movie> movies = movieRepository.findAll();
+        List<MovieDto> moviesDto = movieConverter.convertToListDTO(movies);
+        List<Optional<MovieDto>> moviesDtoNew = new ArrayList<>();
+        for (var item : moviesDto) {
+            if (moviesDtoNew.size() == 10)
+                break;
+            String movieName = nameNormalizationService.normalizeName(item.getName());
+            if (movieName.contains(nameMovie)) {
+                moviesDtoNew.add(Optional.of(item));
+            }
+        }
+        return moviesDtoNew;
     }
 
     @Override
