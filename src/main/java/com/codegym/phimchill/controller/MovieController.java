@@ -131,5 +131,15 @@ public class MovieController {
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<ListMovieResponse> updateMovie(@RequestBody MovieDto movieDto) {
+        try {
+            ListMovieResponse response = movieService.updateMovie(movieDto);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new ListMovieResponse(null, e.getMessage(), HttpStatus.BAD_REQUEST.value()));
+        }
+    }
 }
 

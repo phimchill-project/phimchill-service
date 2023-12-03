@@ -1,4 +1,5 @@
 package com.codegym.phimchill.service.impl;
+
 import com.codegym.phimchill.converter.UserConverter;
 import com.codegym.phimchill.dto.RegisterDto;
 import com.codegym.phimchill.dto.UserDto;
@@ -19,6 +20,15 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Optional;
 
+
+import java.util.ArrayList;
+<<<<<<< HEAD
+import java.util.Collections;
+import java.util.List;
+=======
+>>>>>>> 96d9c719c11f8ca9ce2e68fb9af16fa823c19d1e
+import java.util.Optional;
+
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
@@ -34,31 +44,60 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RoleRepository roleRepository;
 
-//    @Override
-//    public String  login(LoginRequest loginRequest) {
-//        User user = userRepository.findUserByEmail(loginRequest.getEmail());
-//        return user.getName();
-//    }
+<<<<<<< HEAD
+    @Autowired
+    private MovieRepository movieRepository;
+
+    @Autowired
+    private MovieConverter movieConverter;
+
+    @Autowired
+    private TvSeriesConverterImpl tvSeriesConverter;
+
+    @Autowired
+    private TvSeriesRepository tvSeriesRepository;
 
     @Override
-    public UserDto login(LoginRequest loginRequest) {
-        User user = userRepository.findUserByEmail(loginRequest.getEmail());
-        return userConverter.converterToDTO(user);
-    }
+    public String login(LoginRequest loginRequest) {
+        @Override
+//        public String login (LoginRequest loginRequest){
+//            User user = userRepository.findUserByEmail(loginRequest.getEmail());
+//            return user.getName();
+//        }
 
-    @Override
-    public RegisterResponse register(RegisterRequest registerRequest) throws Exception {
+        @Override
+        public UserDto login (LoginRequest loginRequest){
+            User user = userRepository.findUserByEmail(loginRequest.getEmail());
+            return userConverter.converterToDTO(user);
+        }
+
+        @Override
+        public RegisterResponse register (RegisterRequest registerRequest) throws Exception {
             User user = userRepository.findUserByEmail(registerRequest.getEmail());
-            if (user == null ){
+            if (user == null) {
                 String hashPassword = passwordEncoder.encode(registerRequest.getPassword());
                 registerRequest.setPassword(hashPassword);
                 Role role = roleRepository.findById(2L).orElse(null);
                 User user1 = User
+//                    .builder()
+//                    .email(registerRequest.getEmail())
+//                    .password(registerRequest.getPassword())
+//                    .name(registerRequest.getName())
+//                    .role(role)
+//                    .build();
                         .builder()
                         .email(registerRequest.getEmail())
                         .password(registerRequest.getPassword())
                         .name(registerRequest.getName())
-
+                        .movieHistoryList(new ArrayList<>())
+                        .tvSeriesFavoriteList(new ArrayList<>())
+                        .episodeHistoryList(new ArrayList<>())
+                        .movieFavoriteList(new ArrayList<>())
+                        .tvSeriesFavoriteList(new ArrayList<>())
+                        .commentsMovieList(new ArrayList<>())
+                        .movieSubCommentsList(new ArrayList<>())
+                        .listCommentTaggedIn(new ArrayList<>())
+                        .listSubCommnetTaggedIn(new ArrayList<>())
                         .role(role)
                         .build();
                 userRepository.save(user1);
@@ -70,55 +109,138 @@ public class UserServiceImpl implements UserService {
                 return registerResponse;
             } else {
                 throw new Exception();
+                User user = userRepository.findUserByEmail(registerRequest.getEmail());
+                if (user == null) {
+                    String hashPassword = passwordEncoder.encode(registerRequest.getPassword());
+                    registerRequest.setPassword(hashPassword);
+                    Role role = roleRepository.findById(2L).orElse(null);
+                    User user1 = User
+                            .builder()
+                            .email(registerRequest.getEmail())
+                            .password(registerRequest.getPassword())
+                            .name(registerRequest.getName())
+
+                            .role(role)
+                            .build();
+                    userRepository.save(user1);
+                    RegisterDto registerDto = userConverter.converterRegister(user1);
+                    RegisterResponse registerResponse = new RegisterResponse();
+                    registerResponse.setData(registerDto);
+                    registerResponse.setStatusCode(200);
+                    registerResponse.setMessage("Register Success");
+                    return registerResponse;
+                } else {
+                    throw new Exception();
+                }
+            }
+
+            @Override
+            public boolean isEmailExist (EmailRequest email){
+                User user = userRepository.findUserByEmail(email.getEmail());
+                if (user != null) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            @Override
+            public User findUserByEmail (String email) throws Exception {
+                User user = userRepository.findUserByEmail(email);
+                if (user == null) {
+                    throw new Exception("Email cannot find");
+                }
+                return user;
+            }
+
+            @Override
+            public boolean updateEmail (String email, String newEmail){
+                User existingUser = userRepository.findUserByEmail(newEmail);
+                if (existingUser != null) {
+                    return false;
+                }
+                User newUser = userRepository.findUserByEmail(email);
+                newUser.setEmail(newEmail);
+                userRepository.save(newUser);
+                return true;
+            }
+
+            @Override
+            public boolean updatePass (String email, String pass){
+
+                User user = userRepository.findUserByEmail(email);
+                if (user != null) {
+                    String hashPassword = passwordEncoder.encode(pass);
+                    user.setPassword(hashPassword);
+                    userRepository.save(user);
+                    return true;
+                }
+                return false;
+
+            }
+
+
+            @Override
+            public ListMovieResponse getFavoriteMovies (String email) throws Exception {
+                User user = userRepository.findUserByEmail(email);
+                if (user == null) {
+                    throw new Exception("Cannot get list movie favorite");
+                }
+                ListMovieResponse listMovieResponse = new ListMovieResponse();
+                List<MovieDto> movieDtoList = movieConverter.convertToListDTO(user.getMovieFavoriteList());
+                listMovieResponse.setData(movieDtoList);
+                listMovieResponse.setMessage("Get Movie Success");
+                listMovieResponse.setStatusCode(HttpStatus.OK.value());
+                return listMovieResponse;
+            }
+
+            @Override
+            public ListTvSeriesResponse getFavoriTeTVSeries (String email) throws Exception {
+                User user = userRepository.findUserByEmail(email);
+                if (user == null) {
+                    throw new Exception("Cannot get list  TvSeries favorite");
+                }
+                ListTvSeriesResponse listTvSeriesResponse = new ListTvSeriesResponse();
+                List<TvSeriesDto> tvSeriesDtos = tvSeriesConverter.convertToListDTO(user.getTvSeriesFavoriteList());
+                listTvSeriesResponse.setData(tvSeriesDtos);
+                listTvSeriesResponse.setMessage("Get list  TvSeries favorite");
+                listTvSeriesResponse.setStatusCode(HttpStatus.OK.value());
+                return listTvSeriesResponse;
+            }
+
+            @Override
+            public ListMovieResponse deleteFavoriteMovies (String email, Long movieId) throws Exception {
+                User user = userRepository.findUserByEmail(email);
+                if (user == null) {
+                    throw new Exception("User not found");
+                }
+                Movie movie = movieRepository.findById(movieId)
+                        .orElseThrow(() -> new Exception("Movie not found"));
+                user.getMovieFavoriteList().remove(movie);
+                movie.getUserFavoriteList().remove(user);
+                movieRepository.save(movie);
+                userRepository.save(user);
+                return new ListMovieResponse(new ArrayList<>(), "Movie removed from favorites", HttpStatus.OK.value());
+            }
+            @Override
+            public ListTvSeriesResponse deleteFavoriteTVSeries (String email, Long Id) throws Exception {
+                User user = userRepository.findUserByEmail(email);
+                if (user == null) {
+                    throw new Exception("User not found");
+                }
+                TVSeries tvSeriesDto = tvSeriesRepository.findById(Id)
+                        .orElseThrow(() -> new Exception("TV Series not found"));
+                user.getTvSeriesFavoriteList().remove(tvSeriesDto);
+                user.getTvSeriesFavoriteList().remove(tvSeriesDto);
+                userRepository.save(user);
+                return new ListTvSeriesResponse(
+                        new ArrayList<>(),
+                        "TV Series removed from favorites",
+                        HttpStatus.OK.value()
+                );
+            }
+
         }
-    }
-
-    @Override
-    public boolean isEmailExist(EmailRequest email) {
-        User user = userRepository.findUserByEmail(email.getEmail());
-        if(user != null) {
-            return true;
-        }else {
-            return false;
-        }
-    }
-
-    @Override
-    public User findUserByEmail(String email) throws Exception {
-        User user = userRepository.findUserByEmail(email);
-        if (user == null) {
-            throw new Exception("Email cannot find");
-        }
-        return user;
-    }
-
-    @Override
-    public boolean updateEmail(String email, String newEmail) {
-
-        User existingUser = userRepository.findUserByEmail(newEmail);
-        if (existingUser != null) {
-            return false;
-        }
-        User newUser = userRepository.findUserByEmail(email);
-        newUser.setEmail(newEmail);
-        userRepository.save(newUser);
-        return true;
-    }
-
-    @Override
-    public boolean updatePass(String email, String pass) {
-
-        User user = userRepository.findUserByEmail(email);
-        if (user != null) {
-            String hashPassword = passwordEncoder.encode(pass);
-            user.setPassword(hashPassword);
-            userRepository.save(user);
-            return true;
-        }
-        return false;
 
     }
-
-
 }
-
