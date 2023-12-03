@@ -10,5 +10,4 @@ public class AuthTvSeriesController {
     @Autowired
     private TvSeriesService tvSeriesService;
 
-
 }

@@ -35,5 +35,14 @@ public class MovieComment {
             inverseJoinColumns = @JoinColumn(name = "USER_ID_TAGGED", referencedColumnName = "ID")
     )
     private List<User> listUserTaggedInComment;
+    @Column(name = "TOTAL_LIKES")
+    private int totalLike;
+    @ManyToMany
+    @JoinTable(
+            name = "USER_LIKE_MOVIE_COMMENT",
+            joinColumns = @JoinColumn(name = "MOVIE_COMMENT_ID"),
+            inverseJoinColumns = @JoinColumn (name = "USER_ID")
+    )
+    private List<User> userListLikeComment;
 }
 

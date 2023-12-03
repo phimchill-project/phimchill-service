@@ -1,17 +1,14 @@
-package com.codegym.phimchill.controller;
+package com.codegym.phimchill.controller.auth;
 
 import com.codegym.phimchill.dto.payload.request.EmailRequest;
 import com.codegym.phimchill.dto.payload.response.ListMovieResponse;
 import com.codegym.phimchill.dto.payload.response.ListTvSeriesResponse;
-import com.codegym.phimchill.entity.Movie;
-import com.codegym.phimchill.security.JwtAuthFilter;
-import com.codegym.phimchill.security.JwtTokenProvider;
+import com.codegym.phimchill.dto.payload.request.PassRequest;
 import com.codegym.phimchill.service.SecurityService;
 import com.codegym.phimchill.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,10 +20,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
-
     @Autowired
     private UserService userService;
-
     @Autowired
     private SecurityService securityService;
 
@@ -109,6 +104,17 @@ public class UserController {
         }
     }
 
-
-
+        @PutMapping("/edit-password")
+        public ResponseEntity<?> editPassword (@RequestBody PassRequest passRequest, @RequestHeader("Authorization") String authToken ){
+                if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
+                        return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
+                }
+                String email = SecurityContextHolder.getContext().getAuthentication().getName();
+                boolean updated = userService.updatePass( email,passRequest.getPass());
+                if (updated) {
+                        return ResponseEntity.ok("Pass updated successfully");
+                } else {
+                        return ResponseEntity.ok("Pass updated fail");
+                }
+        }
 }

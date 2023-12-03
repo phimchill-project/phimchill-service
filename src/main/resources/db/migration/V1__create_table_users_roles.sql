@@ -1,4 +1,3 @@
-
 CREATE TABLE IF NOT EXISTS ROLES
 (
     ID          bigint auto_increment primary key,
