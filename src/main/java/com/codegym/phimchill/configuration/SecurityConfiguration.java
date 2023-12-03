@@ -101,10 +101,10 @@ public class SecurityConfiguration {
                 .requestMatchers("/api/movies/blockbuster").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/api/users/edit-email").permitAll());
+                .requestMatchers("/api/auth/users/edit-email").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/api/users/edit-password").permitAll());
+                .requestMatchers("/api/auth/users/edit-password").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/admin/movie/new").permitAll());

@@ -2,25 +2,29 @@ package com.codegym.phimchill.controller.auth;
 
 import com.codegym.phimchill.dto.payload.request.EmailRequest;
 import com.codegym.phimchill.dto.payload.request.PassRequest;
+import com.codegym.phimchill.security.JwtTokenProvider;
 import com.codegym.phimchill.service.SecurityService;
 import com.codegym.phimchill.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @CrossOrigin(value = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/auth/users")
 public class UserController {
 
         @Autowired
         private UserService userService;
+
         @Autowired
         private SecurityService securityService;
-
         @PutMapping("/edit-email")
         public ResponseEntity<?> editEmail( @RequestBody EmailRequest emailRequest,@RequestHeader("Authorization") String authToken) {
                 // Gọi service để xử lý logic
@@ -43,7 +47,7 @@ public class UserController {
                 String email = SecurityContextHolder.getContext().getAuthentication().getName();
                 boolean updated = userService.updatePass( email,passRequest.getPass());
                 if (updated) {
-                        return ResponseEntity.ok("Pass updated successfully");
+                        return ResponseEntity.ok("Pass updated ok");
                 } else {
                         return ResponseEntity.ok("Pass updated fail");
                 }

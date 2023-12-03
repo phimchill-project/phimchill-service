@@ -102,6 +102,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findUserByEmail(email);
         if (user != null) {
             String hashPassword = passwordEncoder.encode(pass);
+            user.setEmail(email);
             user.setPassword(hashPassword);
             userRepository.save(user);
             return true;
