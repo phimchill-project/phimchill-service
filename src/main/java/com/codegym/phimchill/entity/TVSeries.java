@@ -1,5 +1,6 @@
 package com.codegym.phimchill.entity;
 
+import com.codegym.phimchill.dto.TvSeriesDto;
 import jakarta.persistence.*;
 import lombok.*;
 import java.sql.Date;
@@ -52,4 +53,6 @@ public class TVSeries {
 
     @ManyToMany(mappedBy = "tvSeriesFavoriteList")
     private List<User> userFavoriteList;
+
+
 }

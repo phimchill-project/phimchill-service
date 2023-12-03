@@ -28,10 +28,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class MovieServiceImpl implements MovieService {
@@ -209,4 +206,25 @@ public class MovieServiceImpl implements MovieService {
                 .statusCode(HttpStatus.OK.value())
                 .build();
     }
+
+    @Override
+    public ListMovieResponse updateMovie(MovieDto movieDto) throws Exception {
+        Movie movie = movieRepository.findById(movieDto.getId())
+                .orElseThrow(() -> new Exception("Movie not found"));
+        movie.setName(movieDto.getName());
+        movie.setDescription(movieDto.getDescription());
+        movie.setYear(movieDto.getYear());
+        movie.setDuration(movieDto.getDuration());
+        movie.setImdb(movieDto.getImdb());
+        movie.setImage(movieDto.getImage());
+        movie.setTrailer(movieDto.getTrailer());
+        movie.setUrl(movieDto.getUrl());
+        movie.setViews(movieDto.getViews());
+        movieRepository.save(movie);
+        MovieDto updatedMovieDto = movieConverter.convertToDTO(movie);
+        List<MovieDto> updatedMovies = Collections.singletonList(updatedMovieDto);
+        return new ListMovieResponse(updatedMovies, "Movie updated successfully", HttpStatus.OK.value());
+    }
+
+
 }

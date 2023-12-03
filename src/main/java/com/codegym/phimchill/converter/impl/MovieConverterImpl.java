@@ -7,6 +7,7 @@ import com.codegym.phimchill.entity.Movie;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 public class MovieConverterImpl implements MovieConverter {
     @Autowired
     private CategoryConverter categoryConverter;
+
     @Override
     public MovieDto convertToDTO(Movie movie) {
         MovieDto movieDTO = new MovieDto();
@@ -26,7 +28,7 @@ public class MovieConverterImpl implements MovieConverter {
     @Override
     public List<MovieDto> convertToListDTO(List<Movie> movies) {
         List<MovieDto> listDTO = new ArrayList<>();
-        for (Movie movie: movies
+        for (Movie movie : movies
         ) {
             listDTO.add(convertToDTO(movie));
         }
