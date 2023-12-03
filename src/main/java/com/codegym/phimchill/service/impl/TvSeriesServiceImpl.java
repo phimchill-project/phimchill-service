@@ -10,6 +10,7 @@ import com.codegym.phimchill.dto.payload.response.CheckMovieNameExistResponse;
 import com.codegym.phimchill.dto.payload.response.ListMovieResponse;
 import com.codegym.phimchill.dto.payload.response.ListTvSeriesResponse;
 import com.codegym.phimchill.dto.payload.response.NewMovieResponse;
+import com.codegym.phimchill.entity.Movie;
 import com.codegym.phimchill.entity.TVSeries;
 import com.codegym.phimchill.entity.User;
 import com.codegym.phimchill.repository.TvSeriesPagingRepository;
@@ -22,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -95,6 +97,23 @@ public class TvSeriesServiceImpl implements TvSeriesService {
             }
         }
         return series.map(value -> tvSeriesConverter.convertToDto(value)).orElse(null);
+    }
+
+    @Override
+    public List<Optional<TvSeriesDto>> findManyTvSeriesByName(String nameMovie) {
+        nameMovie = nameNormalizationService.normalizeName(nameMovie);
+        List<TVSeries> tvSeries = tvSeriesRepository.findAll();
+        List<TvSeriesDto> tvSeriesDtos = tvSeriesConverter.convertToListDTO(tvSeries);
+        List<Optional<TvSeriesDto>> tvSeriesDtosNew = new ArrayList<>();
+        for (var item : tvSeriesDtos) {
+            if (tvSeriesDtosNew.size() == 10)
+                break;
+            String movieName = nameNormalizationService.normalizeName(item.getName());
+            if (movieName.contains(nameMovie)) {
+                tvSeriesDtosNew.add(Optional.of(item));
+            }
+        }
+        return tvSeriesDtosNew;
     }
 
     @Override

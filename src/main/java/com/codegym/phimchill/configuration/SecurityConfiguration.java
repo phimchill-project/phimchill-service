@@ -106,6 +106,9 @@ public class SecurityConfiguration {
                 .requestMatchers("/api/users/edit-email").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers("/api/users/edit-password").permitAll());
+
+        http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/admin/movie/new").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
@@ -124,8 +127,11 @@ public class SecurityConfiguration {
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/movies/detail").permitAll());
 
+//        http.authorizeHttpRequests((authorize) -> authorize
+//                .requestMatchers("/api/auth/comment/**").permitAll());
+
         http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/api/auth/comment/**").permitAll());
+                .requestMatchers("/api/comment/**").permitAll());
 
 
         // Configure remember me (save token in database)

@@ -47,9 +47,9 @@ public class TVSeries {
     @OneToMany(mappedBy = "tvSeries")
     private List<Season> seasonList;
 
-    @ManyToMany(mappedBy = "tvSeriesHistoryList")
-    private List<User> userHistoryList;
-
     @ManyToMany(mappedBy = "tvSeriesFavoriteList")
     private List<User> userFavoriteList;
+
+    @Column(name = "IS_DELETE")
+    private boolean isDelete;
 }
