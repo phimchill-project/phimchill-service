@@ -129,6 +129,7 @@ public class MovieController {
         }
     }
 
+
     @GetMapping("/{movieId}/duration")
     public ResponseEntity<MovieHistoryResponse> getDurationByMovieId(@PathVariable Long movieId, @RequestHeader("Authorization") final String authToken) {
         if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
@@ -148,6 +149,14 @@ public class MovieController {
             response.setMessage(e.getMessage());
             response.setStatusCode(HttpStatus.BAD_REQUEST.value());
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+
+    @PutMapping("/update")
+    public ResponseEntity<ListMovieResponse> updateMovie(@RequestBody MovieDto movieDto) {
+        try {
+            ListMovieResponse response = movieService.updateMovie(movieDto);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new ListMovieResponse(null, e.getMessage(), HttpStatus.BAD_REQUEST.value()));
         }
     }
 }
