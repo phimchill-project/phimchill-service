@@ -18,7 +18,7 @@ public interface UserService {
     RegisterResponse register(RegisterRequest registerRequest) throws Exception;
     boolean isEmailExist(EmailRequest emailRequest);
     User findUserByEmail(String email) throws Exception;
-    boolean updateEmail( String email );
+
     ListMovieResponse getFavoriteMovies(String email) throws  Exception;
     ListTvSeriesResponse getFavoriTeTVSeries(String email) throws Exception;
 

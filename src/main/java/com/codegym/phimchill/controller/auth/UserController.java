@@ -33,7 +33,8 @@ public class UserController {
         if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
             return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
         }
-        boolean updated = userService.updateEmail(emailRequest.getEmail());
+        String oldEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        boolean updated = userService.updateEmail(emailRequest.getEmail(), oldEmail);
         if (updated) {
             return ResponseEntity.ok("Email updated successfully");
         } else {
