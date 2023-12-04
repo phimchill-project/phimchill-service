@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TvSeriesResponse {
-    List<TvSeriesDto> listTVSeries;
-    String title;
+    private List<TvSeriesDto> listTVSeries;
+    private String title;
+    private int statusCode;
 }

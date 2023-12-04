@@ -14,11 +14,8 @@ import com.codegym.phimchill.dto.payload.response.MovieResponse;
 import com.codegym.phimchill.entity.Category;
 import com.codegym.phimchill.entity.Movie;
 import com.codegym.phimchill.entity.MovieComment;
-import com.codegym.phimchill.repository.CategoryRepository;
-import com.codegym.phimchill.repository.MovieCommentRepository;
-import com.codegym.phimchill.repository.MoviePagingRepository;
-import com.codegym.phimchill.repository.MovieRepository;
-import com.codegym.phimchill.service.CategoryService;
+import com.codegym.phimchill.entity.MovieSubComment;
+import com.codegym.phimchill.repository.*;
 import com.codegym.phimchill.service.MovieService;
 import com.codegym.phimchill.service.NameNormalizationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +24,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
+import java.util.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
+
 
 @Service
 public class MovieServiceImpl implements MovieService {
@@ -48,6 +45,7 @@ public class MovieServiceImpl implements MovieService {
     @Autowired
     private MovieConverter movieConverter;
 
+    @Autowired
     private NameNormalizationService nameNormalizationService;
 
     @Autowired
@@ -58,6 +56,10 @@ public class MovieServiceImpl implements MovieService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private MovieSubCommentRepository movieSubCommentRepository;
+
     @Override
     public ListMovieResponse getUpcomingMovies() {
         List<Movie> movies = movieRepository.findUnreleasedMovies();
@@ -140,22 +142,34 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public MovieDto findByName(String nameMovie) throws Exception {
-        nameMovie = nameMovie.replaceAll("-", " ");
-//        List<Movie> movies = movieRepository.findAll();
-//        Optional<Movie> movie = Optional.empty();
-//        for (var item : movies) {
-//            String movieName = nameNormalizationService.normalizeName(item.getName());
-//            if (movieName.equalsIgnoreCase(nameMovie)) {
-//                movie = Optional.of(item);
-//            }
-//        }
-//        return movie.map(value -> movieDtoConvert.convertToDTO(value)).orElse(null);
-        Movie movie = movieRepository.findByName(nameMovie);
-        if (movie == null){
-            throw new Exception("Cannot find movie : " + nameMovie);
+    public MovieDto findByName(String nameMovie) {
+        nameMovie = nameNormalizationService.normalizeName(nameMovie);
+        List<Movie> movies = movieRepository.findAll();
+        Optional<Movie> movie = Optional.empty();
+        for (var item : movies) {
+            String movieName = nameNormalizationService.normalizeName(item.getName());
+            if (movieName.equalsIgnoreCase(nameMovie)) {
+                movie = Optional.of(item);
+            }
         }
-        return movieConverter.convertToDTO(movie);
+        return movie.map(value -> movieDtoConvert.convertToDTO(value)).orElse(null);
+    }
+
+    @Override
+    public List<Optional<MovieDto>> findMoviesByName(String nameMovie) {
+        nameMovie = nameNormalizationService.normalizeName(nameMovie);
+        List<Movie> movies = movieRepository.findAll();
+        List<MovieDto> moviesDto = movieConverter.convertToListDTO(movies);
+        List<Optional<MovieDto>> moviesDtoNew = new ArrayList<>();
+        for (var item : moviesDto) {
+            if (moviesDtoNew.size() == 10)
+                break;
+            String movieName = nameNormalizationService.normalizeName(item.getName());
+            if (movieName.contains(nameMovie)) {
+                moviesDtoNew.add(Optional.of(item));
+            }
+        }
+        return moviesDtoNew;
     }
 
     @Override
@@ -181,14 +195,15 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public ListMovieCommentResponse getMovieCommentsById(Long movieId) throws Exception {
         List<MovieComment> movieCommentList = movieCommentRepository.findAllByMovieId(movieId);
-        if(movieCommentList == null){
-            throw new Exception("Cannot get comments by movie id " + movieId);
+        if(movieCommentList == null) {
+            throw new Exception("cannot comments success by movie id " + movieId);
         }
         List<MovieCommentDto> movieCommentDtoList = new ArrayList<>();
         for(MovieComment movieComment : movieCommentList){
+            List<MovieSubComment> movieSubCommentList = movieSubCommentRepository.findMovieSubCommentsByMovieComments_Id(movieComment.getId());
+            movieComment.setMovieSubCommentsList(movieSubCommentList);
             movieCommentDtoList.add(movieCommentConverter.convertToDto(movieComment));
         }
-
         return ListMovieCommentResponse.builder()
                 .data(movieCommentDtoList)
                 .message("get comments success by movie id " + movieId)
@@ -209,4 +224,25 @@ public class MovieServiceImpl implements MovieService {
                 .statusCode(HttpStatus.OK.value())
                 .build();
     }
+
+    @Override
+    public ListMovieResponse updateMovie(MovieDto movieDto) throws Exception {
+        Movie movie = movieRepository.findById(movieDto.getId())
+                .orElseThrow(() -> new Exception("Movie not found"));
+        movie.setName(movieDto.getName());
+        movie.setDescription(movieDto.getDescription());
+        movie.setYear(movieDto.getYear());
+        movie.setDuration(movieDto.getDuration());
+        movie.setImdb(movieDto.getImdb());
+        movie.setImage(movieDto.getImage());
+        movie.setTrailer(movieDto.getTrailer());
+        movie.setUrl(movieDto.getUrl());
+        movie.setViews(movieDto.getViews());
+        movieRepository.save(movie);
+        MovieDto updatedMovieDto = movieConverter.convertToDTO(movie);
+        List<MovieDto> updatedMovies = Collections.singletonList(updatedMovieDto);
+        return new ListMovieResponse(updatedMovies, "Movie updated successfully", HttpStatus.OK.value());
+    }
+
+
 }
