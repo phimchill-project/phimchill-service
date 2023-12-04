@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -93,6 +94,7 @@ public class SecurityConfiguration {
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/movies/upcoming").permitAll());
 
+
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/auth/login").permitAll());
 
@@ -101,7 +103,10 @@ public class SecurityConfiguration {
                 .requestMatchers("/api/movies/blockbuster").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/api/auth/users/edit-email").permitAll());
+
+                .requestMatchers("/api/auth/users/**").hasRole("USER"));
+        http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers("/api/auth/users/edit-email").hasRole("USER"));
 
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/auth/users/edit-password").permitAll());
@@ -110,10 +115,14 @@ public class SecurityConfiguration {
                 .requestMatchers("/api/admin/movie/new").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers("/api/movies/update").permitAll());
+
+        http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/movies/**").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/tvseries/**").permitAll());
+
 
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/category/**").permitAll());
@@ -124,8 +133,12 @@ public class SecurityConfiguration {
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/movies/detail").permitAll());
 
+//        http.authorizeHttpRequests((authorize) -> authorize
+//                .requestMatchers("/api/auth/comment/**").permitAll());
+
         http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/api/auth/comment/**").permitAll());
+                .requestMatchers("/api/comment/**").permitAll());
+
 
         // Configure remember me (save token in database)
         http.rememberMe((remember) -> remember

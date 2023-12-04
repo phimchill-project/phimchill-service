@@ -26,4 +26,5 @@ public interface MovieService {
     MovieDto getMovieById(Long id);
     ListMovieCommentResponse getMovieCommentsById(Long movieId) throws Exception;
     ListMovieResponse findMoviesByCategoryId(Long id) throws Exception;
+    ListMovieResponse updateMovie(MovieDto movieDto) throws Exception;
 }

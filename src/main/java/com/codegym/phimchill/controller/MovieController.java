@@ -125,9 +125,20 @@ public class MovieController {
         }catch (Exception e){
             ListMovieCommentResponse response = new ListMovieCommentResponse();
             response.setData(null);
-            response.setMessage("Cannot get comments by movie id "+ movieId);
+//            response.setMessage("Cannot get comments by movie id "+ movieId);
+            response.setMessage(e.getMessage());
             response.setStatusCode(HttpStatus.BAD_REQUEST.value());
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<ListMovieResponse> updateMovie(@RequestBody MovieDto movieDto) {
+        try {
+            ListMovieResponse response = movieService.updateMovie(movieDto);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new ListMovieResponse(null, e.getMessage(), HttpStatus.BAD_REQUEST.value()));
         }
     }
 }

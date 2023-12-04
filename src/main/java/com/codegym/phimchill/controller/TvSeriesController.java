@@ -1,7 +1,8 @@
 package com.codegym.phimchill.controller;
 
+import com.codegym.phimchill.dto.payload.request.TvSeriesRequest;
+
 import com.codegym.phimchill.dto.payload.response.FindManyTvSeriesReponse;
-import com.codegym.phimchill.dto.payload.response.FindMoviesReponse;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+
 import java.util.Optional;
 
 @RestController
@@ -38,6 +40,13 @@ public class TvSeriesController {
         TvSeriesResponse tvSeriesResponse = new TvSeriesResponse();
         tvSeriesResponse.setListTVSeries(tvSeriesService.getTop10Newest());
         tvSeriesResponse.setTitle("Newest TV series");
+        return new ResponseEntity<>(tvSeriesResponse, HttpStatus.OK) ;
+    }
+    @GetMapping("/favorites")
+    public ResponseEntity<TvSeriesResponse> findFavoriteList(@RequestParam Long user_id){
+        TvSeriesResponse tvSeriesResponse = new TvSeriesResponse();
+        tvSeriesResponse.setListTVSeries(tvSeriesService.getTop10FavoriteList(user_id));
+        tvSeriesResponse.setTitle("Favorite TVseries List");
         return new ResponseEntity<>(tvSeriesResponse, HttpStatus.OK) ;
     }
     // upcoming => them truong status (isDeleted, UpComing,...) vao bang TvSeries
@@ -81,5 +90,11 @@ public class TvSeriesController {
             }
             return ResponseEntity.ok(response);
         }
+    }
+    @PostMapping("/addFavoriteList")
+    public ResponseEntity<String> addFavoriteList(@RequestBody TvSeriesRequest tvSeriesRequest){
+
+        String message = tvSeriesService.addFavoriteList(tvSeriesRequest.getUser_id(),tvSeriesRequest.getTvSeries_id());
+        return new ResponseEntity<>(message, HttpStatus.OK) ;
     }
 }
