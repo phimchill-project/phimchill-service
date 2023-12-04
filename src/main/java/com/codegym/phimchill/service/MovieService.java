@@ -4,7 +4,6 @@ import com.codegym.phimchill.dto.payload.response.*;
 import com.codegym.phimchill.dto.MovieDto;
 import com.codegym.phimchill.dto.payload.request.MovieNameRequest;
 import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
-
 import com.codegym.phimchill.dto.payload.response.ListMovieResponse;
 import com.codegym.phimchill.dto.payload.response.CheckMovieNameExistResponse;
 import com.codegym.phimchill.dto.payload.response.MovieResponse;
@@ -26,6 +25,6 @@ public interface MovieService {
     MovieDto getMovieById(Long id);
     ListMovieCommentResponse getMovieCommentsById(Long movieId) throws Exception;
     ListMovieResponse findMoviesByCategoryId(Long id) throws Exception;
-
     MovieHistoryResponse DurationByMovieId(Long movieId) throws Exception;
+    ListMovieResponse updateMovie(MovieDto movieDto) throws Exception;
 }
