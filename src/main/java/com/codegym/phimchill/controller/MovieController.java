@@ -1,10 +1,7 @@
 package com.codegym.phimchill.controller;
 import com.codegym.phimchill.dto.payload.request.FavoriteMoviesRequest;
 import com.codegym.phimchill.dto.MovieDto;
-import com.codegym.phimchill.dto.payload.response.FindMoviesReponse;
-import com.codegym.phimchill.dto.payload.response.ListMovieCommentResponse;
-import com.codegym.phimchill.dto.payload.response.ListMovieResponse;
-import com.codegym.phimchill.dto.payload.response.FindMovieReponse;
+import com.codegym.phimchill.dto.payload.response.*;
 
 import com.codegym.phimchill.service.FavoriteMoviesService;
 import com.codegym.phimchill.service.MovieService;
@@ -131,6 +128,27 @@ public class MovieController {
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
+
+
+    @GetMapping("/{movieId}/duration")
+    public ResponseEntity<MovieHistoryResponse> getDurationByMovieId(@PathVariable Long movieId, @RequestHeader("Authorization") final String authToken) {
+        if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
+            MovieHistoryResponse response = MovieHistoryResponse.builder()
+                    .data(null)
+                    .message("Responding with unauthorized error. Message - {}")
+                    .statusCode(HttpStatus.UNAUTHORIZED.value())
+                    .build();
+            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+        }
+        try {
+            MovieHistoryResponse response = movieService.DurationByMovieId(movieId);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch (Exception e){
+            MovieHistoryResponse response = new MovieHistoryResponse();
+            response.setData(null);
+            response.setMessage(e.getMessage());
+            response.setStatusCode(HttpStatus.BAD_REQUEST.value());
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 
     @PutMapping("/update")
     public ResponseEntity<ListMovieResponse> updateMovie(@RequestBody MovieDto movieDto) {
