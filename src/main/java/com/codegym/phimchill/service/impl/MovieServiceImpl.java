@@ -2,19 +2,14 @@ package com.codegym.phimchill.service.impl;
 
 import com.codegym.phimchill.converter.MovieCommentConverter;
 import com.codegym.phimchill.converter.MovieConverter;
+import com.codegym.phimchill.converter.MovieHistoryConverter;
 import com.codegym.phimchill.dto.MovieCommentDto;
 import com.codegym.phimchill.dto.MovieDto;
 import com.codegym.phimchill.dto.payload.request.MovieNameRequest;
 import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
-import com.codegym.phimchill.dto.payload.response.CheckMovieNameExistResponse;
-import com.codegym.phimchill.dto.payload.response.ListMovieCommentResponse;
-import com.codegym.phimchill.dto.payload.response.ListMovieResponse;
+import com.codegym.phimchill.dto.payload.response.*;
 import com.codegym.phimchill.dto.NewMovieCategoryDto;
-import com.codegym.phimchill.dto.payload.response.MovieResponse;
-import com.codegym.phimchill.entity.Category;
-import com.codegym.phimchill.entity.Movie;
-import com.codegym.phimchill.entity.MovieComment;
-import com.codegym.phimchill.entity.MovieSubComment;
+import com.codegym.phimchill.entity.*;
 import com.codegym.phimchill.repository.*;
 import com.codegym.phimchill.service.MovieService;
 import com.codegym.phimchill.service.NameNormalizationService;
@@ -23,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -58,6 +54,15 @@ public class MovieServiceImpl implements MovieService {
 
     @Autowired
     private MovieSubCommentRepository movieSubCommentRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private MovieHistoryRepository movieHistoryRepository;
+
+    @Autowired
+    private MovieHistoryConverter movieHistoryConverter;
 
     @Override
     public ListMovieResponse getUpcomingMovies() {
@@ -220,6 +225,31 @@ public class MovieServiceImpl implements MovieService {
         return ListMovieResponse.builder()
                 .data(movieDtoList)
                 .message("Get movies by category " + id + " success")
+                .statusCode(HttpStatus.OK.value())
+                .build();
+    }
+
+    @Override
+    public MovieHistoryResponse DurationByMovieId(Long movieId) throws Exception {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findUserByEmail(email);
+        if(user == null) {
+            throw new Exception("Cannot find User by emai " + email + "to get duration");
+        }
+//        Movie movie = movieRepository.findById(movieId).orElseThrow(
+//                () -> new Exception("Cannot find movie by id " + movieId + "to save movie history")
+//        );
+        MovieHistory movieHistory = movieHistoryRepository.findMovieHistoriesByMovie_IdAndAndUser_Id(movieId, user.getId());
+        if(movieHistory == null){
+            return MovieHistoryResponse.builder()
+                    .data(null)
+                    .message("Get movie history success")
+                    .statusCode(HttpStatus.OK.value())
+                    .build();
+        }
+        return MovieHistoryResponse.builder()
+                .data(movieHistoryConverter.convertToDto(movieHistory))
+                .message("Get movie history success")
                 .statusCode(HttpStatus.OK.value())
                 .build();
     }

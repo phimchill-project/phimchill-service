@@ -17,10 +17,6 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
-
-#!**/src/main/resources/application.properties
-#!**/src/main/resources/application-local.properties
-
 ### IntelliJ IDEA ###
 .idea
 *.iws
@@ -41,4 +37,3 @@ out/
 .vscode/
 
 src/main/resources/application-local.properties
->>>>>>> 060e9d933892bb6d014758601b6368ade30c7458
