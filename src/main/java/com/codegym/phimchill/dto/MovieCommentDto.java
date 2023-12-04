@@ -15,6 +15,8 @@ public class MovieCommentDto {
     private Date datePost;
     private Long movieId;
     private UserDto userDto;
+    private List<Long> listUserIdLiked;
+    private int totalLike;
     private List<MovieSubCommentDto> subCommentDtoList;
     private List<UserDto> listUserTagged;
 }

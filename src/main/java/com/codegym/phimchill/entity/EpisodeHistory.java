@@ -1,27 +1,27 @@
-
 package com.codegym.phimchill.entity;
+
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Duration;
 
 @Entity
-@Table(name = "HISTORY_MOVIE")
+@Table(name = "HISTORY_EPISODE")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Builder
-public class MovieHistory {
+public class EpisodeHistory {
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "MOVIE_ID", referencedColumnName = "ID")
-    private Movie movie;
+    @JoinColumn(name = "EPISODE_ID", referencedColumnName = "ID")
+    private Episode episode;
     @ManyToOne
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
     private User user;
     @Column(name = "DURATION")
-    private float duration;
+    private Duration duration;
 }
