@@ -23,5 +23,5 @@ public class MovieHistory {
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
     private User user;
     @Column(name = "DURATION")
-    private Duration duration;
+    private float duration;
 }
