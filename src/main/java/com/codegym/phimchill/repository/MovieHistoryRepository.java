@@ -4,5 +4,5 @@ import com.codegym.phimchill.entity.MovieHistory;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MovieHistoryRepository extends JpaRepository<MovieHistory, Long> {
-    MovieHistory findMovieHistoriesByMovie_IdAndAndUser_Id(Long movieId, Long UserId);
+    MovieHistory findMovieHistoriesByMovie_IdAndUser_Id(Long movieId, Long UserId);
 }

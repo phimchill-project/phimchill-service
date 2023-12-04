@@ -239,7 +239,7 @@ public class MovieServiceImpl implements MovieService {
 //        Movie movie = movieRepository.findById(movieId).orElseThrow(
 //                () -> new Exception("Cannot find movie by id " + movieId + "to save movie history")
 //        );
-        MovieHistory movieHistory = movieHistoryRepository.findMovieHistoriesByMovie_IdAndAndUser_Id(movieId, user.getId());
+        MovieHistory movieHistory = movieHistoryRepository.findMovieHistoriesByMovie_IdAndUser_Id(movieId, user.getId());
         if(movieHistory == null){
             return MovieHistoryResponse.builder()
                     .data(null)
