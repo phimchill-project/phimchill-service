@@ -52,4 +52,8 @@ public class User {
     private List<MovieComment> movieCommentListUserLiked;
     @ManyToMany(mappedBy = "userListLikeSubComment")
     private List<MovieSubComment> movieSubCommentListUserLiked;
+    @OneToMany(mappedBy = "user")
+    private List<Payment> paymentList;
+    @Column(name = "IS_MEMBER")
+    private boolean isMember;
 }

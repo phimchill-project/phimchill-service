@@ -48,6 +48,7 @@ public class  AuthController {
             userDto.setEmail(SecurityContextHolder.getContext().getAuthentication().getName());
             userDto.setToken(token);
             userDto.setName(userDto.getName());
+            userDto.setMember(userDto.isMember());
             loginResponse.setData(userDto);
             loginResponse.setStatusCode(200);
             loginResponse.setMessage("login success");

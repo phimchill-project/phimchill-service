@@ -149,7 +149,8 @@ public class MovieController {
             response.setMessage(e.getMessage());
             response.setStatusCode(HttpStatus.BAD_REQUEST.value());
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-
+        }
+    }
     @PutMapping("/update")
     public ResponseEntity<ListMovieResponse> updateMovie(@RequestBody MovieDto movieDto) {
         try {

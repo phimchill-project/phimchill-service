@@ -3,6 +3,9 @@ package com.codegym.phimchill.controller;
 import com.codegym.phimchill.dto.payload.request.TvSeriesRequest;
 
 import com.codegym.phimchill.dto.payload.response.FindManyTvSeriesReponse;
+import com.codegym.phimchill.dto.payload.response.MovieHistoryResponse;
+import com.codegym.phimchill.service.SecurityService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +26,9 @@ import java.util.Optional;
 @CrossOrigin(value = "*", maxAge = 3600)
 public class TvSeriesController {
     private final TvSeriesService tvSeriesService;
+
+    @Autowired
+    private SecurityService securityService;
 
     public TvSeriesController(TvSeriesService tvSeriesService) {
         this.tvSeriesService = tvSeriesService;
@@ -96,5 +102,22 @@ public class TvSeriesController {
 
         String message = tvSeriesService.addFavoriteList(tvSeriesRequest.getUser_id(),tvSeriesRequest.getTvSeries_id());
         return new ResponseEntity<>(message, HttpStatus.OK) ;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<String> findById(@PathVariable Long id,
+                                           @RequestHeader("Authorization") final String authToken){
+        if(!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
+            return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
+            try {
+                MovieHistoryResponse response = movieService.DurationByMovieId(movieId);
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            }catch (Exception e){
+                MovieHistoryResponse response = new MovieHistoryResponse();
+                response.setData(null);
+                response.setMessage(e.getMessage());
+                response.setStatusCode(HttpStatus.BAD_REQUEST.value());
+                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            }
     }
 }
