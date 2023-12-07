@@ -25,8 +25,8 @@ public class Category {
     private List<Movie> movieList;
     @ManyToMany
     @JoinTable(
-            name = "CATEGORY_TVSERIES",
+            name = "category_tvseries",
             joinColumns = @JoinColumn(name = "CATEGORY_ID"),
             inverseJoinColumns = @JoinColumn(name = "TVSERIES_ID"))
-    private List<TVSeries> tvSeriesList;
+    private List<TVSeries> tvSeriesListManyToMany;
 }

@@ -40,7 +40,8 @@ public class TVSeries {
     @Column (name = "VIEWS")
     private Integer views;
 
-    @ManyToMany(mappedBy = "tvSeriesList")
+    @ManyToMany(mappedBy = "tvSeriesListManyToMany")
+    @EqualsAndHashCode.Exclude
     private List<Category> categoryList;
 
     @OneToMany(mappedBy = "tvSeries")
@@ -50,5 +51,5 @@ public class TVSeries {
     private List<User> userFavoriteList;
 
     @Column(name = "IS_DELETE")
-    private boolean isDelete;
+    private Boolean isDelete;
 }

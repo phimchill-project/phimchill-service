@@ -136,6 +136,8 @@ public class SecurityConfiguration {
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/comment/**").permitAll());
 
+        http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers("/api/admin/tvSeries/**").permitAll());
 
         // Configure remember me (save token in database)
         http.rememberMe((remember) -> remember

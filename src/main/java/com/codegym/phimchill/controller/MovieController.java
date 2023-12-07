@@ -143,12 +143,14 @@ public class MovieController {
         try {
             MovieHistoryResponse response = movieService.DurationByMovieId(movieId);
             return new ResponseEntity<>(response, HttpStatus.OK);
-        }catch (Exception e){
+        } catch (Exception e) {
             MovieHistoryResponse response = new MovieHistoryResponse();
             response.setData(null);
             response.setMessage(e.getMessage());
             response.setStatusCode(HttpStatus.BAD_REQUEST.value());
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
 
     @PutMapping("/update")
     public ResponseEntity<ListMovieResponse> updateMovie(@RequestBody MovieDto movieDto) {
