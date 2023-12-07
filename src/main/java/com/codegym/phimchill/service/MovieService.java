@@ -7,6 +7,8 @@ import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
 import com.codegym.phimchill.dto.payload.response.ListMovieResponse;
 import com.codegym.phimchill.dto.payload.response.CheckMovieNameExistResponse;
 import com.codegym.phimchill.dto.payload.response.MovieResponse;
+//import com.codegym.phimchill.entity.MovieHistory;
+
 import java.util.List;
 import java.util.Optional;
 

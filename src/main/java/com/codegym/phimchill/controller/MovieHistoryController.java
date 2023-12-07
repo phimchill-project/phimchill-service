@@ -1,6 +1,7 @@
 package com.codegym.phimchill.controller;
 
 import com.codegym.phimchill.dto.payload.request.MovieHistoryRequest;
+import com.codegym.phimchill.dto.payload.response.ListMovieHistoryResponse;
 import com.codegym.phimchill.dto.payload.response.MovieHistoryResponse;
 import com.codegym.phimchill.service.MovieHistoryService;
 import com.codegym.phimchill.service.SecurityService;
@@ -39,6 +40,29 @@ public class MovieHistoryController {
                     .statusCode(HttpStatus.UNAUTHORIZED.value())
                     .build();
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
+    @GetMapping("/watched-movies")
+    public ResponseEntity<ListMovieHistoryResponse> getWatchedMovies(@RequestHeader("Authorization") final String authToken) {
+        if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
+            ListMovieHistoryResponse response = ListMovieHistoryResponse.builder()
+                    .data(null)
+                    .message("Responding with unauthorized error. Message - {}")
+                    .statusCode(HttpStatus.UNAUTHORIZED.value())
+                    .build();
+            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+        }
+
+        try {
+            ListMovieHistoryResponse response = movieHistoryService.getWatchedMovies();
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            ListMovieHistoryResponse response = ListMovieHistoryResponse.builder()
+                    .data(null)
+                    .message(e.getMessage())
+                    .statusCode(HttpStatus.BAD_REQUEST.value())
+                    .build();
+            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
         }
     }
 }

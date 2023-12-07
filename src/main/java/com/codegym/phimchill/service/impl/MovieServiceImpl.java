@@ -254,7 +254,7 @@ public class MovieServiceImpl implements MovieService {
                 .statusCode(HttpStatus.OK.value())
                 .build();
     }
-  
+
     public ListMovieResponse updateMovie(MovieDto movieDto) throws Exception {
         Movie movie = movieRepository.findById(movieDto.getId())
                 .orElseThrow(() -> new Exception("Movie not found"));

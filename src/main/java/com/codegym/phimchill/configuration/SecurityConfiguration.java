@@ -34,7 +34,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableAutoConfiguration
 @EnableAsync
 @EnableWebSecurity
-@ComponentScan(basePackages = {"com.codegym.phimchill", "com.codegym.phimchill.security"})
+@ComponentScan(basePackages = {"com.codegym.phimchill", "com.codegym.phimchill.security",
+                                "com.codegym.phimchill.service.impl", "com.codegym.phimchill.repository"})
 public class SecurityConfiguration {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
@@ -99,7 +100,6 @@ public class SecurityConfiguration {
                 .requestMatchers("/api/auth/login").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
-
                 .requestMatchers("/api/movies/blockbuster").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
@@ -125,7 +125,7 @@ public class SecurityConfiguration {
                 .requestMatchers("/api/category/**").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/api/movies/**").permitAll());
+                .requestMatchers("/api/auth/comment/**").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/movies/detail").permitAll());
@@ -137,17 +137,8 @@ public class SecurityConfiguration {
                 .requestMatchers("/api/comment/**").permitAll());
 
 
-        // Configure remember me (save token in database)
-        http.rememberMe((remember) -> remember
-                .tokenRepository(this.persistentTokenRepository())
-                .tokenValiditySeconds(24 * 60 * 60)
-        );
-
         // Use JwtAuthorizationFilter to check token -> get user info
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
-    }
-    public PersistentTokenRepository persistentTokenRepository() {
-        return new InMemoryTokenRepositoryImpl();
     }
 }
