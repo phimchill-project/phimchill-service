@@ -1,5 +1,6 @@
 package com.codegym.phimchill.repository;
 
+import com.codegym.phimchill.entity.Category;
 import com.codegym.phimchill.entity.Movie;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,5 +30,5 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
 
     Movie findByName(String name);
 
-
+    void deleteMovieById(Long id);
 }

@@ -1,9 +1,11 @@
 package com.codegym.phimchill.controller.auth;
 
+import com.codegym.phimchill.dto.MovieDto;
 import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
 import com.codegym.phimchill.dto.payload.request.MovieNameRequest;
 import com.codegym.phimchill.dto.payload.response.CheckMovieNameExistResponse;
 import com.codegym.phimchill.dto.payload.response.ErrorResponse;
+import com.codegym.phimchill.dto.payload.response.ListMovieResponse;
 import com.codegym.phimchill.dto.payload.response.MovieResponse;
 import com.codegym.phimchill.service.MovieService;
 import com.codegym.phimchill.service.SecurityService;
@@ -14,7 +16,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/admin/movie")
+@RequestMapping("/api/admin/movies")
+@CrossOrigin(value = "*", maxAge = 3600)
 public class AuthMovieController {
     @Autowired
     private MovieService movieService;
@@ -44,4 +47,8 @@ public class AuthMovieController {
         CheckMovieNameExistResponse response = movieService.isNotExist(movieNameRequest);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+
+
+
 }

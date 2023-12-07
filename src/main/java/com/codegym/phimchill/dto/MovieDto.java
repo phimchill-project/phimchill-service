@@ -33,4 +33,6 @@ public class MovieDto {
     private List<CategoryDto> categoryList;
 
     private List<Long> userIdListLiked;
+
+    private Date dateRelease;
 }

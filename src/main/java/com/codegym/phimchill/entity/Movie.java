@@ -2,6 +2,8 @@ package com.codegym.phimchill.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
+
 import java.sql.Date;
 import java.util.List;
 
@@ -38,7 +40,7 @@ public class Movie {
     private Date dateRelease;
     @Column (name = "VIEWS")
     private Integer views;
-    @ManyToMany(mappedBy = "movieList")
+    @ManyToMany(mappedBy = "movieList",cascade = CascadeType.REMOVE)
     private List<Category> categoryList;
     @OneToMany(mappedBy = "movie")
     private List<MovieHistory> movieHistoryList;

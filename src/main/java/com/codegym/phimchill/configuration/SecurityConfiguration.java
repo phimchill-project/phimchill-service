@@ -116,6 +116,8 @@ public class SecurityConfiguration {
 
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/movies/**").permitAll());
+        http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers(HttpMethod.DELETE, "/api/movies/**").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/tvseries/**").permitAll());
@@ -126,6 +128,8 @@ public class SecurityConfiguration {
 
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/movies/**").permitAll());
+        http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers("/api/admin/movies/**").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/movies/detail").permitAll());
