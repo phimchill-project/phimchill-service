@@ -75,7 +75,6 @@ public class MovieHistoryServiceImpl implements MovieHistoryService {
             throw new Exception("User not found with email: " + email);
         }
 
-        // Lấy danh sách lịch sử xem phim của người dùng
         List<MovieHistory> watchedMovies = movieHistoryRepository.findMovieHistoriesByUser_Id(user.getId());
         if (watchedMovies.isEmpty()) {
             throw new Exception("Movie history is empty");
@@ -83,7 +82,7 @@ public class MovieHistoryServiceImpl implements MovieHistoryService {
         List<MovieHistoryWithMovieDetailDto> data = new ArrayList<>();
         for (MovieHistory movieHistory : watchedMovies) {
             data.add(MovieHistoryWithMovieDetailDto.builder()
-                            .movieImg(movieHistory.getMovie().getImage())
+                    .movieImg(movieHistory.getMovie().getImage())
                     .movieName(movieHistory.getMovie().getName())
                     .duration(movieHistory.getDuration())
                     .build());
@@ -93,8 +92,6 @@ public class MovieHistoryServiceImpl implements MovieHistoryService {
                 .message("Retrieved watched movies successfully")
                 .statusCode(HttpStatus.OK.value())
                 .build();
-        // Xử lý ngoại lệ
-
     }
 
 }

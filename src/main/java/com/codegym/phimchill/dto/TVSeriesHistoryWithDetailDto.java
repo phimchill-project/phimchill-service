@@ -7,8 +7,8 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
-public class MovieHistoryWithMovieDetailDto {
-    private String movieName;
-    private String movieImg;
+public class TVSeriesHistoryWithDetailDto {
+    private String tvseriesName;
+    private String tvseriesImg;
     private float duration;
 }
