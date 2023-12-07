@@ -9,10 +9,7 @@ import lombok.*;
 @Setter
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ErrorResponse {
-
-    private String data = null;
-
+public class NonDataResponse {
     private String message;
 
     private int statusCode;

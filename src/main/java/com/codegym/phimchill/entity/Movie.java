@@ -49,5 +49,5 @@ public class Movie {
     @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY)
     private List<MovieComment> movieCommentList;
     @Column(name = "IS_DELETE")
-    private boolean isDelete;
+    private Boolean isDelete;
 }

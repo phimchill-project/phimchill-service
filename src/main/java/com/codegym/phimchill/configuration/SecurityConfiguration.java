@@ -141,6 +141,8 @@ public class SecurityConfiguration {
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/comment/**").permitAll());
 
+        http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers("/api/admin/tvSeries/**").permitAll());
 
         // Use JwtAuthorizationFilter to check token -> get user info
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

@@ -1,10 +1,11 @@
 package com.codegym.phimchill.service;
 
 import com.codegym.phimchill.dto.PagingMovieResponseDto;
+import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
 import com.codegym.phimchill.dto.payload.response.*;
 import com.codegym.phimchill.dto.MovieDto;
 import com.codegym.phimchill.dto.payload.request.MovieNameRequest;
-import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
+import com.codegym.phimchill.dto.payload.request.NewFilmRequest;
 import com.codegym.phimchill.dto.payload.response.ListMovieResponse;
 import com.codegym.phimchill.dto.payload.response.CheckMovieNameExistResponse;
 import com.codegym.phimchill.dto.payload.response.MovieResponse;
@@ -20,8 +21,12 @@ public interface MovieService {
 
     PagingMovieResponse findAll(int pageNumber, int pageSize);
 
-    MovieResponse create(NewMovieRequest newTvSeriesRequest) throws Exception;
+//    MovieResponse create(NewMovieRequest newTvSeriesRequest) throws Exception;
 
+    MovieResponse update(NewMovieRequest updateMovieRequest) throws Exception;
+
+    List<MovieDto> findAll();
+    MovieResponse create(NewFilmRequest newTvSeriesRequest) throws Exception;
     CheckMovieNameExistResponse isNotExist(MovieNameRequest movieNameRequest);
 
     ListMovieResponse getMoviesByCategory(Long id);
@@ -50,5 +55,5 @@ public interface MovieService {
 
     PagingMovieResponse deleteMovies(Long id, Pageable pageable);
 
-    MovieResponse update(NewMovieRequest updateMovieRequest) throws Exception;
+
 }
