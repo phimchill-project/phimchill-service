@@ -46,12 +46,22 @@ public class TvSeriesServiceImpl implements TvSeriesService {
 
     @Override
     public boolean create(NewFilmRequest newTvSeriesRequest) {
+
         if (newTvSeriesRequest.getName() == null || newTvSeriesRequest.getName().isEmpty() ||
                 newTvSeriesRequest.getDescription() == null || newTvSeriesRequest.getDescription().isEmpty() ||
                 newTvSeriesRequest.getImage() == null || newTvSeriesRequest.getImage().isEmpty() ||
                 newTvSeriesRequest.getDateRelease() == null ||
                 newTvSeriesRequest.getCategoryList() == null || newTvSeriesRequest.getCategoryList().isEmpty()) {
             return false;
+        }
+
+        String nameTvSeries = nameNormalizationService.normalizeName(newTvSeriesRequest.getName());
+        List<TVSeries> seriesList = tvSeriesRepository.findAll();
+        for (var item : seriesList) {
+            String tvSeriesName = nameNormalizationService.normalizeName(item.getName());
+            if (tvSeriesName.equalsIgnoreCase(nameTvSeries)) {
+                return false;
+            }
         }
 
         try {
@@ -119,7 +129,7 @@ public class TvSeriesServiceImpl implements TvSeriesService {
 
     @Override
     public TvSeriesDto findByName(String nameTvSeries){
-        nameTvSeries = nameTvSeries.replaceAll("-", " ");
+        nameTvSeries = nameNormalizationService.normalizeName(nameTvSeries);
         List<TVSeries> seriesList = tvSeriesRepository.findAll();
         Optional<TVSeries> series = Optional.empty();
         for (var item : seriesList) {
