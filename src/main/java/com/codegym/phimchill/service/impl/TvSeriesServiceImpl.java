@@ -72,6 +72,10 @@ public class TvSeriesServiceImpl implements TvSeriesService {
             }
             tvSeries.setCategoryList(categoryList);
             tvSeriesRepository.save(tvSeries);
+            for(Category category : categoryList){
+                category.getTvSeriesList().add(tvSeries);
+                categoryRepository.save(category);
+            }
         }catch (Exception ignored){
             return false;
         }

@@ -40,7 +40,7 @@ public class TVSeries {
     @Column (name = "VIEWS")
     private Integer views;
 
-    @ManyToMany(mappedBy = "tvSeriesListManyToMany")
+    @ManyToMany(mappedBy = "tvSeriesList")
     @EqualsAndHashCode.Exclude
     private List<Category> categoryList;
 
