@@ -1,6 +1,6 @@
 package com.codegym.phimchill.controller.auth;
 
-import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
+import com.codegym.phimchill.dto.payload.request.NewFilmRequest;
 import com.codegym.phimchill.dto.payload.request.MovieNameRequest;
 import com.codegym.phimchill.dto.payload.response.CheckMovieNameExistResponse;
 import com.codegym.phimchill.dto.payload.response.ErrorResponse;
@@ -24,7 +24,7 @@ public class AuthMovieController {
 
     @PostMapping("/new")
     public ResponseEntity<?> createNewMovie(
-            @RequestBody NewMovieRequest newMovieRequest) {
+            @RequestBody NewFilmRequest newMovieRequest) {
 //        if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
 //            return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
 //        }

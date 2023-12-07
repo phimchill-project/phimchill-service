@@ -6,9 +6,9 @@ import com.codegym.phimchill.converter.MovieHistoryConverter;
 import com.codegym.phimchill.dto.MovieCommentDto;
 import com.codegym.phimchill.dto.MovieDto;
 import com.codegym.phimchill.dto.payload.request.MovieNameRequest;
-import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
+import com.codegym.phimchill.dto.payload.request.NewFilmRequest;
 import com.codegym.phimchill.dto.payload.response.*;
-import com.codegym.phimchill.dto.NewMovieCategoryDto;
+import com.codegym.phimchill.dto.NewFilmCategoryDto;
 import com.codegym.phimchill.entity.*;
 import com.codegym.phimchill.repository.*;
 import com.codegym.phimchill.service.MovieService;
@@ -76,7 +76,6 @@ public class MovieServiceImpl implements MovieService {
         return movieResponse;
     }
 
-
     @Override
     public List<MovieDto> findAll() {
         List<Movie> movieList = movieRepository.findAll();
@@ -85,7 +84,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public MovieResponse create(NewMovieRequest newTvSeriesRequest) throws Exception {
+    public MovieResponse create(NewFilmRequest newTvSeriesRequest) throws Exception {
         Movie newMovie = Movie.builder()
                 .name(newTvSeriesRequest.getName())
                 .description(newTvSeriesRequest.getDescription())
@@ -97,7 +96,7 @@ public class MovieServiceImpl implements MovieService {
                 .dateRelease(newTvSeriesRequest.getDateRelease())
                 .build();
         List<Category> categoryList = new ArrayList<>();
-        for (NewMovieCategoryDto categoryDto : newTvSeriesRequest.getCategoryList()) {
+        for (NewFilmCategoryDto categoryDto : newTvSeriesRequest.getCategoryList()) {
             Category category = categoryRepository.findById(categoryDto.getId()).orElseThrow(
                     () -> new Exception("Create Movie Fail")
             );
