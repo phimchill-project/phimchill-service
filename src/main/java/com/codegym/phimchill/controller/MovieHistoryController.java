@@ -33,7 +33,7 @@ public class MovieHistoryController {
         try {
             MovieHistoryResponse response = movieHistoryService.save(movieHistoryRequest);
             return new ResponseEntity<>(response, HttpStatus.OK);
-        }catch (Exception e){
+        } catch (Exception e) {
             MovieHistoryResponse response = MovieHistoryResponse.builder()
                     .data(null)
                     .message("Cannot save movie history")
@@ -42,6 +42,7 @@ public class MovieHistoryController {
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
+
     @GetMapping("/watched-movies")
     public ResponseEntity<ListMovieHistoryResponse> getWatchedMovies(@RequestHeader("Authorization") final String authToken) {
         if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
@@ -52,7 +53,6 @@ public class MovieHistoryController {
                     .build();
             return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
         }
-
         try {
             ListMovieHistoryResponse response = movieHistoryService.getWatchedMovies();
             return new ResponseEntity<>(response, HttpStatus.OK);
