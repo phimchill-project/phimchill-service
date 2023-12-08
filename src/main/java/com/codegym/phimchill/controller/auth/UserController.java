@@ -1,11 +1,8 @@
 package com.codegym.phimchill.controller.auth;
 
 import com.codegym.phimchill.dto.payload.request.EmailRequest;
-import com.codegym.phimchill.dto.payload.response.ListChatResponse;
-import com.codegym.phimchill.dto.payload.response.ListMovieResponse;
-import com.codegym.phimchill.dto.payload.response.ListTvSeriesResponse;
+import com.codegym.phimchill.dto.payload.response.*;
 import com.codegym.phimchill.dto.payload.request.PassRequest;
-import com.codegym.phimchill.dto.payload.response.ListUserResponse;
 import com.codegym.phimchill.service.SecurityService;
 import com.codegym.phimchill.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,37 +17,14 @@ import java.util.List;
 
 @CrossOrigin(value = "*", maxAge = 3600)
 @RestController
-    @RequestMapping("/api/users")
+@RequestMapping("/api/users")
 public class UserController {
     @Autowired
     private UserService userService;
     @Autowired
     private SecurityService securityService;
 
-    @PutMapping("/edit-email")
-    public ResponseEntity<?> editEmail(@RequestBody EmailRequest emailRequest, @RequestHeader("Authorization") String authToken) {
-        // Gọi service để xử lý logic
-        if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
-            return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
-        }
-        String oldEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        boolean updated = userService.updateEmail(emailRequest.getEmail(), oldEmail);
-        if (updated) {
-            return ResponseEntity.ok("Email updated successfully");
-        } else {
-            return ResponseEntity.ok("Email updated fail");
-        }
 
-    }
-
-    //        @PutMapping("/edit-password")
-//        public ResponseEntity<?> editPassword (@RequestBody PassRequest passRequest,@RequestHeader("Authorization") String authToken ){
-//                if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
-//                        return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
-//                }
-//                boolean updated = userService.updatePass(passRequest.getPass());
-//
-//        }
     @GetMapping("/favorite-movies")
     public ResponseEntity<?> getFavoriteMovies(@RequestHeader("Authorization") String authToken) {
         if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
@@ -105,58 +79,86 @@ public class UserController {
         }
     }
 
-        @PutMapping("/edit-password")
-        public ResponseEntity<?> editPassword (@RequestBody PassRequest passRequest, @RequestHeader("Authorization") String authToken ){
-                if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
-                        return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
-                }
-                String email = SecurityContextHolder.getContext().getAuthentication().getName();
-                boolean updated = userService.updatePass( email,passRequest.getPass());
-                if (updated) {
-                        return ResponseEntity.ok("Pass updated successfully");
-                } else {
-                        return ResponseEntity.ok("Pass updated fail");
-                }
+    @PutMapping("/edit-password")
+    public ResponseEntity<?> editPassword (@RequestBody PassRequest passRequest, @RequestHeader("Authorization") String authToken ){
+        if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
+            return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
+        }
+        try {
+            String email = SecurityContextHolder.getContext().getAuthentication().getName();
+            EmailRespone updated = userService.updatePass( email,passRequest.getPass());
+            return ResponseEntity.ok(updated);
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(new EmailRespone(new ArrayList<>(), e.getMessage(), HttpStatus.BAD_REQUEST.value()));
         }
 
-        @GetMapping("/all")
-        public ResponseEntity<ListUserResponse> editPassword (@RequestHeader("Authorization") String authToken ){
-            if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
-                ListUserResponse response = ListUserResponse.builder()
-                        .data(null)
-                        .message("Responding with unauthorized error. Message - {}")
-                        .statusCode(HttpStatus.UNAUTHORIZED.value())
-                        .build();
-                return new ResponseEntity<>(response, HttpStatus.OK);
-            }
-            try {
-                String email = SecurityContextHolder.getContext().getAuthentication().getName();
-                ListUserResponse response = userService.findAll(email);
-                return new ResponseEntity<>(response, HttpStatus.OK);
-            }catch (Exception e){
-                ListUserResponse response = ListUserResponse.builder()
-                        .data(null)
-                        .message(e.getMessage())
-                        .statusCode(HttpStatus.BAD_REQUEST.value())
-                        .build();
-                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-            }
+    }
+    @PutMapping("/edit-email")
+    public ResponseEntity<?> editEmail( @RequestBody EmailRequest emailRequest,@RequestHeader("Authorization") String authToken) {
+        if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
+            return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
+        }  try {
+            String email = SecurityContextHolder.getContext().getAuthentication().getName();
+            EmailRespone updated = userService.updatePass( email,emailRequest.getEmail());
+            return ResponseEntity.ok(updated);
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(new EmailRespone(new ArrayList<>(), e.getMessage(), HttpStatus.BAD_REQUEST.value()));
+        }
+    }
+
+    @PostMapping("/favorite-movies/{movieId}")
+    public ResponseEntity<?> editFavorite(@RequestHeader("Authorization") String
+                                                  authToken, @PathVariable Long movieId) {
+        if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
+            return new ResponseEntity<>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
+        }
+        try {
+            String email = SecurityContextHolder.getContext().getAuthentication().getName();
+            ListMovieResponse response = userService.editFavoriteMovies(email, movieId);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new ListMovieResponse(new ArrayList<>(), e.getMessage(), HttpStatus.BAD_REQUEST.value()));
+        }
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<ListUserResponse> editPassword (@RequestHeader("Authorization") String authToken ){
+        if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
+            ListUserResponse response = ListUserResponse.builder()
+                    .data(null)
+                    .message("Responding with unauthorized error. Message - {}")
+                    .statusCode(HttpStatus.UNAUTHORIZED.value())
+                    .build();
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+        try {
+            String email = SecurityContextHolder.getContext().getAuthentication().getName();
+            ListUserResponse response = userService.findAll(email);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch (Exception e){
+            ListUserResponse response = ListUserResponse.builder()
+                    .data(null)
+                    .message(e.getMessage())
+                    .statusCode(HttpStatus.BAD_REQUEST.value())
+                    .build();
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/check-member")
+    public ResponseEntity<?> checkMember (@RequestHeader("Authorization") String authToken ) throws Exception {
+        if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
+            ListUserResponse response = ListUserResponse.builder()
+                    .data(null)
+                    .message("Responding with unauthorized error. Message - {}")
+                    .statusCode(HttpStatus.UNAUTHORIZED.value())
+                    .build();
+            return new ResponseEntity<>(response, HttpStatus.OK);
         }
 
-        @GetMapping("/check-member")
-        public ResponseEntity<?> checkMember (@RequestHeader("Authorization") String authToken ) throws Exception {
-            if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
-                ListUserResponse response = ListUserResponse.builder()
-                        .data(null)
-                        .message("Responding with unauthorized error. Message - {}")
-                        .statusCode(HttpStatus.UNAUTHORIZED.value())
-                        .build();
-                return new ResponseEntity<>(response, HttpStatus.OK);
-            }
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        boolean response = userService.checkMember(email);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
-                String email = SecurityContextHolder.getContext().getAuthentication().getName();
-                boolean response = userService.checkMember(email);
-                return new ResponseEntity<>(response, HttpStatus.OK);
-           
-        }
 }

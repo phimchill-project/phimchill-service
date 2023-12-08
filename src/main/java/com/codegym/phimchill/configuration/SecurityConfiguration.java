@@ -102,6 +102,14 @@ public class SecurityConfiguration {
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/movies/blockbuster").permitAll());
 
+        http.authorizeHttpRequests((authorize) -> authorize
+
+                .requestMatchers("/api/auth/users/**").hasRole("USER"));
+        http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers("/api/auth/users/edit-email").hasRole("USER"));
+
+        http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers("/api/auth/users/edit-password").permitAll());
 //        http.authorizeHttpRequests((authorize) -> authorize
 //                .requestMatchers("/api/users/**").hasRole("USER"));
 

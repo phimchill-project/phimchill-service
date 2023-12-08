@@ -111,28 +111,49 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updateEmail(String newEmail, String oldEmail) {
+    public EmailRespone updateEmail(String email, String newEmail) throws Exception {
         User existingUser = userRepository.findUserByEmail(newEmail);
         if (existingUser != null) {
-            return false;
+            throw new Exception("User not found");
         }
-        User newUser = userRepository.findUserByEmail(oldEmail);
+        User newUser = userRepository.findUserByEmail(email);
         newUser.setEmail(newEmail);
         userRepository.save(newUser);
-        return true;
+        return new EmailRespone(
+                new ArrayList<>(),
+                "Update Email ok",
+                HttpStatus.OK.value()
+        );
+    }
+    @Override
+    public EmailRespone updatePass(String email, String pass) throws Exception {
+        User user = userRepository.findUserByEmail(email);
+        if (user == null) {
+            throw new Exception("User not found");
+        }
+        String hashPassword = passwordEncoder.encode(pass);
+        user.setPassword(hashPassword);
+        userRepository.save(user);
+        return new EmailRespone(
+                new ArrayList<>(),
+                "Update Email ok",
+                HttpStatus.OK.value()
+        );
     }
 
     @Override
-    public boolean updatePass(String email, String pass) {
+    public ListMovieResponse editFavoriteMovies(String email, Long movieId) throws Exception {
         User user = userRepository.findUserByEmail(email);
-        if (user != null) {
-            String hashPassword = passwordEncoder.encode(pass);
-            user.setPassword(hashPassword);
-            userRepository.save(user);
-            return true;
+        if (user == null) {
+            throw new Exception("User not found");
         }
-        return false;
-
+        Movie movie = movieRepository.findById(movieId)
+                .orElseThrow(() -> new Exception("Movie not found"));
+        user.getMovieFavoriteList().add(movie);
+        movie.getUserFavoriteList().add(user);
+        movieRepository.save(movie);
+        userRepository.save(user);
+        return new ListMovieResponse(new ArrayList<>(), "Movie removed from favorites", HttpStatus.OK.value());
     }
 
     @Override
@@ -164,6 +185,7 @@ public class UserServiceImpl implements UserService {
         }
         return user.isMember();
     }
+
 
     @Override
     public ListMovieResponse getFavoriteMovies(String email) throws Exception {
