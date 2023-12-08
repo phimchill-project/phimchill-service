@@ -7,6 +7,6 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
-public class NewMovieCategoryDto {
+public class NewFilmCategoryDto {
     private Long id;
 }

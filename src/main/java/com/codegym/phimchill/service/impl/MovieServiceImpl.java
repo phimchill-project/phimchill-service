@@ -3,12 +3,14 @@ package com.codegym.phimchill.service.impl;
 import com.codegym.phimchill.converter.MovieCommentConverter;
 import com.codegym.phimchill.converter.MovieConverter;
 import com.codegym.phimchill.converter.MovieHistoryConverter;
+import com.codegym.phimchill.dto.CategoryDto;
 import com.codegym.phimchill.dto.MovieCommentDto;
 import com.codegym.phimchill.dto.MovieDto;
 import com.codegym.phimchill.dto.payload.request.MovieNameRequest;
+import com.codegym.phimchill.dto.payload.request.NewFilmRequest;
 import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
 import com.codegym.phimchill.dto.payload.response.*;
-import com.codegym.phimchill.dto.NewMovieCategoryDto;
+import com.codegym.phimchill.dto.NewFilmCategoryDto;
 import com.codegym.phimchill.entity.*;
 import com.codegym.phimchill.repository.*;
 import com.codegym.phimchill.service.CategoryService;
@@ -78,7 +80,6 @@ public class MovieServiceImpl implements MovieService {
         return movieResponse;
     }
 
-
     @Override
     public List<MovieDto> findAll() {
         List<Movie> movieList = movieRepository.findAll();
@@ -87,7 +88,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public MovieResponse create(@Payload NewMovieRequest newMovieRequest) throws Exception {
+    public MovieResponse create(NewMovieRequest newMovieRequest) throws Exception {
         Movie newMovie = Movie.builder()
                 .name(newMovieRequest.getName())
                 .description(newMovieRequest.getDescription())
@@ -103,7 +104,7 @@ public class MovieServiceImpl implements MovieService {
             throw new Exception("Movie already exist");
         }
         List<Category> categoryList = new ArrayList<>();
-        for (NewMovieCategoryDto categoryDto : newMovieRequest.getCategoryList()) {
+        for (CategoryDto categoryDto : newMovieRequest.getCategoryList()) {
             Category category = categoryRepository.findById(categoryDto.getId()).orElseThrow(
                     () -> new Exception("Create Movie Fail")
             );
@@ -122,6 +123,7 @@ public class MovieServiceImpl implements MovieService {
                 .statusCode(200)
                 .build();
     }
+
 
     @Override
     public CheckMovieNameExistResponse isNotExist(MovieNameRequest movieNameRequest) {
@@ -265,7 +267,7 @@ public class MovieServiceImpl implements MovieService {
                 .statusCode(HttpStatus.OK.value())
                 .build();
     }
-  
+
     public ListMovieResponse updateMovie(MovieDto movieDto) throws Exception {
         Movie movie = movieRepository.findById(movieDto.getId())
                 .orElseThrow(() -> new Exception("Movie not found"));
