@@ -9,15 +9,12 @@ import com.codegym.phimchill.dto.TvSeriesDto;
 import com.codegym.phimchill.dto.UserDto;
 import com.codegym.phimchill.dto.payload.request.EmailRequest;
 import com.codegym.phimchill.dto.payload.request.RegisterRequest;
-import com.codegym.phimchill.dto.payload.response.ListMovieResponse;
-import com.codegym.phimchill.dto.payload.response.ListTvSeriesResponse;
+import com.codegym.phimchill.dto.payload.response.*;
 import com.codegym.phimchill.entity.Movie;
 import com.codegym.phimchill.entity.Role;
 import com.codegym.phimchill.entity.TVSeries;
 import com.codegym.phimchill.entity.User;
 import com.codegym.phimchill.dto.payload.request.LoginRequest;
-import com.codegym.phimchill.dto.payload.response.LoginResponse;
-import com.codegym.phimchill.dto.payload.response.RegisterResponse;
 import com.codegym.phimchill.repository.MovieRepository;
 import com.codegym.phimchill.repository.RoleRepository;
 import com.codegym.phimchill.repository.TvSeriesRepository;
@@ -138,6 +135,26 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public ListUserResponse findAll(String email) throws Exception {
+        User currentUser = userRepository.findUserByEmail(email);
+        if(currentUser == null) {
+            throw new Exception("email not exist");
+        }
+        List<User> userLists = userRepository.findAll();
+        List<UserDto> userDtoList = new ArrayList<>();
+        for (User user : userLists){
+            if(user.getId() == currentUser.getId()){
+                continue;
+            }
+            userDtoList.add(userConverter.converterToDTO(user));
+        }
+        return ListUserResponse.builder()
+                .data(userDtoList)
+                .message("Get all user success")
+                .statusCode(HttpStatus.OK.value())
+                .build();
+    }
 
     @Override
     public ListMovieResponse getFavoriteMovies(String email) throws Exception {

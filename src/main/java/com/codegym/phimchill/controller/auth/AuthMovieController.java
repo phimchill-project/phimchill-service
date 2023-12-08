@@ -1,7 +1,8 @@
 package com.codegym.phimchill.controller.auth;
 
-import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
+import com.codegym.phimchill.dto.payload.request.NewFilmRequest;
 import com.codegym.phimchill.dto.payload.request.MovieNameRequest;
+import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
 import com.codegym.phimchill.dto.payload.response.CheckMovieNameExistResponse;
 import com.codegym.phimchill.dto.payload.response.ErrorResponse;
 import com.codegym.phimchill.dto.payload.response.MovieResponse;

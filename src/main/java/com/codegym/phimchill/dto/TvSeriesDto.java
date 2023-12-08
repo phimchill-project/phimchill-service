@@ -27,4 +27,5 @@ public class TvSeriesDto {
     private List<CategoryDto> categoryList;
 
     private List<SeasonDto> seasonList;
+    private Boolean isDelete;
 }

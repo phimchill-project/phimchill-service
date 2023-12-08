@@ -23,6 +23,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +61,7 @@ public class MovieCommentServiceImpl implements MovieCommentService {
                 }
             }
         }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Movie movieWatching = movieRepository.findById(commentRequest.getMovieId()).orElseThrow(() -> new Exception("Cannot Find Movie To Save Comment"));
         MovieComment newComment = MovieComment.builder()
                 .comment(commentRequest.getComment())

@@ -44,10 +44,11 @@ public class  AuthController {
             UserDto userDto = userService.login(loginRequest);
             LoginResponse loginResponse = new LoginResponse();
 //            UserDto userDto = new UserDto();
-            userDto.setId(userDto.getId());
-            userDto.setEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+//            userDto.setId(userDto.getId());
+//            userDto.setEmail(SecurityContextHolder.getContext().getAuthentication().getName());
             userDto.setToken(token);
-            userDto.setName(userDto.getName());
+//            userDto.setName(userDto.getName());
+//            userDto.setMember(userDto.isMember());
             loginResponse.setData(userDto);
             loginResponse.setStatusCode(200);
             loginResponse.setMessage("login success");
@@ -58,7 +59,6 @@ public class  AuthController {
             return ResponseEntity.ok(loginResponse);
         }
     }
-
     @PostMapping("/register")
     public ResponseEntity<?> register(@Validated @RequestBody RegisterRequest registerRequest) throws Exception {
         RegisterResponse response = userService.register(registerRequest);
@@ -67,7 +67,6 @@ public class  AuthController {
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-
     @PostMapping("/email-not-existion")
     public ResponseEntity<?> isEmailNotExist (@RequestBody EmailRequest emailRequest) {
         boolean response = userService.isEmailExist(emailRequest);

@@ -22,6 +22,7 @@ public class MovieConverterImpl implements MovieConverter {
         MovieDto movieDTO = new MovieDto();
         BeanUtils.copyProperties(movie, movieDTO);
         movieDTO.setCategoryList(categoryConverter.convertToListDto(movie.getCategoryList()));
+
         return movieDTO;
     }
 

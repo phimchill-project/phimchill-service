@@ -1,9 +1,8 @@
-package com.codegym.phimchill.entity;
 
+package com.codegym.phimchill.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.Duration;
 
 @Entity
 @Table(name = "HISTORY_MOVIE")
