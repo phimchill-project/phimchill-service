@@ -3,32 +3,32 @@ package com.codegym.phimchill.service.impl;
 import com.codegym.phimchill.converter.MovieCommentConverter;
 import com.codegym.phimchill.converter.MovieConverter;
 import com.codegym.phimchill.converter.MovieHistoryConverter;
-import com.codegym.phimchill.dto.CategoryDto;
-import com.codegym.phimchill.dto.MovieCommentDto;
-import com.codegym.phimchill.dto.MovieDto;
+import com.codegym.phimchill.dto.*;
 import com.codegym.phimchill.dto.payload.request.MovieNameRequest;
 import com.codegym.phimchill.dto.payload.request.NewFilmRequest;
 import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
 import com.codegym.phimchill.dto.payload.response.*;
-import com.codegym.phimchill.dto.NewFilmCategoryDto;
 import com.codegym.phimchill.entity.*;
 import com.codegym.phimchill.repository.*;
 import com.codegym.phimchill.service.CategoryService;
 import com.codegym.phimchill.service.MovieService;
 import com.codegym.phimchill.service.NameNormalizationService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
 import java.util.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+import java.util.stream.Collectors;
 
 
 @Service
@@ -118,7 +118,7 @@ public class MovieServiceImpl implements MovieService {
                 .dateRelease(newMovieRequest.getDateRelease())
                 .build();
         Movie movie = movieRepository.findByName(newMovie.getName());
-        if(movie != null){
+        if (movie != null) {
             throw new Exception("Movie already exist");
         }
         List<Category> categoryList = new ArrayList<>();
@@ -131,7 +131,7 @@ public class MovieServiceImpl implements MovieService {
         newMovie.setCategoryList(categoryList);
 
         newMovie = movieRepository.save(newMovie);
-        for(Category category : categoryList){
+        for (Category category : categoryList) {
             category.getMovieList().add(newMovie);
             categoryRepository.save(category);
         }
@@ -273,8 +273,6 @@ public class MovieServiceImpl implements MovieService {
 //                () -> new Exception("Cannot find movie by id " + movieId + "to save movie history")
 //        );
         MovieHistory movieHistory = movieHistoryRepository.findMovieHistoriesByMovie_IdAndUser_Id(movieId, user.getId());
-        if(movieHistory == null){
-        MovieHistory movieHistory = movieHistoryRepository.findMovieHistoriesByMovie_IdAndAndUser_Id(movieId, user.getId());
         if (movieHistory == null) {
             return MovieHistoryResponse.builder()
                     .data(null)
@@ -289,6 +287,7 @@ public class MovieServiceImpl implements MovieService {
                 .build();
     }
 
+    @Override
     public ListMovieResponse updateMovie(MovieDto movieDto) throws Exception {
         Movie movie = movieRepository.findById(movieDto.getId())
                 .orElseThrow(() -> new Exception("Movie not found"));
@@ -314,7 +313,7 @@ public class MovieServiceImpl implements MovieService {
 //                .orElseThrow(() -> new EntityNotFoundException("Movie not found with id: " + id));
         movieRepository.deleteMovieById(id);
 //        movieRepository.delete(movie);
-        Page<Movie> moviePage = movieRepository.findAll(pageable);
+        Page<Movie> moviePage =  moviePagingRepository.findAll(pageable);
         List<MovieDto> movieDtos = moviePage.getContent().stream()
                 .map(movieConverter::convertToDTO)
                 .collect(Collectors.toList());
@@ -331,6 +330,7 @@ public class MovieServiceImpl implements MovieService {
                 .statusCode(200)
                 .build();
     }
+
     @Override
     public MovieResponse update(NewMovieRequest updateMovieRequest) throws Exception {
         Movie movieToUpdate = movieRepository.findById(updateMovieRequest.getId()).orElseThrow(

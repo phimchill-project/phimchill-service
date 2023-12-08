@@ -1,31 +1,11 @@
-package com.codegym.phimchill.service.impl;
+package com.codegym.phimchill.service;
 
-import com.codegym.phimchill.converter.MovieCommentConverter;
-import com.codegym.phimchill.converter.MovieConverter;
-import com.codegym.phimchill.converter.MovieHistoryConverter;
-import com.codegym.phimchill.dto.CategoryDto;
-import com.codegym.phimchill.dto.MovieCommentDto;
 import com.codegym.phimchill.dto.MovieDto;
 import com.codegym.phimchill.dto.payload.request.MovieNameRequest;
-import com.codegym.phimchill.dto.payload.request.NewFilmRequest;
 import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
 import com.codegym.phimchill.dto.payload.response.*;
-import com.codegym.phimchill.dto.NewFilmCategoryDto;
-import com.codegym.phimchill.entity.*;
-import com.codegym.phimchill.repository.*;
-import com.codegym.phimchill.service.CategoryService;
-import com.codegym.phimchill.service.MovieService;
-import com.codegym.phimchill.service.NameNormalizationService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
-import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
-import java.util.*;
-import java.util.ArrayList;
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
 import java.util.Optional;
 
