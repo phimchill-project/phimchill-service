@@ -29,4 +29,6 @@ public interface TvSeriesService {
 
     ListTvSeriesResponse findTvSeriesByCategoryId(Long id) throws Exception;
     String addFavoriteList(Long user_id, Long tvSeries_id);
+    List<TvSeriesDto> findAll();
+    void deleteTVSeries(Long id);
 }

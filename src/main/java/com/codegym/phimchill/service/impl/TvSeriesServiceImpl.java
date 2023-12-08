@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -247,4 +248,25 @@ public class TvSeriesServiceImpl implements TvSeriesService {
             return "TV Series is already in the favorite list.";
         }
     }
+
+    @Override
+    public List<TvSeriesDto> findAll() {
+        return tvSeriesConverter.convertToListDTO(tvSeriesRepository.findAll());
+    }
+
+    @Override
+    public void deleteTVSeries(Long id) {
+        Optional<TVSeries> optionalTvSeries = tvSeriesRepository.findById(id);
+
+        if (optionalTvSeries.isPresent()) {
+            TVSeries tvSeries = optionalTvSeries.get();
+
+            tvSeries.setIsDelete(true);
+
+            tvSeriesRepository.save(tvSeries);
+        } else {
+            throw new NoSuchElementException("TV Series not found with id: " + id);
+        }
+    }
+
 }
