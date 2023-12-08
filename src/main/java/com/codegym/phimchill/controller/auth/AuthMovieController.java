@@ -24,11 +24,11 @@ public class AuthMovieController {
     private SecurityService securityService;
 
     @PostMapping("/new")
-    public ResponseEntity<?> createNewMovie(
+    public ResponseEntity<?> createNewMovie(@RequestHeader("Authorization") final String authToken,
             @RequestBody NewMovieRequest newMovieRequest) {
-//        if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
-//            return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
-//        }
+        if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
+            return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
+        }
         try {
             MovieResponse response = movieService.create(newMovieRequest);
             return new ResponseEntity<>(response, HttpStatus.OK);
