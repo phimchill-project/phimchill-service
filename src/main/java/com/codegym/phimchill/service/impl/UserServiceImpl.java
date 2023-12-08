@@ -9,15 +9,12 @@ import com.codegym.phimchill.dto.TvSeriesDto;
 import com.codegym.phimchill.dto.UserDto;
 import com.codegym.phimchill.dto.payload.request.EmailRequest;
 import com.codegym.phimchill.dto.payload.request.RegisterRequest;
-import com.codegym.phimchill.dto.payload.response.ListMovieResponse;
-import com.codegym.phimchill.dto.payload.response.ListTvSeriesResponse;
+import com.codegym.phimchill.dto.payload.response.*;
 import com.codegym.phimchill.entity.Movie;
 import com.codegym.phimchill.entity.Role;
 import com.codegym.phimchill.entity.TVSeries;
 import com.codegym.phimchill.entity.User;
 import com.codegym.phimchill.dto.payload.request.LoginRequest;
-import com.codegym.phimchill.dto.payload.response.LoginResponse;
-import com.codegym.phimchill.dto.payload.response.RegisterResponse;
 import com.codegym.phimchill.repository.MovieRepository;
 import com.codegym.phimchill.repository.RoleRepository;
 import com.codegym.phimchill.repository.TvSeriesRepository;
@@ -29,11 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Optional;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -113,17 +106,6 @@ public class UserServiceImpl implements UserService {
         return user;
     }
     @Override
-    public boolean updatePass(String email, String pass) {
-        User user = userRepository.findUserByEmail(email);
-        if (user != null) {
-            String hashPassword = passwordEncoder.encode(pass);
-            user.setPassword(hashPassword);
-            userRepository.save(user);
-            return true;
-        }
-        return false;
-    }
-    @Override
     public ListMovieResponse getFavoriteMovies(String email) throws Exception {
         User user = userRepository.findUserByEmail(email);
         if (user == null) {
@@ -185,14 +167,47 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updateEmail(String email, String newEmail) {
+    public EmailRespone updateEmail(String email, String newEmail) throws Exception {
             User existingUser = userRepository.findUserByEmail(newEmail);
             if (existingUser != null) {
-                return false;
+                throw new Exception("User not found");
             }
             User newUser = userRepository.findUserByEmail(email);
             newUser.setEmail(newEmail);
             userRepository.save(newUser);
-            return true;
+        return new EmailRespone(
+                new ArrayList<>(),
+                "Update Email ok",
+                HttpStatus.OK.value()
+        );
     }
+    @Override
+    public EmailRespone updatePass(String email, String pass) throws Exception {
+        User user = userRepository.findUserByEmail(email);
+        if (user == null) {
+            throw new Exception("User not found");
+        }
+            String hashPassword = passwordEncoder.encode(pass);
+            user.setPassword(hashPassword);
+            userRepository.save(user);
+        return new EmailRespone(
+                new ArrayList<>(),
+                "Update Email ok",
+                HttpStatus.OK.value()
+        );
+    }
+
+    @Override
+    public ListMovieResponse editFavoriteMovies(String email, Long movieId) throws Exception {
+        User user = userRepository.findUserByEmail(email);
+        if (user == null) {
+            throw new Exception("User not found");
+        }
+        Movie movie = movieRepository.findById(movieId)
+                .orElseThrow(() -> new Exception("Movie not found"));
+        user.getMovieFavoriteList().add(movie);
+        movie.getUserFavoriteList().add(user);
+        movieRepository.save(movie);
+        userRepository.save(user);
+        return new ListMovieResponse(new ArrayList<>(), "Movie removed from favorites", HttpStatus.OK.value());    }
 }

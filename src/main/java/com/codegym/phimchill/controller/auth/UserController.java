@@ -1,6 +1,7 @@
 package com.codegym.phimchill.controller.auth;
 
 import com.codegym.phimchill.dto.payload.request.EmailRequest;
+import com.codegym.phimchill.dto.payload.response.EmailRespone;
 import com.codegym.phimchill.dto.payload.response.ListMovieResponse;
 import com.codegym.phimchill.dto.payload.response.ListTvSeriesResponse;
 import com.codegym.phimchill.dto.payload.request.PassRequest;
@@ -28,20 +29,6 @@ public class UserController {
     private UserService userService;
     @Autowired
     private SecurityService securityService;
-
-        @PutMapping("/edit-email")
-        public ResponseEntity<?> editEmail( @RequestBody EmailRequest emailRequest,@RequestHeader("Authorization") String authToken) {
-            if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
-                return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
-            }
-            String email = SecurityContextHolder.getContext().getAuthentication().getName();
-            boolean updated = userService.updateEmail(email, emailRequest.getEmail());
-            if (updated) {
-                return ResponseEntity.ok("Email updated successfully");
-            } else {
-                return ResponseEntity.ok("Email updated fail");
-            }
-        }
             @GetMapping("/favorite-movies")
             public ResponseEntity<?> getFavoriteMovies (@RequestHeader("Authorization") String authToken){
                 if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
@@ -102,13 +89,39 @@ public class UserController {
         if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
             return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
         }
+        try {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        boolean updated = userService.updatePass( email,passRequest.getPass());
-        if (updated) {
-            return ResponseEntity.ok("Pass updated ok");
-        } else {
-            return ResponseEntity.ok("Pass updated fail");
+        EmailRespone updated = userService.updatePass( email,passRequest.getPass());
+            return ResponseEntity.ok(updated);
+        } catch (Exception e){
+        return ResponseEntity.badRequest().body(new EmailRespone(new ArrayList<>(), e.getMessage(), HttpStatus.BAD_REQUEST.value()));
+        }
+
+    }
+    @PutMapping("/edit-email")
+    public ResponseEntity<?> editEmail( @RequestBody EmailRequest emailRequest,@RequestHeader("Authorization") String authToken) {
+        if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
+            return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
+        }        try {
+            String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        EmailRespone response = userService.updateEmail(email, emailRequest.getEmail());
+            return ResponseEntity.ok(response);
+    } catch (Exception e){
+        return ResponseEntity.badRequest().body(new EmailRespone(new ArrayList<>(), e.getMessage(), HttpStatus.BAD_REQUEST.value()));
+    }
+    }
+    @PostMapping("/favorite-movies/{movieId}")
+    public ResponseEntity<?> editFavorite(@RequestHeader("Authorization") String
+                                                      authToken, @PathVariable Long movieId) {
+        if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
+            return new ResponseEntity<>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
+        }
+        try {
+            String email = SecurityContextHolder.getContext().getAuthentication().getName();
+            ListMovieResponse response = userService.editFavoriteMovies(email, movieId);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new ListMovieResponse(new ArrayList<>(), e.getMessage(), HttpStatus.BAD_REQUEST.value()));
         }
     }
-
-        }
+}

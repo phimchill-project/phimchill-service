@@ -3,14 +3,8 @@ import com.codegym.phimchill.dto.UserDto;
 import com.codegym.phimchill.dto.payload.request.EmailRequest;
 import com.codegym.phimchill.dto.payload.request.RegisterRequest;
 import com.codegym.phimchill.dto.payload.request.LoginRequest;
-import com.codegym.phimchill.dto.payload.response.ListMovieResponse;
-import com.codegym.phimchill.dto.payload.response.ListTvSeriesResponse;
-import com.codegym.phimchill.dto.payload.response.LoginResponse;
-import com.codegym.phimchill.dto.payload.response.RegisterResponse;
-import com.codegym.phimchill.entity.Movie;
+import com.codegym.phimchill.dto.payload.response.*;
 import com.codegym.phimchill.entity.User;
-
-import java.util.List;
 
 public interface UserService {
 //    String login(LoginRequest loginRequest);
@@ -23,7 +17,9 @@ public interface UserService {
 
     ListMovieResponse deleteFavoriteMovies(String email,Long movieId) throws Exception;
     ListTvSeriesResponse deleteFavoriteTVSeries(String email,Long Id) throws Exception;
-    boolean updateEmail(String email, String newEmail );
+    EmailRespone updateEmail(String email, String newEmail ) throws Exception;
 
-    boolean updatePass(String email, String pass);
+    EmailRespone updatePass(String email, String pass) throws Exception;
+
+    ListMovieResponse editFavoriteMovies(String email, Long movieId) throws Exception;
 }
