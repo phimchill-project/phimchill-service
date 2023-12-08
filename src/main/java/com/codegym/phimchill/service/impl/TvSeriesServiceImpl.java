@@ -1,30 +1,29 @@
 package com.codegym.phimchill.service.impl;
 
 import com.codegym.phimchill.converter.TvSeriesConverter;
-import com.codegym.phimchill.converter.UserConverter;
-import com.codegym.phimchill.dto.MovieDto;
+import com.codegym.phimchill.dto.NewFilmCategoryDto;
 import com.codegym.phimchill.dto.TvSeriesDto;
-import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
+import com.codegym.phimchill.dto.payload.request.NewFilmRequest;
 import com.codegym.phimchill.dto.payload.request.MovieNameRequest;
+import com.codegym.phimchill.dto.payload.request.UpdateFilmRequest;
 import com.codegym.phimchill.dto.payload.response.CheckMovieNameExistResponse;
-import com.codegym.phimchill.dto.payload.response.ListMovieResponse;
 import com.codegym.phimchill.dto.payload.response.ListTvSeriesResponse;
-import com.codegym.phimchill.dto.payload.response.NewMovieResponse;
-import com.codegym.phimchill.entity.Movie;
+import com.codegym.phimchill.entity.Category;
 import com.codegym.phimchill.entity.TVSeries;
 import com.codegym.phimchill.entity.User;
+import com.codegym.phimchill.repository.CategoryRepository;
 import com.codegym.phimchill.repository.TvSeriesPagingRepository;
 import com.codegym.phimchill.repository.TvSeriesRepository;
 import com.codegym.phimchill.repository.UserRepository;
 import com.codegym.phimchill.service.NameNormalizationService;
 import com.codegym.phimchill.service.TvSeriesService;
-import com.codegym.phimchill.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -44,10 +43,108 @@ public class TvSeriesServiceImpl implements TvSeriesService {
     @Autowired
     private UserRepository userRepository;
 
-    @Override
-    public NewMovieResponse create(NewMovieRequest newTvSeriesRequest) {
+    @Autowired
+    private CategoryRepository categoryRepository;
 
-        return null;
+    @Override
+    public boolean create(NewFilmRequest newTvSeriesRequest) {
+
+        if (newTvSeriesRequest.getName() == null || newTvSeriesRequest.getName().isEmpty() ||
+                newTvSeriesRequest.getDescription() == null || newTvSeriesRequest.getDescription().isEmpty() ||
+                newTvSeriesRequest.getImage() == null || newTvSeriesRequest.getImage().isEmpty() ||
+                newTvSeriesRequest.getDateRelease() == null ||
+                newTvSeriesRequest.getCategoryList() == null || newTvSeriesRequest.getCategoryList().isEmpty()) {
+            return false;
+        }
+
+        String nameTvSeries = nameNormalizationService.normalizeName(newTvSeriesRequest.getName());
+        List<TVSeries> seriesList = tvSeriesRepository.findAll();
+        for (var item : seriesList) {
+            String tvSeriesName = nameNormalizationService.normalizeName(item.getName());
+            if (tvSeriesName.equalsIgnoreCase(nameTvSeries)) {
+                return false;
+            }
+        }
+
+        try {
+            TVSeries tvSeries = TVSeries.builder()
+                    .name(newTvSeriesRequest.getName())
+                    .description(newTvSeriesRequest.getDescription())
+                    .year(newTvSeriesRequest.getYear())
+                    .imdb(newTvSeriesRequest.getImdb())
+                    .image(newTvSeriesRequest.getImage())
+                    .dateRelease(newTvSeriesRequest.getDateRelease())
+                    .build();
+            List<Category> categoryList = new ArrayList<>();
+            for (NewFilmCategoryDto categoryDto : newTvSeriesRequest.getCategoryList()) {
+                Optional<Category> category = categoryRepository.findById(categoryDto.getId());
+                if (category.isEmpty())
+                    return false;
+                categoryList.add(category.get());
+            }
+            tvSeries.setCategoryList(categoryList);
+            tvSeriesRepository.save(tvSeries);
+            for(Category category : categoryList){
+                category.getTvSeriesList().add(tvSeries);
+                categoryRepository.save(category);
+            }
+        }catch (Exception ignored){
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean update(UpdateFilmRequest updateFilmRequest){
+        if (updateFilmRequest.getId() == null ||
+                updateFilmRequest.getName() == null || updateFilmRequest.getName().isEmpty() ||
+                updateFilmRequest.getDescription() == null || updateFilmRequest.getDescription().isEmpty() ||
+                updateFilmRequest.getImage() == null || updateFilmRequest.getImage().isEmpty() ||
+                updateFilmRequest.getDateRelease() == null ||
+                updateFilmRequest.getCategoryList() == null || updateFilmRequest.getCategoryList().isEmpty()) {
+            return false;
+        }
+
+        String nameTvSeries = nameNormalizationService.normalizeName(updateFilmRequest.getName());
+        List<TVSeries> seriesList = tvSeriesRepository.findAll();
+        TVSeries tvSeriesOld = null;
+        for (var item : seriesList) {
+            String tvSeriesName = nameNormalizationService.normalizeName(item.getName());
+            if (tvSeriesName.equalsIgnoreCase(nameTvSeries)) {
+                tvSeriesOld = item;
+            }
+        }
+
+        if (tvSeriesOld == null)
+            return false;
+
+        try {
+            TVSeries tvSeries = TVSeries.builder()
+                    .id(updateFilmRequest.getId())
+                    .name(updateFilmRequest.getName())
+                    .description(updateFilmRequest.getDescription())
+                    .year(updateFilmRequest.getYear())
+                    .imdb(updateFilmRequest.getImdb())
+                    .image(updateFilmRequest.getImage())
+                    .dateRelease(updateFilmRequest.getDateRelease())
+                    .build();
+            List<Category> categoryList = new ArrayList<>();
+            for (NewFilmCategoryDto categoryDto : updateFilmRequest.getCategoryList()) {
+                Optional<Category> category = categoryRepository.findById(categoryDto.getId());
+                if (category.isPresent() && !tvSeriesOld.getCategoryList().contains(category.get())) {
+                    categoryList.add(category.get());
+                }
+            }
+            tvSeries.setCategoryList(categoryList);
+            tvSeriesRepository.save(tvSeries);
+            for(Category category : categoryList){
+                category.getTvSeriesList().add(tvSeries);
+                categoryRepository.save(category);
+            }
+        }catch (Exception ignored){
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -87,7 +184,7 @@ public class TvSeriesServiceImpl implements TvSeriesService {
 
     @Override
     public TvSeriesDto findByName(String nameTvSeries){
-        nameTvSeries = nameTvSeries.replaceAll("-", " ");
+        nameTvSeries = nameNormalizationService.normalizeName(nameTvSeries);
         List<TVSeries> seriesList = tvSeriesRepository.findAll();
         Optional<TVSeries> series = Optional.empty();
         for (var item : seriesList) {
@@ -151,4 +248,25 @@ public class TvSeriesServiceImpl implements TvSeriesService {
             return "TV Series is already in the favorite list.";
         }
     }
+
+    @Override
+    public List<TvSeriesDto> findAll() {
+        return tvSeriesConverter.convertToListDTO(tvSeriesRepository.findAll());
+    }
+
+    @Override
+    public void deleteTVSeries(Long id) {
+        Optional<TVSeries> optionalTvSeries = tvSeriesRepository.findById(id);
+
+        if (optionalTvSeries.isPresent()) {
+            TVSeries tvSeries = optionalTvSeries.get();
+
+            tvSeries.setIsDelete(true);
+
+            tvSeriesRepository.save(tvSeries);
+        } else {
+            throw new NoSuchElementException("TV Series not found with id: " + id);
+        }
+    }
+
 }

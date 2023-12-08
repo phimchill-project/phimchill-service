@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RestController
@@ -96,5 +97,21 @@ public class TvSeriesController {
 
         String message = tvSeriesService.addFavoriteList(tvSeriesRequest.getUser_id(),tvSeriesRequest.getTvSeries_id());
         return new ResponseEntity<>(message, HttpStatus.OK) ;
+    }
+    @GetMapping("/all")
+    public ResponseEntity<TvSeriesResponse> getAll(){
+        TvSeriesResponse tvSeriesResponse = new TvSeriesResponse();
+        tvSeriesResponse.setListTVSeries(tvSeriesService.findAll());
+        tvSeriesResponse.setTitle("Show List TVSeries");
+        return new ResponseEntity<>(tvSeriesResponse,HttpStatus.OK);
+    }
+    @DeleteMapping("/{showId}")
+    public ResponseEntity<String> deleteTVSeries(@PathVariable Long showId){
+        try {
+            tvSeriesService.deleteTVSeries(showId);
+            return new ResponseEntity<>("TV Series deleted successfully", HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>("TV Series not found with id: " + showId, HttpStatus.NOT_FOUND);
+        }
     }
 }

@@ -102,14 +102,15 @@ public class UserController {
     public ResponseEntity<?> editEmail( @RequestBody EmailRequest emailRequest,@RequestHeader("Authorization") String authToken) {
         if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
             return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
-        }        try {
-            String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        EmailRespone response = userService.updateEmail(email, emailRequest.getEmail());
-            return ResponseEntity.ok(response);
-    } catch (Exception e){
-        return ResponseEntity.badRequest().body(new EmailRespone(new ArrayList<>(), e.getMessage(), HttpStatus.BAD_REQUEST.value()));
-    }
-    }
+        }  try {
+                String email = SecurityContextHolder.getContext().getAuthentication().getName();
+                EmailRespone updated = userService.updatePass( email,emailRequest.getEmail());
+                return ResponseEntity.ok(updated);
+            } catch (Exception e){
+                return ResponseEntity.badRequest().body(new EmailRespone(new ArrayList<>(), e.getMessage(), HttpStatus.BAD_REQUEST.value()));
+            }
+                }
+
     @PostMapping("/favorite-movies/{movieId}")
     public ResponseEntity<?> editFavorite(@RequestHeader("Authorization") String
                                                       authToken, @PathVariable Long movieId) {

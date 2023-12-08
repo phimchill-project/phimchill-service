@@ -1,23 +1,22 @@
-
 package com.codegym.phimchill.entity;
+
 import jakarta.persistence.*;
 import lombok.*;
 
-
 @Entity
-@Table(name = "HISTORY_MOVIE")
+@Table(name = "HISTORY_TVSERIES")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Builder
-public class MovieHistory {
+public class TVSeriesHistory {
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "MOVIE_ID", referencedColumnName = "ID")
-    private Movie movie;
+    @JoinColumn(name = "TVSERIES_ID", referencedColumnName = "ID")
+    private TVSeries tvSeries;
     @ManyToOne
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
     private User user;

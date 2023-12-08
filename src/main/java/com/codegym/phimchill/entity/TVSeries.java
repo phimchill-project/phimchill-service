@@ -26,7 +26,7 @@ public class TVSeries {
     private int year; // năm phát hành
 
     @Column(name = "IMDB")
-    private float imdb; // điểm đánh giá
+    private Float imdb; // điểm đánh giá
 
     @Column(name = "IMAGE")
     private String image;
@@ -41,6 +41,7 @@ public class TVSeries {
     private Integer views;
 
     @ManyToMany(mappedBy = "tvSeriesList")
+    @EqualsAndHashCode.Exclude
     private List<Category> categoryList;
 
     @OneToMany(mappedBy = "tvSeries")
@@ -50,5 +51,7 @@ public class TVSeries {
     private List<User> userFavoriteList;
 
     @Column(name = "IS_DELETE")
-    private boolean isDelete;
+    private Boolean isDelete = false;
+
+
 }
