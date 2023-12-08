@@ -11,6 +11,7 @@ import com.codegym.phimchill.dto.payload.response.*;
 import com.codegym.phimchill.dto.NewMovieCategoryDto;
 import com.codegym.phimchill.entity.*;
 import com.codegym.phimchill.repository.*;
+import com.codegym.phimchill.service.CategoryService;
 import com.codegym.phimchill.service.MovieService;
 import com.codegym.phimchill.service.NameNormalizationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import java.util.*;
@@ -85,26 +87,35 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public MovieResponse create(NewMovieRequest newTvSeriesRequest) throws Exception {
+    public MovieResponse create(@Payload NewMovieRequest newMovieRequest) throws Exception {
         Movie newMovie = Movie.builder()
-                .name(newTvSeriesRequest.getName())
-                .description(newTvSeriesRequest.getDescription())
-                .year(newTvSeriesRequest.getYear())
-                .duration(newTvSeriesRequest.getDuration())
-                .imdb(newTvSeriesRequest.getImdb())
-                .image(newTvSeriesRequest.getImage())
-                .url(newTvSeriesRequest.getUrl())
-                .dateRelease(newTvSeriesRequest.getDateRelease())
+                .name(newMovieRequest.getName())
+                .description(newMovieRequest.getDescription())
+                .year(newMovieRequest.getYear())
+                .duration(newMovieRequest.getDuration())
+                .imdb(newMovieRequest.getImdb())
+                .image(newMovieRequest.getImage())
+                .url(newMovieRequest.getUrl())
+                .dateRelease(newMovieRequest.getDateRelease())
                 .build();
+        Movie movie = movieRepository.findByName(newMovie.getName());
+        if(movie != null){
+            throw new Exception("Movie already exist");
+        }
         List<Category> categoryList = new ArrayList<>();
-        for (NewMovieCategoryDto categoryDto : newTvSeriesRequest.getCategoryList()) {
+        for (NewMovieCategoryDto categoryDto : newMovieRequest.getCategoryList()) {
             Category category = categoryRepository.findById(categoryDto.getId()).orElseThrow(
                     () -> new Exception("Create Movie Fail")
             );
             categoryList.add(category);
         }
         newMovie.setCategoryList(categoryList);
-        movieRepository.save(newMovie);
+
+        newMovie = movieRepository.save(newMovie);
+        for(Category category : categoryList){
+            category.getMovieList().add(newMovie);
+            categoryRepository.save(category);
+        }
         return MovieResponse.builder()
                 .data(movieConverter.convertToDTO(newMovie))
                 .message("Add Movie Success")

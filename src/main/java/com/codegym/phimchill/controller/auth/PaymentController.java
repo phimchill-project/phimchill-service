@@ -1,9 +1,13 @@
 package com.codegym.phimchill.controller.auth;
 
 import com.codegym.phimchill.configuration.VnPayConfiguration;
+import com.codegym.phimchill.dto.payload.request.CheckPayMentRequest;
 import com.codegym.phimchill.dto.payload.request.PaymentRequest;
+import com.codegym.phimchill.dto.payload.request.ResultPaymentRequest;
+import com.codegym.phimchill.dto.payload.response.ListMessageResponse;
 import com.codegym.phimchill.dto.payload.response.MovieCommentResponse;
 import com.codegym.phimchill.dto.payload.response.PaymentResponse;
+import com.codegym.phimchill.dto.payload.response.ResultPaymentResponse;
 import com.codegym.phimchill.entity.Payment;
 import com.codegym.phimchill.service.PaymentService;
 import com.codegym.phimchill.service.SecurityService;
@@ -125,23 +129,46 @@ public class PaymentController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/payment-callback")
-    public void paymentCallback(@RequestParam Map<String, String> queryParams, HttpServletResponse response) throws IOException {
-        String emailCurrent = queryParams.get("email");
-        String bankCode = queryParams.get("vnp_BankCode");
-        String bankTranNo = queryParams.get("vnp_BankTranNo");
-        String payDate = queryParams.get("vnp_PayDate");
-        String transactionStatus = queryParams.get("vnp_TransactionStatus");
-        String paymentCode = queryParams.get("vnp_TxnRef");
-        Payment payment = Payment.builder()
-                .bankCode(bankCode)
-                .bankTranNo(bankTranNo)
-                .payDate(payDate)
-                .transactionStatus(transactionStatus)
-                .paymentCode(paymentCode)
-                .build();
-        paymentService.save(emailCurrent, payment);
+//    @GetMapping("/payment-callback")
+//    public void paymentCallback(@RequestParam Map<String, String> queryParams, HttpServletResponse response) throws IOException {
+//        String emailCurrent = queryParams.get("email");
+//        String bankCode = queryParams.get("vnp_BankCode");
+//        String bankTranNo = queryParams.get("vnp_BankTranNo");
+//        String payDate = queryParams.get("vnp_PayDate");
+//        String transactionStatus = queryParams.get("vnp_TransactionStatus");
+//        String paymentCode = queryParams.get("vnp_TxnRef");
+//        Payment payment = Payment.builder()
+//                .bankCode(bankCode)
+//                .bankTranNo(bankTranNo)
+//                .payDate(payDate)
+//                .transactionStatus(transactionStatus)
+//                .paymentCode(paymentCode)
+//                .build();
+//        paymentService.save(emailCurrent, payment);
+//    }
+
+    @PostMapping("/save")
+    public ResponseEntity<ResultPaymentResponse> paymentCallback(@RequestHeader("Authorization") final String authToken, @RequestBody ResultPaymentRequest resultPaymentRequest){
+        if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
+            ResultPaymentResponse response = ResultPaymentResponse.builder()
+                    .data(null)
+                    .message("Responding with unauthorized error. Message - {}")
+                    .statusCode(HttpStatus.UNAUTHORIZED.value())
+                    .build();
+            return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+        }
+        try {
+            String email = SecurityContextHolder.getContext().getAuthentication().getName();
+            ResultPaymentResponse response = paymentService.save(email, resultPaymentRequest);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch (Exception e){
+            ResultPaymentResponse response = ResultPaymentResponse.builder()
+                    .data(null)
+                    .message(e.getMessage())
+                    .statusCode(HttpStatus.BAD_REQUEST.value())
+                    .build();
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+
     }
-
-
 }

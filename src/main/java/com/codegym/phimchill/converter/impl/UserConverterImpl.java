@@ -22,6 +22,7 @@ public class UserConverterImpl implements UserConverter {
         userDTO.setEmail(user.getEmail());
         userDTO.setName(user.getName());
         userDTO.setMember(user.isMember());
+        userDTO.setRole(user.getRole().getName());
         return userDTO;
     }
 

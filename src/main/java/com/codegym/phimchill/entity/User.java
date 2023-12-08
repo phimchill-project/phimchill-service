@@ -56,4 +56,8 @@ public class User {
     private List<Payment> paymentList;
     @Column(name = "IS_MEMBER")
     private boolean isMember;
+    @ManyToMany(mappedBy = "usersInChat", fetch = FetchType.EAGER)
+    private List<Chat> chatList;
+    @OneToMany(mappedBy = "userSend")
+    private List<Message> messageList;
 }

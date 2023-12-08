@@ -44,11 +44,11 @@ public class  AuthController {
             UserDto userDto = userService.login(loginRequest);
             LoginResponse loginResponse = new LoginResponse();
 //            UserDto userDto = new UserDto();
-            userDto.setId(userDto.getId());
-            userDto.setEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+//            userDto.setId(userDto.getId());
+//            userDto.setEmail(SecurityContextHolder.getContext().getAuthentication().getName());
             userDto.setToken(token);
-            userDto.setName(userDto.getName());
-            userDto.setMember(userDto.isMember());
+//            userDto.setName(userDto.getName());
+//            userDto.setMember(userDto.isMember());
             loginResponse.setData(userDto);
             loginResponse.setStatusCode(200);
             loginResponse.setMessage("login success");

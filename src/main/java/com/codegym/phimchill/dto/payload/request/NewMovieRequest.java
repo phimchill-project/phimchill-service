@@ -14,6 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 public class NewMovieRequest {
+    private Long id;
     private String name;
     private String description;
     private int duration;

@@ -139,6 +139,12 @@ public class SecurityConfiguration {
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/payment/**").permitAll());
 
+        http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers("/api/chat/**").permitAll());
+
+        http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers("/api/message/**").permitAll());
+
         // Configure remember me (save token in database)
         http.rememberMe((remember) -> remember
                 .tokenRepository(this.persistentTokenRepository())
