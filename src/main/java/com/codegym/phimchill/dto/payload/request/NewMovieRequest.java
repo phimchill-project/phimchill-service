@@ -1,7 +1,6 @@
 package com.codegym.phimchill.dto.payload.request;
 
 import com.codegym.phimchill.dto.CategoryDto;
-import com.codegym.phimchill.dto.NewFilmCategoryDto;
 import lombok.*;
 
 import java.sql.Date;
@@ -32,3 +31,4 @@ public class NewMovieRequest {
 
     private List<CategoryDto> categoryList;
 }
+

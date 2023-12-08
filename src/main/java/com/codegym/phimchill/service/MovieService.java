@@ -1,16 +1,34 @@
-package com.codegym.phimchill.service;
+package com.codegym.phimchill.service.impl;
 
-import com.codegym.phimchill.dto.PagingMovieResponseDto;
-import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
-import com.codegym.phimchill.dto.payload.response.*;
+import com.codegym.phimchill.converter.MovieCommentConverter;
+import com.codegym.phimchill.converter.MovieConverter;
+import com.codegym.phimchill.converter.MovieHistoryConverter;
+import com.codegym.phimchill.dto.CategoryDto;
+import com.codegym.phimchill.dto.MovieCommentDto;
 import com.codegym.phimchill.dto.MovieDto;
 import com.codegym.phimchill.dto.payload.request.MovieNameRequest;
 import com.codegym.phimchill.dto.payload.request.NewFilmRequest;
-import com.codegym.phimchill.dto.payload.response.ListMovieResponse;
-import com.codegym.phimchill.dto.payload.response.CheckMovieNameExistResponse;
-import com.codegym.phimchill.dto.payload.response.MovieResponse;
-import org.springframework.data.domain.Pageable;
-//import com.codegym.phimchill.entity.MovieHistory;
+import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
+import com.codegym.phimchill.dto.payload.response.*;
+import com.codegym.phimchill.dto.NewFilmCategoryDto;
+import com.codegym.phimchill.entity.*;
+import com.codegym.phimchill.repository.*;
+import com.codegym.phimchill.service.CategoryService;
+import com.codegym.phimchill.service.MovieService;
+import com.codegym.phimchill.service.NameNormalizationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 
 
 import java.util.List;
@@ -26,7 +44,7 @@ public interface MovieService {
     MovieResponse update(NewMovieRequest updateMovieRequest) throws Exception;
 
     List<MovieDto> findAll();
-    MovieResponse create(NewFilmRequest newTvSeriesRequest) throws Exception;
+    MovieResponse create(NewMovieRequest newTvSeriesRequest) throws Exception;
     CheckMovieNameExistResponse isNotExist(MovieNameRequest movieNameRequest);
 
     ListMovieResponse getMoviesByCategory(Long id);

@@ -3,30 +3,32 @@ package com.codegym.phimchill.service.impl;
 import com.codegym.phimchill.converter.MovieCommentConverter;
 import com.codegym.phimchill.converter.MovieConverter;
 import com.codegym.phimchill.converter.MovieHistoryConverter;
-import com.codegym.phimchill.dto.*;
+import com.codegym.phimchill.dto.CategoryDto;
+import com.codegym.phimchill.dto.MovieCommentDto;
+import com.codegym.phimchill.dto.MovieDto;
 import com.codegym.phimchill.dto.payload.request.MovieNameRequest;
 import com.codegym.phimchill.dto.payload.request.NewFilmRequest;
 import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
 import com.codegym.phimchill.dto.payload.response.*;
+import com.codegym.phimchill.dto.NewFilmCategoryDto;
 import com.codegym.phimchill.entity.*;
 import com.codegym.phimchill.repository.*;
+import com.codegym.phimchill.service.CategoryService;
 import com.codegym.phimchill.service.MovieService;
 import com.codegym.phimchill.service.NameNormalizationService;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+
 
 
 @Service
@@ -104,32 +106,42 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public MovieResponse create(NewFilmRequest newTvSeriesRequest) throws Exception {
+    public MovieResponse create(NewMovieRequest newMovieRequest) throws Exception {
         Movie newMovie = Movie.builder()
-                .name(newTvSeriesRequest.getName())
-                .description(newTvSeriesRequest.getDescription())
-                .year(newTvSeriesRequest.getYear())
-                .duration(newTvSeriesRequest.getDuration())
-                .imdb(newTvSeriesRequest.getImdb())
-                .image(newTvSeriesRequest.getImage())
-                .url(newTvSeriesRequest.getUrl())
-                .dateRelease(newTvSeriesRequest.getDateRelease())
+                .name(newMovieRequest.getName())
+                .description(newMovieRequest.getDescription())
+                .year(newMovieRequest.getYear())
+                .duration(newMovieRequest.getDuration())
+                .imdb(newMovieRequest.getImdb())
+                .image(newMovieRequest.getImage())
+                .url(newMovieRequest.getUrl())
+                .dateRelease(newMovieRequest.getDateRelease())
                 .build();
+        Movie movie = movieRepository.findByName(newMovie.getName());
+        if(movie != null){
+            throw new Exception("Movie already exist");
+        }
         List<Category> categoryList = new ArrayList<>();
-        for (NewFilmCategoryDto categoryDto : newTvSeriesRequest.getCategoryList()) {
+        for (CategoryDto categoryDto : newMovieRequest.getCategoryList()) {
             Category category = categoryRepository.findById(categoryDto.getId()).orElseThrow(
                     () -> new Exception("Create Movie Fail")
             );
             categoryList.add(category);
         }
         newMovie.setCategoryList(categoryList);
-        movieRepository.save(newMovie);
+
+        newMovie = movieRepository.save(newMovie);
+        for(Category category : categoryList){
+            category.getMovieList().add(newMovie);
+            categoryRepository.save(category);
+        }
         return MovieResponse.builder()
                 .data(movieConverter.convertToDTO(newMovie))
                 .message("Add Movie Success")
                 .statusCode(200)
                 .build();
     }
+
 
     @Override
     public CheckMovieNameExistResponse isNotExist(MovieNameRequest movieNameRequest) {
@@ -260,6 +272,8 @@ public class MovieServiceImpl implements MovieService {
 //        Movie movie = movieRepository.findById(movieId).orElseThrow(
 //                () -> new Exception("Cannot find movie by id " + movieId + "to save movie history")
 //        );
+        MovieHistory movieHistory = movieHistoryRepository.findMovieHistoriesByMovie_IdAndUser_Id(movieId, user.getId());
+        if(movieHistory == null){
         MovieHistory movieHistory = movieHistoryRepository.findMovieHistoriesByMovie_IdAndAndUser_Id(movieId, user.getId());
         if (movieHistory == null) {
             return MovieHistoryResponse.builder()

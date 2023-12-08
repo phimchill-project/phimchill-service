@@ -188,7 +188,8 @@ public class TvSeriesServiceImpl implements TvSeriesService {
         List<TVSeries> seriesList = tvSeriesRepository.findAll();
         Optional<TVSeries> series = Optional.empty();
         for (var item : seriesList) {
-            String tvSeriesName = nameNormalizationService.normalizeName(item.getName());
+//            String tvSeriesName = nameNormalizationService.normalizeName(item.getName());
+            String tvSeriesName = item.getName();
             if (tvSeriesName.equalsIgnoreCase(nameTvSeries)) {
                 series = Optional.of(item);
             }
@@ -249,7 +250,6 @@ public class TvSeriesServiceImpl implements TvSeriesService {
         }
     }
 
-    @Override
     public List<TvSeriesDto> findAll() {
         return tvSeriesConverter.convertToListDTO(tvSeriesRepository.findAll());
     }
@@ -268,5 +268,4 @@ public class TvSeriesServiceImpl implements TvSeriesService {
             throw new NoSuchElementException("TV Series not found with id: " + id);
         }
     }
-
 }

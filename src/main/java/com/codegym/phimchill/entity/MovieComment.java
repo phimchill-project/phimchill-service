@@ -1,8 +1,13 @@
 package com.codegym.phimchill.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -19,7 +24,8 @@ public class MovieComment {
     @Column(name = "COMMENT")
     private String comment;
     @Column(name = "DATE_POST")
-    private Date datePost;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Ho_Chi_Minh")
+    private Timestamp datePost;
     @ManyToOne
     @JoinColumn(name = "MOVIE_ID", referencedColumnName = "ID")
     private Movie movie;

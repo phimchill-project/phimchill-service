@@ -1,9 +1,11 @@
 package com.codegym.phimchill.controller.auth;
 
 import com.codegym.phimchill.dto.payload.request.EmailRequest;
+import com.codegym.phimchill.dto.payload.response.ListChatResponse;
 import com.codegym.phimchill.dto.payload.response.ListMovieResponse;
 import com.codegym.phimchill.dto.payload.response.ListTvSeriesResponse;
 import com.codegym.phimchill.dto.payload.request.PassRequest;
+import com.codegym.phimchill.dto.payload.response.ListUserResponse;
 import com.codegym.phimchill.service.SecurityService;
 import com.codegym.phimchill.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +26,6 @@ public class UserController {
     private UserService userService;
     @Autowired
     private SecurityService securityService;
-
-
 
     @PutMapping("/edit-email")
     public ResponseEntity<?> editEmail(@RequestBody EmailRequest emailRequest, @RequestHeader("Authorization") String authToken) {
@@ -117,5 +117,29 @@ public class UserController {
                 } else {
                         return ResponseEntity.ok("Pass updated fail");
                 }
+        }
+
+        @GetMapping("/all")
+        public ResponseEntity<ListUserResponse> editPassword (@RequestHeader("Authorization") String authToken ){
+            if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
+                ListUserResponse response = ListUserResponse.builder()
+                        .data(null)
+                        .message("Responding with unauthorized error. Message - {}")
+                        .statusCode(HttpStatus.UNAUTHORIZED.value())
+                        .build();
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            }
+            try {
+                String email = SecurityContextHolder.getContext().getAuthentication().getName();
+                ListUserResponse response = userService.findAll(email);
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            }catch (Exception e){
+                ListUserResponse response = ListUserResponse.builder()
+                        .data(null)
+                        .message(e.getMessage())
+                        .statusCode(HttpStatus.BAD_REQUEST.value())
+                        .build();
+                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            }
         }
 }

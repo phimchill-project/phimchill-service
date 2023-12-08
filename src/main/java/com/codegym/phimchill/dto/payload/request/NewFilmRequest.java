@@ -1,10 +1,8 @@
 package com.codegym.phimchill.dto.payload.request;
 
 import com.codegym.phimchill.dto.NewFilmCategoryDto;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 import java.sql.Date;
 import java.util.List;
 
@@ -12,6 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class NewFilmRequest {
     private String name;
 
