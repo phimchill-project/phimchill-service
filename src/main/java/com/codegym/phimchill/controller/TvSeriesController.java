@@ -110,6 +110,7 @@ public class TvSeriesController {
 
 
 
+
     @GetMapping("/all")
     public ResponseEntity<TvSeriesResponse> getAll(){
         TvSeriesResponse tvSeriesResponse = new TvSeriesResponse();
@@ -136,4 +137,6 @@ public class TvSeriesController {
         }
     }
 }
+
+
 
