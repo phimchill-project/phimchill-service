@@ -157,6 +157,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean checkMember(String email) throws Exception {
+        User user = userRepository.findUserByEmail(email);
+        if(user == null) {
+            throw new Exception("email not exist");
+        }
+        return user.isMember();
+    }
+
+    @Override
     public ListMovieResponse getFavoriteMovies(String email) throws Exception {
         User user = userRepository.findUserByEmail(email);
         if (user == null) {
