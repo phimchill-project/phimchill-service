@@ -166,12 +166,12 @@ public class TvSeriesServiceImpl implements TvSeriesService {
 
     @Override
     public List<TvSeriesDto> getTop10ByImdb() {
-        return tvSeriesConverter.convertToListDTO(tvSeriesRepository.findFirst10ByOrderByImdbDesc());
+        return tvSeriesConverter.convertToListDTO(tvSeriesRepository.findFirst10ByIsDeleteFalseOrderByImdbDesc());
     }
 
     @Override
     public List<TvSeriesDto> getTop10Newest() {
-        return tvSeriesConverter.convertToListDTO(tvSeriesRepository.findFirst10ByOrderByDateReleaseDesc());
+        return tvSeriesConverter.convertToListDTO(tvSeriesRepository.findFirst10ByIsDeleteFalseOrderByDateReleaseDesc());
     }
 
     @Override
@@ -249,7 +249,6 @@ public class TvSeriesServiceImpl implements TvSeriesService {
         }
     }
 
-    @Override
     public List<TvSeriesDto> findAll() {
         return tvSeriesConverter.convertToListDTO(tvSeriesRepository.findAll());
     }
@@ -268,5 +267,19 @@ public class TvSeriesServiceImpl implements TvSeriesService {
             throw new NoSuchElementException("TV Series not found with id: " + id);
         }
     }
+
+    @Override
+    public void restoreTVSeries(Long id) {
+        Optional<TVSeries> optionalTvSeries = tvSeriesRepository.findById(id);
+        if (optionalTvSeries.isPresent()) {
+            TVSeries tvSeries = optionalTvSeries.get();
+            tvSeries.setIsDelete(false);
+            tvSeriesRepository.save(tvSeries);
+        } else {
+            throw new NoSuchElementException("TV Series not found with id: " + id);
+        }
+
+    }
+
 
 }

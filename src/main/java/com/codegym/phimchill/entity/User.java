@@ -52,4 +52,12 @@ public class User {
     private List<MovieComment> movieCommentListUserLiked;
     @ManyToMany(mappedBy = "userListLikeSubComment")
     private List<MovieSubComment> movieSubCommentListUserLiked;
+    @OneToMany(mappedBy = "user")
+    private List<Payment> paymentList;
+    @Column(name = "IS_MEMBER")
+    private boolean isMember;
+    @ManyToMany(mappedBy = "usersInChat", fetch = FetchType.EAGER)
+    private List<Chat> chatList;
+    @OneToMany(mappedBy = "userSend")
+    private List<Message> messageList;
 }

@@ -156,6 +156,35 @@ public class UserServiceImpl implements UserService {
         return new ListMovieResponse(new ArrayList<>(), "Movie removed from favorites", HttpStatus.OK.value());
     }
 
+    @Override
+    public ListUserResponse findAll(String email) throws Exception {
+        User currentUser = userRepository.findUserByEmail(email);
+        if(currentUser == null) {
+            throw new Exception("email not exist");
+        }
+        List<User> userLists = userRepository.findAll();
+        List<UserDto> userDtoList = new ArrayList<>();
+        for (User user : userLists){
+            if(user.getId() == currentUser.getId()){
+                continue;
+            }
+            userDtoList.add(userConverter.converterToDTO(user));
+        }
+        return ListUserResponse.builder()
+                .data(userDtoList)
+                .message("Get all user success")
+                .statusCode(HttpStatus.OK.value())
+                .build();
+    }
+
+    @Override
+    public boolean checkMember(String email) throws Exception {
+        User user = userRepository.findUserByEmail(email);
+        if(user == null) {
+            throw new Exception("email not exist");
+        }
+        return user.isMember();
+    }
 
 
     @Override

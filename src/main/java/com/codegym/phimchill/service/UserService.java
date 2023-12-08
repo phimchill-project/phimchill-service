@@ -4,6 +4,8 @@ import com.codegym.phimchill.dto.payload.request.EmailRequest;
 import com.codegym.phimchill.dto.payload.request.RegisterRequest;
 import com.codegym.phimchill.dto.payload.request.LoginRequest;
 import com.codegym.phimchill.dto.payload.response.*;
+
+import com.codegym.phimchill.entity.Movie;
 import com.codegym.phimchill.entity.User;
 
 public interface UserService {
@@ -19,7 +21,11 @@ public interface UserService {
     ListTvSeriesResponse deleteFavoriteTVSeries(String email,Long Id) throws Exception;
     EmailRespone updateEmail(String email, String newEmail ) throws Exception;
 
-    EmailRespone updatePass(String email, String pass) throws Exception;
 
     ListMovieResponse editFavoriteMovies(String email, Long movieId) throws Exception;
+    EmailRespone updatePass(String email, String pass) throws Exception;
+
+    ListUserResponse findAll(String email) throws Exception;
+
+    boolean checkMember(String email) throws Exception;
 }

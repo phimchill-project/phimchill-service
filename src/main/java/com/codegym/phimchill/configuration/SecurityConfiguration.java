@@ -35,7 +35,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableAsync
 @EnableWebSecurity
 @ComponentScan(basePackages = {"com.codegym.phimchill", "com.codegym.phimchill.security",
-                                "com.codegym.phimchill.service.impl", "com.codegym.phimchill.repository"})
+        "com.codegym.phimchill.service.impl", "com.codegym.phimchill.repository"})
 public class SecurityConfiguration {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
@@ -90,7 +90,7 @@ public class SecurityConfiguration {
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/api/auth/**").permitAll());
+                .requestMatchers("/api/auth/**").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/movies/upcoming").permitAll());
@@ -110,6 +110,11 @@ public class SecurityConfiguration {
 
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/auth/users/edit-password").permitAll());
+//        http.authorizeHttpRequests((authorize) -> authorize
+//                .requestMatchers("/api/users/**").hasRole("USER"));
+
+        http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers("/api/users/**").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/admin/movie/new").permitAll());
@@ -145,10 +150,31 @@ public class SecurityConfiguration {
                 .requestMatchers("/api/comment/**").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers("/api/payment/**").permitAll());
+
+        http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers("/api/chat/**").permitAll());
+
+        http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers("/api/message/**").permitAll());
+
+        http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/admin/tvSeries/**").permitAll());
+        // Configure remember me (save token in database)
+        http.rememberMe((remember) -> remember
+                .tokenRepository(this.persistentTokenRepository())
+                .tokenValiditySeconds(24 * 60 * 60)
+        );
 
         // Use JwtAuthorizationFilter to check token -> get user info
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
+
+    public PersistentTokenRepository persistentTokenRepository() {
+        return new InMemoryTokenRepositoryImpl();
+    }
 }
+
+
+
