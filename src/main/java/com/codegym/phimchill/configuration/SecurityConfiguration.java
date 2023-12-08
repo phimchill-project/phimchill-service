@@ -116,8 +116,8 @@ public class SecurityConfiguration {
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/users/**").permitAll());
 
-        http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/api/admin/movie/new").permitAll());
+//        http.authorizeHttpRequests((authorize) -> authorize
+//                .requestMatchers("/api/admin/movie/new").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/movies/update").permitAll());
