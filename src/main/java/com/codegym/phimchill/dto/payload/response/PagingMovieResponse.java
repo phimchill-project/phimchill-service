@@ -1,6 +1,6 @@
 package com.codegym.phimchill.dto.payload.response;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.codegym.phimchill.dto.PagingMovieResponseDto;
 import lombok.*;
 
 @AllArgsConstructor
@@ -8,12 +8,8 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class ErrorResponse {
-
-    private String data = null;
-
+public class PagingMovieResponse {
+    private PagingMovieResponseDto data;
     private String message;
-
     private int statusCode;
 }

@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
-
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
 //    @Query(value = "SELECT * FROM movie " +
@@ -14,7 +13,4 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 //            "JOIN category ON category.id = category_movie.category_id " +
 //            "WHERE category.id = :categoryId",
 //            nativeQuery = true)
-
-
-
 }
