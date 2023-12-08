@@ -109,23 +109,6 @@ public class TvSeriesController {
     }
 
 
-//    @GetMapping("/{id}")
-//    public ResponseEntity<String> findById(@PathVariable Long id,
-//                                           @RequestHeader("Authorization") final String authToken) {
-//        if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
-//            return new ResponseEntity<String>("Responding with unauthorized error. Message - {}", HttpStatus.UNAUTHORIZED);
-//            try {
-//                MovieHistoryResponse response = tvSeriesService.DurationByMovieId(movieId);
-//                return new ResponseEntity<>(response, HttpStatus.OK);
-//            } catch (Exception e) {
-//                MovieHistoryResponse response = new MovieHistoryResponse();
-//                response.setData(null);
-//                response.setMessage(e.getMessage());
-//                response.setStatusCode(HttpStatus.BAD_REQUEST.value());
-//                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-//            }
-//        }
-//    }
 
 
     @GetMapping("/all")
@@ -144,4 +127,16 @@ public class TvSeriesController {
             return new ResponseEntity<>("TV Series not found with id: " + showId, HttpStatus.NOT_FOUND);
         }
     }
+    @PutMapping("/{showId}/restore")
+    public ResponseEntity<String> restoreTVSeries(@PathVariable Long showId) {
+        try {
+            tvSeriesService.restoreTVSeries(showId);
+            return new ResponseEntity<>("TV Series restored successfully", HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>("TV Series not found with id: " + showId, HttpStatus.NOT_FOUND);
+        }
+    }
 }
+
+
+

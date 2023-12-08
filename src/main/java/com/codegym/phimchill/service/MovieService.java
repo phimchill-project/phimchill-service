@@ -359,9 +359,4 @@ public class MovieServiceImpl implements MovieService {
                 .statusCode(200)
                 .build();
     }
-
-    @Override
-    public List<MovieDto> findAll() {
-        return null;
-    }
 }
