@@ -3,10 +3,7 @@ import com.codegym.phimchill.dto.UserDto;
 import com.codegym.phimchill.dto.payload.request.EmailRequest;
 import com.codegym.phimchill.dto.payload.request.RegisterRequest;
 import com.codegym.phimchill.dto.payload.request.LoginRequest;
-import com.codegym.phimchill.dto.payload.response.ListMovieResponse;
-import com.codegym.phimchill.dto.payload.response.ListTvSeriesResponse;
-import com.codegym.phimchill.dto.payload.response.LoginResponse;
-import com.codegym.phimchill.dto.payload.response.RegisterResponse;
+import com.codegym.phimchill.dto.payload.response.*;
 import com.codegym.phimchill.entity.Movie;
 import com.codegym.phimchill.entity.User;
 
@@ -27,4 +24,6 @@ public interface UserService {
     boolean updateEmail(String email, String newEmail );
 
     boolean updatePass(String email, String pass);
+
+    ListUserResponse findAll(String email) throws Exception;
 }

@@ -1,16 +1,14 @@
 package com.codegym.phimchill.service;
 
-import com.codegym.phimchill.dto.PagingMovieResponseDto;
-import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
-import com.codegym.phimchill.dto.payload.response.*;
 import com.codegym.phimchill.dto.MovieDto;
 import com.codegym.phimchill.dto.payload.request.MovieNameRequest;
-import com.codegym.phimchill.dto.payload.request.NewFilmRequest;
-import com.codegym.phimchill.dto.payload.response.ListMovieResponse;
-import com.codegym.phimchill.dto.payload.response.CheckMovieNameExistResponse;
-import com.codegym.phimchill.dto.payload.response.MovieResponse;
+import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
+import com.codegym.phimchill.dto.payload.response.*;
 import org.springframework.data.domain.Pageable;
-//import com.codegym.phimchill.entity.MovieHistory;
+
+import java.util.List;
+import java.util.Optional;
+
 
 
 import java.util.List;
@@ -26,7 +24,7 @@ public interface MovieService {
     MovieResponse update(NewMovieRequest updateMovieRequest) throws Exception;
 
     List<MovieDto> findAll();
-    MovieResponse create(NewFilmRequest newTvSeriesRequest) throws Exception;
+    MovieResponse create(NewMovieRequest newTvSeriesRequest) throws Exception;
     CheckMovieNameExistResponse isNotExist(MovieNameRequest movieNameRequest);
 
     ListMovieResponse getMoviesByCategory(Long id);
