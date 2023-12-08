@@ -2,12 +2,15 @@ package com.codegym.phimchill.controller;
 
 import com.codegym.phimchill.dto.payload.request.FavoriteMoviesRequest;
 import com.codegym.phimchill.dto.MovieDto;
+import com.codegym.phimchill.dto.payload.request.NewMovieRequest;
 import com.codegym.phimchill.dto.payload.response.*;
 
 import com.codegym.phimchill.service.FavoriteMoviesService;
 import com.codegym.phimchill.service.MovieService;
 import com.codegym.phimchill.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -27,12 +30,6 @@ public class MovieController {
     private FavoriteMoviesService favoriteMoviesService;
     @Autowired
     private MovieService movieService;
-
-    @GetMapping
-    public ResponseEntity<?> findAll() {
-        List<MovieDto> MovieDtoList = movieService.findAll();
-        return new ResponseEntity<>(MovieDtoList, HttpStatus.OK);
-    }
 
     @GetMapping("/upcoming")
     public ResponseEntity<?> getUpcomingMovies() {
@@ -155,16 +152,33 @@ public class MovieController {
             response.setMessage(e.getMessage());
             response.setStatusCode(HttpStatus.BAD_REQUEST.value());
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+
         }
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<ListMovieResponse> updateMovie(@RequestBody MovieDto movieDto) {
+    @GetMapping({"/all"})
+    public ResponseEntity<PagingMovieResponse> findAllMovies(
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "7") int pageSize) {
+        PagingMovieResponse response = movieService.findAll(pageNumber, pageSize);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<MovieResponse> updateMovie(@PathVariable Long id,
+                                                     @RequestBody NewMovieRequest updateMovieRequest) {
         try {
-            ListMovieResponse response = movieService.updateMovie(movieDto);
-            return ResponseEntity.ok(response);
+            updateMovieRequest.setId(id);
+            MovieResponse movieResponse = movieService.update(updateMovieRequest);
+            return ResponseEntity.ok(movieResponse);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new ListMovieResponse(null, e.getMessage(), HttpStatus.BAD_REQUEST.value()));
+            return ResponseEntity.badRequest().body(new MovieResponse(null, "Update Movie Failed: " + e.getMessage(), 400));
         }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<PagingMovieResponse> deleteMovie(@PathVariable(name = "id") Long movieId, Pageable pageable) {
+        PagingMovieResponse response = movieService.deleteMovies(movieId, pageable);
+        return ResponseEntity.ok(response);
     }
 }

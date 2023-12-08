@@ -59,7 +59,6 @@ public class  AuthController {
             return ResponseEntity.ok(loginResponse);
         }
     }
-
     @PostMapping("/register")
     public ResponseEntity<?> register(@Validated @RequestBody RegisterRequest registerRequest) throws Exception {
         RegisterResponse response = userService.register(registerRequest);
@@ -68,7 +67,6 @@ public class  AuthController {
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-
     @PostMapping("/email-not-existion")
     public ResponseEntity<?> isEmailNotExist (@RequestBody EmailRequest emailRequest) {
         boolean response = userService.isEmailExist(emailRequest);

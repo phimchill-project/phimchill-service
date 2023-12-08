@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Optional;
 
 
+
 @Service
 public class MovieServiceImpl implements MovieService {
     @Autowired
@@ -81,10 +82,27 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<MovieDto> findAll() {
-        List<Movie> movieList = movieRepository.findAll();
-        List<MovieDto> movieDTOList = movieDtoConvert.convertToListDTO(movieList);
-        return movieDTOList;
+    public PagingMovieResponse findAll(int pageNumber, int pageSize) {
+        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
+        Page<Movie> moviePage = moviePagingRepository.findAll(pageRequest);
+        List<Movie> movies = moviePage.getContent();
+        List<MovieDto> movieDtos = new ArrayList<>();
+        for (Movie movie : movies) {
+            MovieDto movieDto = movieConverter.convertToDTO(movie);
+            movieDtos.add(movieDto);
+        }
+        PagingMovieResponseDto response = PagingMovieResponseDto.builder()
+                .totalPages(moviePage.getTotalPages())
+                .totalElements(moviePage.getTotalElements())
+                .pageNumber(moviePage.getNumber())
+                .size(moviePage.getSize())
+                .data(movieDtos)
+                .build();
+        return PagingMovieResponse.builder()
+                .data(response)
+                .message("Get movie page number " + pageNumber + " success")
+                .statusCode(HttpStatus.OK.value())
+                .build();
     }
 
     @Override
@@ -135,6 +153,7 @@ public class MovieServiceImpl implements MovieService {
     public MovieDto getMovieById(Long id) {
         return null;
     }
+
     public ListMovieResponse getMoviesByCategory(Long id) {
         List<Movie> movies = movieRepository.findMoviesByCategoryId(id);
         ListMovieResponse listMovieResponse = new ListMovieResponse();
@@ -213,11 +232,11 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public ListMovieCommentResponse getMovieCommentsById(Long movieId) throws Exception {
         List<MovieComment> movieCommentList = movieCommentRepository.findAllByMovieId(movieId);
-        if(movieCommentList == null) {
+        if (movieCommentList == null) {
             throw new Exception("cannot comments success by movie id " + movieId);
         }
         List<MovieCommentDto> movieCommentDtoList = new ArrayList<>();
-        for(MovieComment movieComment : movieCommentList){
+        for (MovieComment movieComment : movieCommentList) {
             List<MovieSubComment> movieSubCommentList = movieSubCommentRepository.findMovieSubCommentsByMovieComments_Id(movieComment.getId());
             movieComment.setMovieSubCommentsList(movieSubCommentList);
             movieCommentDtoList.add(movieCommentConverter.convertToDto(movieComment));
@@ -232,7 +251,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public ListMovieResponse findMoviesByCategoryId(Long id) throws Exception {
         List<Movie> movieList = movieRepository.findMoviesByCategoryId(id);
-        if(movieList.isEmpty()){
+        if (movieList.isEmpty()) {
             throw new Exception("Categoty id : " + id + " is not exist");
         }
         List<MovieDto> movieDtoList = movieConverter.convertToListDTO(movieList);
@@ -247,7 +266,7 @@ public class MovieServiceImpl implements MovieService {
     public MovieHistoryResponse DurationByMovieId(Long movieId) throws Exception {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findUserByEmail(email);
-        if(user == null) {
+        if (user == null) {
             throw new Exception("Cannot find User by emai " + email + "to get duration");
         }
 //        Movie movie = movieRepository.findById(movieId).orElseThrow(
@@ -255,6 +274,8 @@ public class MovieServiceImpl implements MovieService {
 //        );
         MovieHistory movieHistory = movieHistoryRepository.findMovieHistoriesByMovie_IdAndUser_Id(movieId, user.getId());
         if(movieHistory == null){
+        MovieHistory movieHistory = movieHistoryRepository.findMovieHistoriesByMovie_IdAndAndUser_Id(movieId, user.getId());
+        if (movieHistory == null) {
             return MovieHistoryResponse.builder()
                     .data(null)
                     .message("Get movie history success")
@@ -284,5 +305,63 @@ public class MovieServiceImpl implements MovieService {
         MovieDto updatedMovieDto = movieConverter.convertToDTO(movie);
         List<MovieDto> updatedMovies = Collections.singletonList(updatedMovieDto);
         return new ListMovieResponse(updatedMovies, "Movie updated successfully", HttpStatus.OK.value());
+    }
+
+    @Override
+    @Transactional
+    public PagingMovieResponse deleteMovies(Long id, Pageable pageable) {
+//        Movie movie = movieRepository.findById(id)
+//                .orElseThrow(() -> new EntityNotFoundException("Movie not found with id: " + id));
+        movieRepository.deleteMovieById(id);
+//        movieRepository.delete(movie);
+        Page<Movie> moviePage = movieRepository.findAll(pageable);
+        List<MovieDto> movieDtos = moviePage.getContent().stream()
+                .map(movieConverter::convertToDTO)
+                .collect(Collectors.toList());
+        PagingMovieResponseDto responseDto = PagingMovieResponseDto.builder()
+                .pageNumber(moviePage.getNumber())
+                .size(moviePage.getSize())
+                .totalElements(moviePage.getTotalElements())
+                .totalPages(moviePage.getTotalPages())
+                .data(movieDtos)
+                .build();
+        return PagingMovieResponse.builder()
+                .data(responseDto)
+                .message("Movie deleted successfully")
+                .statusCode(200)
+                .build();
+    }
+    @Override
+    public MovieResponse update(NewMovieRequest updateMovieRequest) throws Exception {
+        Movie movieToUpdate = movieRepository.findById(updateMovieRequest.getId()).orElseThrow(
+                () -> new Exception("Movie not found")
+        );
+        movieToUpdate.setName(updateMovieRequest.getName());
+        movieToUpdate.setDescription(updateMovieRequest.getDescription());
+        movieToUpdate.setYear(updateMovieRequest.getYear());
+        movieToUpdate.setDuration(updateMovieRequest.getDuration());
+        movieToUpdate.setImdb(updateMovieRequest.getImdb());
+        movieToUpdate.setImage(updateMovieRequest.getImage());
+        movieToUpdate.setUrl(updateMovieRequest.getUrl());
+        movieToUpdate.setDateRelease(updateMovieRequest.getDateRelease());
+        List<Category> categoryList = new ArrayList<>();
+        for (CategoryDto categoryDto : updateMovieRequest.getCategoryList()) {
+            Category category = categoryRepository.findById(categoryDto.getId()).orElseThrow(
+                    () -> new Exception("Category not found")
+            );
+            categoryList.add(category);
+        }
+        movieToUpdate.setCategoryList(categoryList);
+        movieRepository.save(movieToUpdate);
+        return MovieResponse.builder()
+                .data(movieConverter.convertToDTO(movieToUpdate))
+                .message("Update Movie Success")
+                .statusCode(200)
+                .build();
+    }
+
+    @Override
+    public List<MovieDto> findAll() {
+        return null;
     }
 }
