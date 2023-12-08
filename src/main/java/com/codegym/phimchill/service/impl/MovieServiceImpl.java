@@ -1,4 +1,4 @@
-package com.codegym.phimchill.service.impl;
+package com.codegym.phimchill.service;
 
 import com.codegym.phimchill.converter.MovieCommentConverter;
 import com.codegym.phimchill.converter.MovieConverter;
