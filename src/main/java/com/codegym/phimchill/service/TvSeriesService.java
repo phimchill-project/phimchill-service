@@ -31,4 +31,5 @@ public interface TvSeriesService {
     String addFavoriteList(Long user_id, Long tvSeries_id);
     List<TvSeriesDto> findAll();
     void deleteTVSeries(Long id);
+    void restoreTVSeries(Long id);
 }

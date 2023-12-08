@@ -114,4 +114,13 @@ public class TvSeriesController {
             return new ResponseEntity<>("TV Series not found with id: " + showId, HttpStatus.NOT_FOUND);
         }
     }
+    @PutMapping("/{showId}/restore")
+    public ResponseEntity<String> restoreTVSeries(@PathVariable Long showId) {
+        try {
+            tvSeriesService.restoreTVSeries(showId);
+            return new ResponseEntity<>("TV Series restored successfully", HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>("TV Series not found with id: " + showId, HttpStatus.NOT_FOUND);
+        }
+    }
 }
