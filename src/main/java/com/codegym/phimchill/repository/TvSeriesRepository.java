@@ -10,9 +10,9 @@ import java.util.Optional;
 public interface TvSeriesRepository extends JpaRepository<TVSeries, Long> {
     TVSeries findByName(String name);
 
-    List<TVSeries> findFirst10ByOrderByImdbDesc();
+    List<TVSeries> findFirst10ByIsDeleteFalseOrderByImdbDesc();
 
-    List<TVSeries> findFirst10ByOrderByDateReleaseDesc();
+    List<TVSeries> findFirst10ByIsDeleteFalseOrderByDateReleaseDesc();
 
     @Query("SELECT m FROM TVSeries m JOIN m.categoryList c WHERE c.id = :id")
     List<TVSeries> findAllByCategoryId (long id);

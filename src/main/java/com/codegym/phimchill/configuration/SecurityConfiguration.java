@@ -102,11 +102,11 @@ public class SecurityConfiguration {
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/movies/blockbuster").permitAll());
 
-        http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/api/users/**").hasRole("USER"));
+//        http.authorizeHttpRequests((authorize) -> authorize
+//                .requestMatchers("/api/users/**").hasRole("USER"));
 
         http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/api/users/edit-password").permitAll());
+                .requestMatchers("/api/users/**").permitAll());
 
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/api/admin/movie/new").permitAll());

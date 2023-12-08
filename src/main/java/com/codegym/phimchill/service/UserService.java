@@ -26,4 +26,6 @@ public interface UserService {
     boolean updatePass(String email, String pass);
 
     ListUserResponse findAll(String email) throws Exception;
+
+    boolean checkMember(String email) throws Exception;
 }
