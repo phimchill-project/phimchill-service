@@ -126,7 +126,7 @@ public class TvSeriesController {
 //            }
 //        }
 //    }
-}
+
 
     @GetMapping("/all")
     public ResponseEntity<TvSeriesResponse> getAll(){

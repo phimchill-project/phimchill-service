@@ -20,7 +20,7 @@ import java.util.List;
 
 @CrossOrigin(value = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/users")
+    @RequestMapping("/api/users")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -141,5 +141,22 @@ public class UserController {
                         .build();
                 return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
             }
+        }
+
+        @GetMapping("/check-member")
+        public ResponseEntity<?> checkMember (@RequestHeader("Authorization") String authToken ) throws Exception {
+            if (!securityService.isAuthenticated() && !securityService.isValidToken(authToken)) {
+                ListUserResponse response = ListUserResponse.builder()
+                        .data(null)
+                        .message("Responding with unauthorized error. Message - {}")
+                        .statusCode(HttpStatus.UNAUTHORIZED.value())
+                        .build();
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            }
+
+                String email = SecurityContextHolder.getContext().getAuthentication().getName();
+                boolean response = userService.checkMember(email);
+                return new ResponseEntity<>(response, HttpStatus.OK);
+           
         }
 }
