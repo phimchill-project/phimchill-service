@@ -22,10 +22,13 @@ public class TvSeriesDto {
 
     private String image;
 
+    private String moreImage;
+
     private Date dateRelease;
 
     private List<CategoryDto> categoryList;
 
     private List<SeasonDto> seasonList;
+
     private Boolean isDelete;
 }

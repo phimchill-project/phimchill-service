@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TvSeriesServiceImpl implements TvSeriesService {
@@ -53,7 +54,8 @@ public class TvSeriesServiceImpl implements TvSeriesService {
                 newTvSeriesRequest.getDescription() == null || newTvSeriesRequest.getDescription().isEmpty() ||
                 newTvSeriesRequest.getImage() == null || newTvSeriesRequest.getImage().isEmpty() ||
                 newTvSeriesRequest.getDateRelease() == null ||
-                newTvSeriesRequest.getCategoryList() == null || newTvSeriesRequest.getCategoryList().isEmpty()) {
+                newTvSeriesRequest.getCategoryList() == null || newTvSeriesRequest.getCategoryList().isEmpty() ||
+                newTvSeriesRequest.getMoreImage() == null || newTvSeriesRequest.getMoreImage().isEmpty()) {
             return false;
         }
 
@@ -66,6 +68,8 @@ public class TvSeriesServiceImpl implements TvSeriesService {
             }
         }
 
+        String moreImage = String.join("|", newTvSeriesRequest.getMoreImage());
+
         try {
             TVSeries tvSeries = TVSeries.builder()
                     .name(newTvSeriesRequest.getName())
@@ -74,6 +78,7 @@ public class TvSeriesServiceImpl implements TvSeriesService {
                     .imdb(newTvSeriesRequest.getImdb())
                     .image(newTvSeriesRequest.getImage())
                     .dateRelease(newTvSeriesRequest.getDateRelease())
+                    .moreImage(moreImage)
                     .build();
             List<Category> categoryList = new ArrayList<>();
             for (NewFilmCategoryDto categoryDto : newTvSeriesRequest.getCategoryList()) {

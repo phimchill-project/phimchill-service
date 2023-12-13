@@ -27,6 +27,15 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+    public String generateToken(String name){
+        return Jwts.builder()
+                .setSubject(name)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date((new Date()).getTime() + jwtExpirationInMs))
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .compact();
+    }
+
     public String getUsernameFromJWT(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(jwtSecret)

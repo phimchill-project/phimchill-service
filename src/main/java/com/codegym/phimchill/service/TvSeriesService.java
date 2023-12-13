@@ -25,6 +25,7 @@ public interface TvSeriesService {
     List<TvSeriesDto> getTop10FavoriteList(Long user_id);
 
     TvSeriesDto findByName(String nameMovie);
+
     List<Optional<TvSeriesDto>> findManyTvSeriesByName(String nameMovive);
 
     ListTvSeriesResponse findTvSeriesByCategoryId(Long id) throws Exception;

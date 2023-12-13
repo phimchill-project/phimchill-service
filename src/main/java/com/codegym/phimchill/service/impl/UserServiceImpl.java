@@ -8,6 +8,7 @@ import com.codegym.phimchill.dto.RegisterDto;
 import com.codegym.phimchill.dto.TvSeriesDto;
 import com.codegym.phimchill.dto.UserDto;
 import com.codegym.phimchill.dto.payload.request.EmailRequest;
+import com.codegym.phimchill.dto.payload.request.LoginGoogleRequest;
 import com.codegym.phimchill.dto.payload.request.RegisterRequest;
 import com.codegym.phimchill.dto.payload.response.*;
 import com.codegym.phimchill.entity.Movie;
@@ -19,18 +20,22 @@ import com.codegym.phimchill.repository.MovieRepository;
 import com.codegym.phimchill.repository.RoleRepository;
 import com.codegym.phimchill.repository.TvSeriesRepository;
 import com.codegym.phimchill.repository.UserRepository;
+import com.codegym.phimchill.security.JwtTokenProvider;
 import com.codegym.phimchill.service.UserService;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Optional;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -43,6 +48,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
     private RoleRepository roleRepository;
@@ -63,6 +70,45 @@ public class UserServiceImpl implements UserService {
     public UserDto login(LoginRequest loginRequest) {
         User user = userRepository.findUserByEmail(loginRequest.getEmail());
         return userConverter.converterToDTO(user);
+    }
+
+    @Override
+    public UserDto loginGoogle(LoginGoogleRequest loginGoogleRequest) {
+
+        UserDto userDto = null;
+
+        HttpTransport transport = new NetHttpTransport();
+        JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
+        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
+                .setAudience(Collections.singletonList("917043825977-g06mbr1dq0v6b6fclba6f4unuatk8m4n.apps.googleusercontent.com"))
+                .build();
+        try{
+            GoogleIdToken idToken = verifier.verify(loginGoogleRequest.getCredential());
+            if (idToken != null){
+                GoogleIdToken.Payload payload = idToken.getPayload();
+                String email = payload.getEmail();
+                String token = jwtTokenProvider.generateToken(email);
+                User user = userRepository.findUserByEmail(email);
+                if (user != null){
+                    userDto = userConverter.converterToDTO(user);
+                    userDto.setToken(token);
+                }else {
+                    String name = (String) payload.get("name");
+                    Role role = roleRepository.findById(2L).orElse(null);
+                    user = User.builder()
+                            .email(email)
+                            .name(name)
+                            .role(role)
+                            .build();
+                    userRepository.save(user);
+                    userDto = userConverter.converterToDTO(user);
+                    userDto.setToken(token);
+                }
+            }
+            return userDto;
+        }catch (Exception ignored){
+            return userDto;
+        }
     }
 
     @Override
