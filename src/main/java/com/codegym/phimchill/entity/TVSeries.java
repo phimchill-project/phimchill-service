@@ -31,6 +31,9 @@ public class TVSeries {
     @Column(name = "IMAGE")
     private String image;
 
+    @Column(name = "MORE_IMAGE")
+    private String moreImage;
+
     @Column(name = "IS_RELEASE")
     private boolean isRelease;
 
@@ -52,6 +55,4 @@ public class TVSeries {
 
     @Column(name = "IS_DELETE")
     private Boolean isDelete = false;
-
-
 }

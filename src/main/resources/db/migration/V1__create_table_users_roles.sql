@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS USERS
     EMAIL    varchar(50),
     NAME     varchar(50),
     PASSWORD varchar(500),
+    IS_MEMBER tinyint(1)   null,
     ROLE_ID  bigint not null,
     FOREIGN KEY (ROLE_ID) REFERENCES ROLES (ID)
 );

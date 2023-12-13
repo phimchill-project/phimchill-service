@@ -32,31 +32,22 @@ CREATE TABLE IF NOT EXISTS MOVIE
 );
 >>>>>>> 7c0345280faaa782b7293f626a9e7403c9427974
 
-CREATE TABLE IF NOT EXISTS TVSERIES
+create table tvseries
 (
-    ID          BIGINT PRIMARY KEY AUTO_INCREMENT,
-    NAME        VARCHAR(50)  ,
-    DESCRIPTION VARCHAR(1000)  ,
-    YEAR        INT,
-    IMDB        FLOAT        ,
-    IMAGE       VARCHAR(500) ,
-    TRAILER     VARCHAR(100) ,
-    IS_RELEASE BOOLEAN DEFAULT TRUE,
-    DATE_RELEASE DATE,
-<<<<<<< HEAD
-    VIEWS INT,
-<<<<<<< HEAD
-    IS_DELETE BOOLEAN DEFAULT TRUE
-
-    );
-=======
-    IS_DELETE BOOLEAN
-=======
-    VIEWS INT DEFAULT 0,
-    IS_DELETE BOOLEAN DEFAULT FALSE
->>>>>>> bcb118dda2b811d0c1ee35aa32c674d123dcee3c
+    ID           bigint auto_increment
+        primary key,
+    NAME         varchar(50)          null,
+    DESCRIPTION  varchar(1000)        null,
+    YEAR         int                  null,
+    IMDB         float                null,
+    IMAGE        varchar(500)         null,
+    TRAILER      varchar(100)         null,
+    IS_RELEASE   tinyint(1) default 1 null,
+    DATE_RELEASE date                 null,
+    VIEWS        int                  null,
+    IS_DELETE    tinyint(1)           null,
+    MoreImage    varchar(5000)        null
 );
->>>>>>> 7c0345280faaa782b7293f626a9e7403c9427974
 
 CREATE TABLE IF NOT EXISTS CATEGORY_MOVIE
 (

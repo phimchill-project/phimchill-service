@@ -1,6 +1,7 @@
 package com.codegym.phimchill.service;
 import com.codegym.phimchill.dto.UserDto;
 import com.codegym.phimchill.dto.payload.request.EmailRequest;
+import com.codegym.phimchill.dto.payload.request.LoginGoogleRequest;
 import com.codegym.phimchill.dto.payload.request.RegisterRequest;
 import com.codegym.phimchill.dto.payload.request.LoginRequest;
 import com.codegym.phimchill.dto.payload.response.*;
@@ -11,6 +12,9 @@ import com.codegym.phimchill.entity.User;
 public interface UserService {
 //    String login(LoginRequest loginRequest);
     UserDto login(LoginRequest loginRequest);
+
+    UserDto loginGoogle(LoginGoogleRequest loginGoogleRequest);
+
     RegisterResponse register(RegisterRequest registerRequest) throws Exception;
     boolean isEmailExist(EmailRequest emailRequest);
     User findUserByEmail(String email) throws Exception;

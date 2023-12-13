@@ -29,4 +29,6 @@ public class NewFilmRequest {
     private Date dateRelease;
 
     private List<NewFilmCategoryDto> categoryList;
+
+    private List<String> moreImage;
 }

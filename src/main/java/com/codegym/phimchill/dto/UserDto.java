@@ -9,9 +9,14 @@ import lombok.*;
 @Builder
 public class UserDto {
     private Long id;
+
     private String email;
+
     private String name ;
+
     private String token;
+
     private boolean isMember;
+
     private String role;
 }
